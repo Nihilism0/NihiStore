@@ -3,10 +3,11 @@
 package user
 
 import (
-	"context"
-
 	huser "NihiStore/server/cmd/api/biz/model/user"
+	"NihiStore/server/cmd/api/config"
 	kuser "NihiStore/server/shared/kitex_gen/user"
+	"context"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -17,13 +18,17 @@ func Login(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.LoginReq
 	resp := new(kuser.LoginResponse)
-
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
 
+	resp, err = config.GlobalUserClient.Login(ctx, &kuser.LoginRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
+	fmt.Println(resp)
 	c.JSON(consts.StatusOK, resp)
 }
 
@@ -32,13 +37,16 @@ func Login(ctx context.Context, c *app.RequestContext) {
 func Register(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.RegisterReq
+	resp := new(kuser.RegisterResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(huser.RegisterResp)
+	resp, err = config.GlobalUserClient.Register(ctx, &kuser.RegisterRequest{
+		Username: req.Username,
+		Password: req.Password,
+	})
 
 	c.JSON(consts.StatusOK, resp)
 }

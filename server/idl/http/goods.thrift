@@ -12,5 +12,5 @@ struct CreateGoodsResponse{
 }
 
 service goodsService{
-    CreateGoodsResponse CreateGoods(1:CreateGoodsRequest req) (api.post ="/goods/creat")
+    common.NilResponse CreateGoods(1:CreateGoodsRequest req) (api.post ="/goods/creat")
 }

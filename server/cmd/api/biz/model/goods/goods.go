@@ -346,7 +346,7 @@ func (p *CreateGoodsResponse) String() string {
 }
 
 type GoodsService interface {
-	CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *CreateGoodsResponse, err error)
+	CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *base.NilResponse, err error)
 }
 
 type GoodsServiceClient struct {
@@ -375,7 +375,7 @@ func (p *GoodsServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *GoodsServiceClient) CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *CreateGoodsResponse, err error) {
+func (p *GoodsServiceClient) CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *base.NilResponse, err error) {
 	var _args GoodsServiceCreateGoodsArgs
 	_args.Req = req
 	var _result GoodsServiceCreateGoodsResult
@@ -445,7 +445,7 @@ func (p *goodsServiceProcessorCreateGoods) Process(ctx context.Context, seqId in
 	iprot.ReadMessageEnd()
 	var err2 error
 	result := GoodsServiceCreateGoodsResult{}
-	var retval *CreateGoodsResponse
+	var retval *base.NilResponse
 	if retval, err2 = p.handler.CreateGoods(ctx, args.Req); err2 != nil {
 		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateGoods: "+err2.Error())
 		oprot.WriteMessageBegin("CreateGoods", thrift.EXCEPTION, seqId)
@@ -620,16 +620,16 @@ func (p *GoodsServiceCreateGoodsArgs) String() string {
 }
 
 type GoodsServiceCreateGoodsResult struct {
-	Success *CreateGoodsResponse `thrift:"success,0,optional"`
+	Success *base.NilResponse `thrift:"success,0,optional"`
 }
 
 func NewGoodsServiceCreateGoodsResult() *GoodsServiceCreateGoodsResult {
 	return &GoodsServiceCreateGoodsResult{}
 }
 
-var GoodsServiceCreateGoodsResult_Success_DEFAULT *CreateGoodsResponse
+var GoodsServiceCreateGoodsResult_Success_DEFAULT *base.NilResponse
 
-func (p *GoodsServiceCreateGoodsResult) GetSuccess() (v *CreateGoodsResponse) {
+func (p *GoodsServiceCreateGoodsResult) GetSuccess() (v *base.NilResponse) {
 	if !p.IsSetSuccess() {
 		return GoodsServiceCreateGoodsResult_Success_DEFAULT
 	}
@@ -704,7 +704,7 @@ ReadStructEndError:
 }
 
 func (p *GoodsServiceCreateGoodsResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewCreateGoodsResponse()
+	p.Success = base.NewNilResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}

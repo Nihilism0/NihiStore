@@ -5,6 +5,7 @@ import (
 )
 
 type CustomClaims struct {
-	ID int64
+	ID       uint
+	IsSeller bool
 	jwt.StandardClaims
 }

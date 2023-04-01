@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"NihiStore/server/shared/consts"
 	"NihiStore/server/shared/model"
 	"context"
 	"errors"
@@ -10,12 +9,9 @@ import (
 	"github.com/golang-jwt/jwt"
 	"net/http"
 	"strings"
-	"time"
 )
 
-var Secret = []byte(consts.JWTSecret)
-
-func JWTAuthMiddleware() app.HandlerFunc {
+func JWTAuthMiddleware(Secret string) app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
 		authHeader := c.Request.Header.Get("Authorization")
 		if authHeader == "" {
@@ -37,7 +33,7 @@ func JWTAuthMiddleware() app.HandlerFunc {
 			return
 		}
 		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
-		mc, err := ParseToken(parts[1])
+		mc, err := ParseToken(parts[1], Secret)
 		if err != nil {
 			c.JSON(http.StatusOK, utils.H{
 				"code": 2005,
@@ -51,7 +47,7 @@ func JWTAuthMiddleware() app.HandlerFunc {
 	}
 }
 
-func ParseToken(tokenString string) (*model.CustomClaims, error) {
+func ParseToken(tokenString, Secret string) (*model.CustomClaims, error) {
 	// 解析token
 	token, err := jwt.ParseWithClaims(tokenString, &model.CustomClaims{}, func(token *jwt.Token) (i interface{}, err error) {
 		return Secret, nil
@@ -64,13 +60,30 @@ func ParseToken(tokenString string) (*model.CustomClaims, error) {
 	}
 	return nil, errors.New("invalid token")
 }
-func NewClaim(id int64) model.CustomClaims {
-	claim := model.CustomClaims{
-		ID: id, // 自定义字段
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: time.Now().Add(time.Hour * 24 * 7).Unix(), // 过期时间
-			Issuer:    consts.JWTIssuer,                          // 签发人
-		},
+
+//func NewClaim(id uint) model.CustomClaims {
+//	claim := model.CustomClaims{
+//		ID: id, // 自定义字段
+//		StandardClaims: jwt.StandardClaims{
+//			ExpiresAt: time.Now().Add(time.Hour * 24 * 7).Unix(), // 过期时间
+//			Issuer:    consts.JWTIssuer,                          // 签发人
+//		},
+//	}
+//	return claim
+//}
+
+type JWT struct {
+	SigningKey []byte
+}
+
+func NewJWT(signingKey string) *JWT {
+	return &JWT{
+		SigningKey: []byte(signingKey),
 	}
-	return claim
+}
+
+// CreateToken to create a token
+func (j *JWT) CreateToken(claims model.CustomClaims) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	return token.SignedString(j.SigningKey)
 }

@@ -1,10 +1,12 @@
 include "../base/common.thrift"
 struct LoginRequest {
     1: string username,
+    2: string password,
 }
 
 struct LoginResponse {
-    1: i64 account_id,
+    1: common.BaseResponse base_resp
+    2: string token,
 }
 
 struct RegisterRequest{
@@ -14,6 +16,7 @@ struct RegisterRequest{
 
 struct RegisterResponse {
     1: common.BaseResponse base_resp,
+    2: bool OK
 }
 
 service UserService {

@@ -18,5 +18,11 @@ func _loginMw() []app.HandlerFunc {
 
 func _registerMw() []app.HandlerFunc {
 	// your code...
+	//middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey)
+	return nil
+}
+
+func _userMw() []app.HandlerFunc {
+	// your code...
 	return nil
 }

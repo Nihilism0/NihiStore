@@ -2,26 +2,20 @@ namespace go user
 include "../base/common.thrift"
 
 struct LoginReq {
-    1: string Name (api.form="name");
-    2: string Password (api.form="password");
-}
-
-struct LoginResp {
-    1: common.BaseResponse base_resp
-    2: string token;
+    1: string Username (api.form="username" api.vd = "len($) > 0 && len($) < 20");//名字长度大于0小于20
+    2: string Password (api.form="password" api.vd = "len($) > 0 && len($) < 20");//密码长度大于0小于20
 }
 
 struct RegisterReq {
-    1: string Name (api.form="name");
-    2: string Pssword (api.form="password");
+    1: string Username (api.form="username" api.vd = "len($) > 0 && len($) < 20");//名字长度大于0小于20
+    2: string Password (api.form="password" api.vd = "len($) > 0 && len($) < 20");//密码长度大于0小于20
 }
 
-struct RegisterResp {
-    1: common.BaseResponse base_resp
-    2: string Msg;
-}
+struct LoginResp {}
+
+struct RegisterResp {}
 
 service userService {
-    LoginResp Login(1: LoginReq request) (api.get="/user/login")
-    RegisterResp Register(1: RegisterReq request) (api.get="/user/request")
+    common.NilResponse Login(1: LoginReq request) (api.get="/user/login")
+    common.NilResponse Register(1: RegisterReq request) (api.post="/user/request")
 }

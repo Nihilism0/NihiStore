@@ -3,12 +3,27 @@
 package main
 
 import (
+	"NihiStore/server/cmd/api/config"
+	"NihiStore/server/cmd/api/initialize"
+	"NihiStore/server/cmd/api/initialize/rpc"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app/server"
+	"github.com/hertz-contrib/cors"
 )
 
 func main() {
-	h := server.Default()
-
+	initialize.InitLogger()
+	initialize.InitConfig()
+	r, info := initialize.InitRegistry()
+	corsCfg := initialize.InitCors()
+	rpc.Init()
+	h := server.New(
+		server.WithALPN(true),
+		server.WithHostPorts(fmt.Sprintf(":%d", config.GlobalServerConfig.Port)),
+		server.WithRegistry(r, info),
+		server.WithHandleMethodNotAllowed(true),
+	)
+	h.Use(cors.New(corsCfg))
 	register(h)
 	h.Spin()
 }
