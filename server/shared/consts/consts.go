@@ -20,9 +20,11 @@ const (
 	ApiConfigPath  = "config.yaml"
 	UserConfigPath = "config.yaml"
 
-	ConsulCheckInterval                       = "7s"
-	ConsulCheckTimeout                        = "5s"
-	ConsulCheckDeregisterCriticalServiceAfter = "15s"
+	NacosLogDir   = "tmp/nacos/log"
+	NacosCacheDir = "tmp/nacos/cache"
+	NacosLogLevel = "debug"
 
-	MySqlDSN = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+	ApiGroup  = "API_GROUP"
+	UserGroup = "USER_GROUP"
+	MySqlDSN  = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 )

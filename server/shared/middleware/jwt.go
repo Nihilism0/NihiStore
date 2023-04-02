@@ -72,18 +72,12 @@ func ParseToken(tokenString, Secret string) (*model.CustomClaims, error) {
 //	return claim
 //}
 
-type JWT struct {
-	SigningKey []byte
-}
-
 func NewJWT(signingKey string) *JWT {
 	return &JWT{
 		SigningKey: []byte(signingKey),
 	}
 }
 
-// CreateToken to create a token
-func (j *JWT) CreateToken(claims model.CustomClaims) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(j.SigningKey)
+type JWT struct {
+	SigningKey []byte
 }

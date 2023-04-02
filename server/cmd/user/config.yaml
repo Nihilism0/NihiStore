@@ -1,3 +1,7 @@
-host: '49.234.42.190'
-port: 8500
-key: 'NihiStore/user_srv'
+host: 'xxx'
+port: 8848
+namespace: 'xxx'
+user: 'xxx'
+password: 'xxx'
+dataid: 'user_srv'
+group: 'USER_GROUP'

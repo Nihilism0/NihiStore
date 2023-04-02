@@ -13,15 +13,13 @@ import (
 
 func main() {
 	initialize.InitLogger()
-	initialize.InitConfig()
-	r, info := initialize.InitRegistry()
+	r, info := initialize.InitNacos()
 	corsCfg := initialize.InitCors()
 	rpc.Init()
 	h := server.New(
 		server.WithALPN(true),
 		server.WithHostPorts(fmt.Sprintf(":%d", config.GlobalServerConfig.Port)),
 		server.WithRegistry(r, info),
-		server.WithHandleMethodNotAllowed(true),
 	)
 	h.Use(cors.New(corsCfg))
 	register(h)

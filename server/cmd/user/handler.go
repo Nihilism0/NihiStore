@@ -6,8 +6,8 @@ import (
 	"NihiStore/server/shared/errx"
 	user "NihiStore/server/shared/kitex_gen/user"
 	"NihiStore/server/shared/model"
+	"NihiStore/server/shared/tools"
 	"context"
-	"fmt"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
@@ -24,35 +24,32 @@ type TokenGenerator interface {
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
 	// TODO: Your code here...
-	fmt.Println("HHEHEHEHEHHEHE")
-	config.DB.AutoMigrate(&model.User{})
 	resp = new(user.LoginResponse)
-	var user model.User
-	config.DB.Where("username = ? ", req.Username).First(&user)
-	if user.Username == "" {
-		resp.BaseResp.StatusCode = errx.FindNone
-		resp.BaseResp.StatusMsg = "No such person found"
-		return
+	theuser := model.User{}
+	config.DB.Where("username = ?", req.Username).First(&theuser)
+	if theuser.Username == "" {
+		resp.BaseResp = tools.BuildBaseResp(errx.FindNone, "No such person found")
+		return resp, nil
 	}
-	if user.Password != req.Password {
-		resp.BaseResp.StatusCode = errx.PassWordWrong
-		resp.BaseResp.StatusMsg = "Wrong Password"
-		return
+	if theuser.Password != req.Password {
+		resp.BaseResp = tools.BuildBaseResp(errx.PassWordWrong, "Wrong Password")
+		return resp, nil
 	}
 	now := time.Now().Unix()
+	tools.BuildToken()
 	resp.Token, err = s.TokenGenerator.CreateToken(&model.CustomClaims{
-		ID:       user.ID,
-		IsSeller: user.IsSeller,
+		ID:       theuser.ID,
+		IsSeller: theuser.IsSeller,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now,
 			NotBefore: now,
 			ExpiresAt: now + consts.ThirtyDays,
 			Issuer:    consts.JWTIssuer,
 		},
-	})
-	resp.BaseResp.StatusCode = 200
-	resp.BaseResp.StatusMsg = "Login Success"
-	return
+	},
+	)
+	resp.BaseResp = tools.BuildBaseResp(200, "Login Success")
+	return resp, nil
 }
 
 // Register implements the UserServiceImpl interface.

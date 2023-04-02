@@ -5,8 +5,8 @@ import (
 )
 
 var (
-	GlobalServerConfig ServerConfig
-	GlobalConsulConfig ConsulConfig
+	GlobalServerConfig = &ServerConfig{}
+	GlobalNacosConfig  = &NacosConfig{}
 
 	GlobalUserClient userservice.Client
 )

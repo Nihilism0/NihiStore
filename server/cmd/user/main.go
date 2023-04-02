@@ -6,6 +6,7 @@ import (
 	"NihiStore/server/cmd/user/pkg/jwt"
 	"NihiStore/server/shared/consts"
 	user "NihiStore/server/shared/kitex_gen/user/userservice"
+	"NihiStore/server/shared/middleware"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -17,10 +18,10 @@ import (
 
 func main() {
 	initialize.InitLogger()
-	initialize.InitConfig()
 	IP, Port := initialize.InitFlag()
-	r, info := initialize.InitRegistry(Port)
-	config.DB = initialize.InitDB()
+	r, info := initialize.InitNacos(Port)
+	initialize.InitDB()
+	// Create new server.
 	srv := user.NewServer(&UserServiceImpl{
 		TokenGenerator: jwt.NewTokenGenerator(config.GlobalServerConfig.JWTInfo.SigningKey),
 	},
@@ -28,6 +29,8 @@ func main() {
 		server.WithRegistry(r),
 		server.WithRegistryInfo(info),
 		server.WithLimit(&limit.Option{MaxConnections: 2000, MaxQPS: 500}),
+		server.WithMiddleware(middleware.CommonMiddleware),
+		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.Name}),
 	)
 

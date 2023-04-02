@@ -3,6 +3,7 @@ package jwt
 import (
 	"NihiStore/server/shared/middleware"
 	"NihiStore/server/shared/model"
+	"github.com/golang-jwt/jwt"
 )
 
 type TokenGenerator struct {
@@ -14,6 +15,9 @@ func NewTokenGenerator(signingKey string) *TokenGenerator {
 	return &TokenGenerator{jwt: j}
 }
 
-func (g *TokenGenerator) CreateToken(claims *model.CustomClaims) (string, error) {
-	return g.jwt.CreateToken(*claims)
+func (g *TokenGenerator) CreateToken(claim *model.CustomClaims) (string, error) {
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
+	tokenString, err := token.SignedString(g.jwt.SigningKey)
+	return tokenString, err
 }
