@@ -4,10 +4,16 @@ package goods
 
 import (
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
+	"NihiStore/server/cmd/api/config"
+	"NihiStore/server/cmd/api/pkg"
+	"NihiStore/server/shared/errx"
 	kgoods "NihiStore/server/shared/kitex_gen/goods"
+	"NihiStore/server/shared/tools"
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
+	"net/http"
 )
 
 // CreateGoods .
@@ -15,13 +21,29 @@ import (
 func CreateGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req hgoods.CreateGoodsRequest
+	resp := new(kgoods.CreateGoodsResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	c.Get("Is")
-	resp := new(kgoods.CreateGoodsResponse)
+	auth, _ := c.Get("IsSeller")
+	if auth.(int64) != 1 {
+		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
+		c.JSON(200, resp)
+		return
+	}
+	resp, err = config.GlobalGoodsClient.CreateGoods(ctx, &kgoods.CreateGoodsRequest{
+		Id:               req.ID,
+		GoodsInformation: pkg.ConvertGoodsInformation(req.GoodsInformation),
+	})
+
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
 	c.JSON(200, resp)
 	return
 }
