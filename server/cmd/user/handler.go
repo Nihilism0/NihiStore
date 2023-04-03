@@ -23,7 +23,6 @@ type TokenGenerator interface {
 
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
-	// TODO: Your code here...
 	resp = new(user.LoginResponse)
 	theUser := model.User{}
 	config.DB.Where("username = ?", req.Username).First(&theUser)

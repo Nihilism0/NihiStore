@@ -10,11 +10,11 @@ import (
 )
 
 func main() {
-	user := ""
-	password := ""
-	host := ""
+	user := "NihiStore"
+	password := "NihiStore1024"
+	host := "49.234.42.190"
 	port := 3306
-	name := ""
+	name := "nihistore"
 	db := initDb(user, password, host, port, name)
 	db.AutoMigrate(
 		&model.User{},

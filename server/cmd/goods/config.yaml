@@ -1,0 +1,7 @@
+host: 'xxx'
+port: 8848
+namespace: 'xxx'
+user: 'xxx'
+password: 'xxx'
+dataid: 'goods_srv'
+group: 'GOODS_GROUP'
