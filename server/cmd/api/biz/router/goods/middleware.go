@@ -3,20 +3,21 @@
 package goods
 
 import (
+	"NihiStore/server/cmd/api/config"
+	"NihiStore/server/shared/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
 func rootMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _goodsMw() []app.HandlerFunc {
-	// your code...
 	return nil
 }
 
 func _creategoodsMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
 }

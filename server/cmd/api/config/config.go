@@ -15,11 +15,12 @@ type JWTConfig struct {
 }
 
 type ServerConfig struct {
-	Name        string       `mapstructure:"name" json:"name"`
-	Host        string       `mapstructure:"host" json:"host"`
-	Port        int          `mapstructure:"port" json:"port"`
-	JWTInfo     JWTConfig    `mapstructure:"jwt" json:"jwt"`
-	UserSrvInfo RPCSrvConfig `mapstructure:"user_srv" json:"user_srv"`
+	Name         string       `mapstructure:"name" json:"name"`
+	Host         string       `mapstructure:"host" json:"host"`
+	Port         int          `mapstructure:"port" json:"port"`
+	JWTInfo      JWTConfig    `mapstructure:"jwt" json:"jwt"`
+	UserSrvInfo  RPCSrvConfig `mapstructure:"user_srv" json:"user_srv"`
+	GoodsSrvInfo RPCSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 }
 
 type RPCSrvConfig struct {

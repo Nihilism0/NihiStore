@@ -10,7 +10,7 @@ import (
 )
 
 type CreateGoodsRequest struct {
-	Username         string      `thrift:"username,1" form:"username" json:"username" query:"username"`
+	ID               int64       `thrift:"id,1" form:"id" json:"id" query:"id"`
 	GoodsInformation *base.Goods `thrift:"goods_information,2" form:"goods_information" json:"goods_information" query:"goods_information"`
 }
 
@@ -18,8 +18,8 @@ func NewCreateGoodsRequest() *CreateGoodsRequest {
 	return &CreateGoodsRequest{}
 }
 
-func (p *CreateGoodsRequest) GetUsername() (v string) {
-	return p.Username
+func (p *CreateGoodsRequest) GetID() (v int64) {
+	return p.ID
 }
 
 var CreateGoodsRequest_GoodsInformation_DEFAULT *base.Goods
@@ -32,7 +32,7 @@ func (p *CreateGoodsRequest) GetGoodsInformation() (v *base.Goods) {
 }
 
 var fieldIDToName_CreateGoodsRequest = map[int16]string{
-	1: "username",
+	1: "id",
 	2: "goods_information",
 }
 
@@ -60,7 +60,7 @@ func (p *CreateGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -110,10 +110,10 @@ ReadStructEndError:
 }
 
 func (p *CreateGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.Username = v
+		p.ID = v
 	}
 	return nil
 }
@@ -160,10 +160,10 @@ WriteStructEndError:
 }
 
 func (p *CreateGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("username", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Username); err != nil {
+	if err := oprot.WriteI64(p.ID); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

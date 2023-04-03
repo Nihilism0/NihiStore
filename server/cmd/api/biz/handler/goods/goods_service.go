@@ -3,9 +3,9 @@
 package goods
 
 import (
+	hgoods "NihiStore/server/cmd/api/biz/model/goods"
+	kgoods "NihiStore/server/shared/kitex_gen/goods"
 	"context"
-
-	goods "NihiStore/server/cmd/api/biz/model/goods"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
 )
@@ -14,14 +14,14 @@ import (
 // @router /goods/creat [POST]
 func CreateGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req goods.CreateGoodsRequest
+	var req hgoods.CreateGoodsRequest
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(goods.CreateGoodsResponse)
-
-	c.JSON(consts.StatusOK, resp)
+	c.Get("Is")
+	resp := new(kgoods.CreateGoodsResponse)
+	c.JSON(200, resp)
+	return
 }
