@@ -25,21 +25,20 @@ type TokenGenerator interface {
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
 	// TODO: Your code here...
 	resp = new(user.LoginResponse)
-	theuser := model.User{}
-	config.DB.Where("username = ?", req.Username).First(&theuser)
-	if theuser.Username == "" {
+	theUser := model.User{}
+	config.DB.Where("username = ?", req.Username).First(&theUser)
+	if theUser.Username == "" {
 		resp.BaseResp = tools.BuildBaseResp(errx.FindNone, "No such person found")
 		return resp, nil
 	}
-	if theuser.Password != req.Password {
+	if theUser.Password != req.Password {
 		resp.BaseResp = tools.BuildBaseResp(errx.PassWordWrong, "Wrong Password")
 		return resp, nil
 	}
 	now := time.Now().Unix()
-	tools.BuildToken()
 	resp.Token, err = s.TokenGenerator.CreateToken(&model.CustomClaims{
-		ID:       theuser.ID,
-		IsSeller: theuser.IsSeller,
+		ID:       theUser.ID,
+		IsSeller: theUser.IsSeller,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now,
 			NotBefore: now,
@@ -55,5 +54,24 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 // Register implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterRequest) (resp *user.RegisterResponse, err error) {
 	// TODO: Your code here...
-	return
+	resp = new(user.RegisterResponse)
+	theUser := model.User{}
+	config.DB.Where("username = ?", req.Username).First(&theUser)
+	if theUser.Username != "" {
+		resp.BaseResp = tools.BuildBaseResp(errx.AlreadyExist, "Username already exist")
+		resp.OK = false
+		return resp, nil
+	}
+	theUser.Username = req.Username
+	theUser.IsSeller = false
+	theUser.Password = req.Password
+	errMsg := config.DB.Create(&theUser).Error
+	if err != nil {
+		resp.BaseResp = tools.BuildBaseResp(errx.CreatUserFail, errMsg.Error())
+		resp.OK = false
+		return resp, nil
+	}
+	resp.BaseResp = tools.BuildBaseResp(200, "Create user success")
+	resp.OK = true
+	return resp, nil
 }

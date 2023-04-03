@@ -17,5 +17,5 @@ struct RegisterResp {}
 
 service userService {
     common.NilResponse Login(1: LoginReq request) (api.get="/user/login")
-    common.NilResponse Register(1: RegisterReq request) (api.post="/user/request")
+    common.NilResponse Register(1: RegisterReq request) (api.post="/user/register")
 }

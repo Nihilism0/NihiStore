@@ -7,7 +7,6 @@ import (
 	"NihiStore/server/cmd/api/config"
 	kuser "NihiStore/server/shared/kitex_gen/user"
 	"context"
-	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -36,8 +35,6 @@ func Login(ctx context.Context, c *app.RequestContext) {
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
-	fmt.Println("HIHIHI")
-	fmt.Println(resp)
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -57,6 +54,11 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		Username: req.Username,
 		Password: req.Password,
 	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
