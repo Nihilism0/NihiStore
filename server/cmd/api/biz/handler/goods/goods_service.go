@@ -3,6 +3,7 @@
 package goods
 
 import (
+	base "NihiStore/server/cmd/api/biz/model/base"
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/pkg"
@@ -28,13 +29,14 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	auth, _ := c.Get("IsSeller")
-	if auth.(int64) != 1 {
+	ID, _ := c.Get("ID")
+	if auth.(bool) != true {
 		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
 		c.JSON(200, resp)
 		return
 	}
 	resp, err = config.GlobalGoodsClient.CreateGoods(ctx, &kgoods.CreateGoodsRequest{
-		Id:               req.ID,
+		Id:               ID.(int64),
 		GoodsInformation: pkg.ConvertGoodsInformation(req.GoodsInformation),
 	})
 
@@ -46,4 +48,52 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(200, resp)
 	return
+}
+
+// DeleteGoods .
+// @router /goods/delete [DELETE]
+func DeleteGoods(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req goods.DeleteGoodsRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(base.NilResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// SearchGoodsInfo .
+// @router /goods/searchgoodsinfo [GET]
+func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req goods.SearchGoodsInfoRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(base.NilResponse)
+
+	c.JSON(consts.StatusOK, resp)
+}
+
+// SearchGoods .
+// @router /goods/searchgoods [GET]
+func SearchGoods(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req goods.SearchGoodsRequest
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+
+	resp := new(base.NilResponse)
+
+	c.JSON(consts.StatusOK, resp)
 }

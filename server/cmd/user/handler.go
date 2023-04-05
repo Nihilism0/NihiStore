@@ -8,18 +8,13 @@ import (
 	"NihiStore/server/shared/model"
 	"NihiStore/server/shared/tools"
 	"context"
+	"fmt"
 	"github.com/golang-jwt/jwt"
 	"time"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.
-type UserServiceImpl struct {
-	TokenGenerator
-}
-
-type TokenGenerator interface {
-	CreateToken(claims *model.CustomClaims) (token string, err error)
-}
+type UserServiceImpl struct{}
 
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
@@ -35,8 +30,9 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 		return resp, nil
 	}
 	now := time.Now().Unix()
-	resp.Token, err = s.TokenGenerator.CreateToken(&model.CustomClaims{
-		ID:       theUser.ID,
+	//jwt
+	claim := model.CustomClaims{
+		ID:       int64(theUser.ID),
 		IsSeller: theUser.IsSeller,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now,
@@ -44,8 +40,14 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 			ExpiresAt: now + consts.ThirtyDays,
 			Issuer:    consts.JWTIssuer,
 		},
-	},
-	)
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
+	fmt.Println("DEBUG")
+	fmt.Println(config.GlobalServerConfig.JWTInfo.SigningKey)
+	resp.Token, err = token.SignedString([]byte(config.GlobalServerConfig.JWTInfo.SigningKey))
+	if err != nil {
+		fmt.Println(err)
+	}
 	resp.BaseResp = tools.BuildBaseResp(200, "Login Success")
 	return resp, nil
 }
@@ -73,4 +75,70 @@ func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterReques
 	resp.BaseResp = tools.BuildBaseResp(200, "Create user success")
 	resp.OK = true
 	return resp, nil
+}
+
+// CreateFavorites implements the UserServiceImpl interface.
+func (s *UserServiceImpl) CreateFavorites(ctx context.Context, req *user.CreateFavoritesRequest) (resp *user.CreateFavoritesResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// WatchFavorites implements the UserServiceImpl interface.
+func (s *UserServiceImpl) WatchFavorites(ctx context.Context, req *user.WatchFavoritesRequset) (resp *user.WatchFavoritesResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// WatchGoodsInFavorites implements the UserServiceImpl interface.
+func (s *UserServiceImpl) WatchGoodsInFavorites(ctx context.Context, req *user.WatchGoodsInFavoritesRequest) (resp *user.WatchGoodsInFavoritesResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// DeleteFavorites implements the UserServiceImpl interface.
+func (s *UserServiceImpl) DeleteFavorites(ctx context.Context, req *user.DeleteFavoritesRequest) (resp *user.DeleteFavoritesResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// CollectGoods implements the UserServiceImpl interface.
+func (s *UserServiceImpl) CollectGoods(ctx context.Context, req *user.CollectGoodsRequest) (resp *user.CollectGoodsResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// AddToCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) AddToCart(ctx context.Context, req *user.AddToCartRequest) (resp *user.AddToCartResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// AddAmountCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) AddAmountCart(ctx context.Context, req *user.AddAmountCartRequest) (resp *user.AddAmountCartResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// DeleteAmountCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) DeleteAmountCart(ctx context.Context, req *user.DeleteAmountCartRequest) (resp *user.DeleteAmountCartResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// RemoveOutCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) RemoveOutCart(ctx context.Context, req *user.RemoveOutCartRequest) (resp *user.RemoveOutCartResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// WatchCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) WatchCart(ctx context.Context, req *user.AddToCartRequest) (resp *user.WatchCartResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// CleanCart implements the UserServiceImpl interface.
+func (s *UserServiceImpl) CleanCart(ctx context.Context, req *user.CleanCartRequest) (resp *user.CleanCartResponse, err error) {
+	// TODO: Your code here...
+	return
 }

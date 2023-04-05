@@ -4,5 +4,4 @@ struct Goods{
     1: string name,
     2: string describe,
     3: i64 cost,
-    4: i64 salesVolume,
 }

@@ -24,3 +24,21 @@ func (s *GoodsServiceImpl) CreateGoods(ctx context.Context, req *goods.CreateGoo
 	resp.BaseResp = tools.BuildBaseResp(200, "Create goods success")
 	return resp, nil
 }
+
+// DeleteGoods implements the GoodsServiceImpl interface.
+func (s *GoodsServiceImpl) DeleteGoods(ctx context.Context, req *goods.DeleteGoodsRequest) (resp *goods.DeleteGoodsResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// SearchGoodsInfo implements the GoodsServiceImpl interface.
+func (s *GoodsServiceImpl) SearchGoodsInfo(ctx context.Context, req *goods.SearchGoodsInfoRequest) (resp *goods.SearchGoodsInfoResponse, err error) {
+	// TODO: Your code here...
+	return
+}
+
+// SearchGoods implements the GoodsServiceImpl interface.
+func (s *GoodsServiceImpl) SearchGoods(ctx context.Context, req *goods.SearchGoodsRequest) (resp *goods.SearchGoodsResponse, err error) {
+	// TODO: Your code here...
+	return
+}

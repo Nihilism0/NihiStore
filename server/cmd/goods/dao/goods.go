@@ -11,6 +11,6 @@ func FillGoods(req *goods.CreateGoodsRequest) *model.Goods {
 		User_Id:     req.Id,
 		Describe:    req.GoodsInformation.Describe,
 		Cost:        req.GoodsInformation.Cost,
-		SalesVolume: req.GoodsInformation.SalesVolume,
+		SalesVolume: 0,
 	}
 }

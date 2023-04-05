@@ -3,7 +3,6 @@ package main
 import (
 	"NihiStore/server/cmd/user/config"
 	"NihiStore/server/cmd/user/initialize"
-	"NihiStore/server/cmd/user/pkg/jwt"
 	"NihiStore/server/shared/consts"
 	user "NihiStore/server/shared/kitex_gen/user/userservice"
 	"NihiStore/server/shared/middleware"
@@ -22,9 +21,8 @@ func main() {
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
 	// Create new server.
-	srv := user.NewServer(&UserServiceImpl{
-		TokenGenerator: jwt.NewTokenGenerator(config.GlobalServerConfig.JWTInfo.SigningKey),
-	},
+	srv := user.NewServer(
+		&UserServiceImpl{},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),
 		server.WithRegistryInfo(info),

@@ -21,5 +21,22 @@ func Register(r *server.Hertz) {
 		_user := root.Group("/user", _userMw()...)
 		_user.GET("/login", append(_loginMw(), user.Login)...)
 		_user.POST("/register", append(_registerMw(), user.Register)...)
+		{
+			_cart := _user.Group("/cart", _cartMw()...)
+			_cart.POST("/addamountcart", append(__dd_mounrcartMw(), user.AddAmounrCart)...)
+			_cart.POST("/addtocart", append(__ddtocartMw(), user.AddToCart)...)
+			_cart.DELETE("/cleancart", append(_cleancartMw(), user.CleanCart)...)
+			_cart.DELETE("/deleteamountcart", append(_delete_mountcartMw(), user.DeleteAmountCart)...)
+			_cart.DELETE("/removeoutcart", append(_removeoutcartMw(), user.RemoveOutCart)...)
+			_cart.GET("/watchcart", append(_watchcartMw(), user.WatchCart)...)
+		}
+		{
+			_favorites := _user.Group("/favorites", _favoritesMw()...)
+			_favorites.POST("/collectgoods", append(_collectgoodsMw(), user.CollectGoods)...)
+			_favorites.POST("/createfavorites", append(_createfavoritesMw(), user.CreateFavorites)...)
+			_favorites.DELETE("/deletefavorites", append(_deletefavoritesMw(), user.DeleteFavorites)...)
+			_favorites.GET("/watchfavorites", append(_watchfavoritesMw(), user.WatchFavorites)...)
+			_favorites.GET("/watchgoodsinfavorites", append(_watchgoodsinfavoritesMw(), user.WatchGoodsInFavorites)...)
+		}
 	}
 }

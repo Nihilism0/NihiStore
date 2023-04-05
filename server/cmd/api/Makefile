@@ -1,14 +1,13 @@
 
-generate:
+update:
 	hz update -idl ./../../idl/http/$(servicename).thrift
-	kitex -service user -module NihiStore -use NihiStore/server/shared/kitex_gen ../../idl/rpc/user.thrift
 
 user:
-	make servicename=user generate
+	make servicename=user update
 
 goods:
-	make servicename=goods generate
+	make servicename=goods update
 
-all:
+updateAll:
 	make user
 	make goods

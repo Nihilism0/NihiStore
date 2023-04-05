@@ -32,7 +32,7 @@ func JWTAuthMiddleware(Secret string) app.HandlerFunc {
 			c.Abort()
 			return
 		}
-		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它
+		// parts[1]是获取到的tokenString，我们使用之前定义好的解析JWT的函数来解析它\
 		mc, err := ParseToken(parts[1], Secret)
 		if err != nil {
 			c.JSON(http.StatusOK, utils.H{
@@ -42,7 +42,8 @@ func JWTAuthMiddleware(Secret string) app.HandlerFunc {
 			c.Abort()
 			return
 		}
-		c.Set("ID", mc.Id)
+
+		c.Set("ID", mc.ID)
 		c.Set("IsSeller", mc.IsSeller)
 		c.Next(ctx)
 	}
@@ -51,7 +52,7 @@ func JWTAuthMiddleware(Secret string) app.HandlerFunc {
 func ParseToken(tokenString, Secret string) (*model.CustomClaims, error) {
 	// 解析token
 	token, err := jwt.ParseWithClaims(tokenString, &model.CustomClaims{}, func(token *jwt.Token) (i interface{}, err error) {
-		return Secret, nil
+		return []byte(Secret), nil
 	})
 	if err != nil {
 		return nil, err
@@ -60,25 +61,4 @@ func ParseToken(tokenString, Secret string) (*model.CustomClaims, error) {
 		return claims, nil
 	}
 	return nil, errors.New("invalid token")
-}
-
-//func NewClaim(id uint) model.CustomClaims {
-//	claim := model.CustomClaims{
-//		ID: id, // 自定义字段
-//		StandardClaims: jwt.StandardClaims{
-//			ExpiresAt: time.Now().Add(time.Hour * 24 * 7).Unix(), // 过期时间
-//			Issuer:    consts.JWTIssuer,                          // 签发人
-//		},
-//	}
-//	return claim
-//}
-
-func NewJWT(signingKey string) *JWT {
-	return &JWT{
-		SigningKey: []byte(signingKey),
-	}
-}
-
-type JWT struct {
-	SigningKey []byte
 }

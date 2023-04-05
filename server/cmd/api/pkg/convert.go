@@ -7,9 +7,8 @@ import (
 
 func ConvertGoodsInformation(in *hbase.Goods) *kbase.Goods {
 	return &kbase.Goods{
-		Name:        in.Name,
-		Describe:    in.Describe,
-		Cost:        in.Cost,
-		SalesVolume: in.SalesVolume,
+		Name:     in.Name,
+		Describe: in.Describe,
+		Cost:     in.Cost,
 	}
 }

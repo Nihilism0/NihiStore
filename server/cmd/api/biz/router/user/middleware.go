@@ -26,3 +26,68 @@ func _userMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _cartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func __dd_mounrcartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func __ddtocartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _cleancartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _delete_mountcartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _removeoutcartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _watchcartMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _favoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _collectgoodsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _createfavoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _deletefavoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _watchfavoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _watchgoodsinfavoritesMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -67,7 +67,6 @@ func InitNacos(Port int) (registry.Registry, *registry.Info) {
 	if err != nil {
 		klog.Fatalf("nacos config failed: %s", err.Error())
 	}
-
 	if config.GlobalServerConfig.Host == "" {
 		config.GlobalServerConfig.Host, err = tools.GetLocalIPv4Address()
 		if err != nil {
