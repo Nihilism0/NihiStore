@@ -7660,7 +7660,7 @@ ReadStructEndError:
 func (p *UserServiceWatchCartArgs) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := NewAddToCartRequest()
+	tmp := NewWatchCartRequest()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {

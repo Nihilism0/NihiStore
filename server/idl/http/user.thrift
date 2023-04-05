@@ -34,7 +34,7 @@ struct RmCollectGoodsReq{
 struct WatchFavoritesReq{}
 
 struct WatchGoodsInFavoritesReq{
-    1: string favoritesId
+    1: i64 favoritesId
 }
 
 struct AddToCartReq{

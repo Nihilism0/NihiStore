@@ -3,7 +3,6 @@
 package goods
 
 import (
-	base "NihiStore/server/cmd/api/biz/model/base"
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/pkg"
@@ -55,15 +54,32 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req hgoods.DeleteGoodsReq
+	resp := new(kgoods.DeleteGoodsResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	auth, _ := c.Get("IsSeller")
+	ID, _ := c.Get("ID")
+	if auth.(bool) != true {
+		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
+		c.JSON(200, resp)
+		return
+	}
+	resp, err = config.GlobalGoodsClient.DeleteGoods(ctx, &kgoods.DeleteGoodsRequest{
+		GoodsId:  req.GoodsID,
+		SellerId: ID.(int64),
+	})
 
-	resp := new(base.NilResponse)
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(200, resp)
+	return
 }
 
 // SearchGoodsInfo .
@@ -71,15 +87,24 @@ func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req hgoods.SearchGoodsInfoReq
+	resp := new(kgoods.SearchGoodsInfoResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	resp, err = config.GlobalGoodsClient.SearchGoodsInfo(ctx, &kgoods.SearchGoodsInfoRequest{
+		SearchMsg: req.SearchMsg,
+	})
 
-	resp := new(base.NilResponse)
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(200, resp)
+	return
 }
 
 // SearchGoods .
@@ -87,13 +112,22 @@ func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
 func SearchGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req hgoods.SearchGoodsReq
+	resp := new(kgoods.SearchGoodsResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
+	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{
+		SearchMsg: req.SearchMsg,
+	})
 
-	resp := new(base.NilResponse)
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
-	c.JSON(consts.StatusOK, resp)
+	c.JSON(200, resp)
+	return
 }

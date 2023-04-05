@@ -401,7 +401,7 @@ func (p *kClient) RemoveOutCart(ctx context.Context, req *user.RemoveOutCartRequ
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) WatchCart(ctx context.Context, req *user.AddToCartRequest) (r *user.WatchCartResponse, err error) {
+func (p *kClient) WatchCart(ctx context.Context, req *user.WatchCartRequest) (r *user.WatchCartResponse, err error) {
 	var _args user.UserServiceWatchCartArgs
 	_args.Req = req
 	var _result user.UserServiceWatchCartResult

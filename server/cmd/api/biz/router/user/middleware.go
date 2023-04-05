@@ -3,6 +3,8 @@
 package user
 
 import (
+	"NihiStore/server/cmd/api/config"
+	"NihiStore/server/shared/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -28,8 +30,9 @@ func _userMw() []app.HandlerFunc {
 }
 
 func _cartMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
 }
 
 func __dd_mounrcartMw() []app.HandlerFunc {
@@ -63,8 +66,9 @@ func _watchcartMw() []app.HandlerFunc {
 }
 
 func _favoritesMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
 }
 
 func _collectgoodsMw() []app.HandlerFunc {

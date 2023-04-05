@@ -3,7 +3,6 @@
 package user
 
 import (
-	base "NihiStore/server/cmd/api/biz/model/base"
 	huser "NihiStore/server/cmd/api/biz/model/user"
 	"NihiStore/server/cmd/api/config"
 	kuser "NihiStore/server/shared/kitex_gen/user"
@@ -69,13 +68,23 @@ func Register(ctx context.Context, c *app.RequestContext) {
 func CreateFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.CreateFavoritesReq
+	resp := new(kuser.CreateFavoritesResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.CreateFavorites(ctx, &kuser.CreateFavoritesRequest{
+		FavoritesName: req.FavoritesName,
+		Describe:      req.Describe,
+		UserId:        ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -85,13 +94,21 @@ func CreateFavorites(ctx context.Context, c *app.RequestContext) {
 func WatchFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.WatchFavoritesReq
+	resp := new(kuser.WatchFavoritesResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.WatchFavorites(ctx, &kuser.WatchFavoritesRequset{
+		UserId: ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -101,13 +118,22 @@ func WatchFavorites(ctx context.Context, c *app.RequestContext) {
 func WatchGoodsInFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.WatchGoodsInFavoritesReq
+	resp := new(kuser.WatchGoodsInFavoritesResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.WatchGoodsInFavorites(ctx, &kuser.WatchGoodsInFavoritesRequest{
+		FavoritesId: req.FavoritesId,
+		UserId:      ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -117,13 +143,22 @@ func WatchGoodsInFavorites(ctx context.Context, c *app.RequestContext) {
 func DeleteFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.DeleteFavoritesReq
+	resp := new(kuser.DeleteFavoritesResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.DeleteFavorites(ctx, &kuser.DeleteFavoritesRequest{
+		FavoritesId: req.FavoritesId,
+		UserId:      ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -133,13 +168,23 @@ func DeleteFavorites(ctx context.Context, c *app.RequestContext) {
 func CollectGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.CollectGoodsReq
+	resp := new(kuser.CollectGoodsResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.CollectGoods(ctx, &kuser.CollectGoodsRequest{
+		GoodsId:     req.GoodsId,
+		FavoritesId: req.FavoritesId,
+		UserId:      ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -149,13 +194,23 @@ func CollectGoods(ctx context.Context, c *app.RequestContext) {
 func AddToCart(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.AddToCartReq
+	resp := new(kuser.AddToCartResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.AddToCart(ctx, &kuser.AddToCartRequest{
+		GoodsId: req.GoodsId,
+		Amount:  req.Amount,
+		UserId:  ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -165,13 +220,23 @@ func AddToCart(ctx context.Context, c *app.RequestContext) {
 func AddAmounrCart(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.AddAmountCartReq
+	resp := new(kuser.AddAmountCartResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.AddAmountCart(ctx, &kuser.AddAmountCartRequest{
+		GoodsId: req.GoodsId,
+		Amount:  req.Amount,
+		UserId:  ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -181,13 +246,23 @@ func AddAmounrCart(ctx context.Context, c *app.RequestContext) {
 func DeleteAmountCart(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.DeleteAmountCartReq
+	resp := new(kuser.DeleteAmountCartResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.DeleteAmountCart(ctx, &kuser.DeleteAmountCartRequest{
+		GoodsId: req.GoodsId,
+		Amount:  req.Amount,
+		UserId:  ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -197,13 +272,22 @@ func DeleteAmountCart(ctx context.Context, c *app.RequestContext) {
 func RemoveOutCart(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.RemoveOutCartReq
+	resp := new(kuser.RemoveOutCartResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.RemoveOutCart(ctx, &kuser.RemoveOutCartRequest{
+		GoodsId: req.GoodsId,
+		UserId:  ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -212,14 +296,20 @@ func RemoveOutCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/watchcart [GET]
 func WatchCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req huser.WatchCartReq
-	err = c.BindAndValidate(&req)
+	resp := new(kuser.WatchCartResponse)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.WatchCart(ctx, &kuser.WatchCartRequest{
+		UserId: ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }
@@ -229,13 +319,19 @@ func WatchCart(ctx context.Context, c *app.RequestContext) {
 func CleanCart(ctx context.Context, c *app.RequestContext) {
 	var err error
 	var req huser.CleanCartReq
+	resp := new(kuser.CleanCartResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-
-	resp := new(base.NilResponse)
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.CleanCart(ctx, &kuser.CleanCartRequest{UserId: ID.(int64)})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 
 	c.JSON(consts.StatusOK, resp)
 }

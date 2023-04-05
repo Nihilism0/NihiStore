@@ -163,6 +163,6 @@ service UserService {
     AddAmountCartResponse AddAmountCart(1:AddAmountCartRequest req)
     DeleteAmountCartResponse DeleteAmountCart(1:DeleteAmountCartRequest req)
     RemoveOutCartResponse RemoveOutCart(1:RemoveOutCartRequest req)
-    WatchCartResponse WatchCart(1:AddToCartRequest req)
+    WatchCartResponse WatchCart(1:WatchCartRequest req)
     CleanCartResponse CleanCart(1:CleanCartRequest req)
 }

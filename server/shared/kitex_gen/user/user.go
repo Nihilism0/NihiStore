@@ -6110,7 +6110,7 @@ type UserService interface {
 
 	RemoveOutCart(ctx context.Context, req *RemoveOutCartRequest) (r *RemoveOutCartResponse, err error)
 
-	WatchCart(ctx context.Context, req *AddToCartRequest) (r *WatchCartResponse, err error)
+	WatchCart(ctx context.Context, req *WatchCartRequest) (r *WatchCartResponse, err error)
 
 	CleanCart(ctx context.Context, req *CleanCartRequest) (r *CleanCartResponse, err error)
 }
@@ -6240,7 +6240,7 @@ func (p *UserServiceClient) RemoveOutCart(ctx context.Context, req *RemoveOutCar
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *UserServiceClient) WatchCart(ctx context.Context, req *AddToCartRequest) (r *WatchCartResponse, err error) {
+func (p *UserServiceClient) WatchCart(ctx context.Context, req *WatchCartRequest) (r *WatchCartResponse, err error) {
 	var _args UserServiceWatchCartArgs
 	_args.Req = req
 	var _result UserServiceWatchCartResult
@@ -10743,7 +10743,7 @@ func (p *UserServiceRemoveOutCartResult) Field0DeepEqual(src *RemoveOutCartRespo
 }
 
 type UserServiceWatchCartArgs struct {
-	Req *AddToCartRequest `thrift:"req,1" frugal:"1,default,AddToCartRequest" json:"req"`
+	Req *WatchCartRequest `thrift:"req,1" frugal:"1,default,WatchCartRequest" json:"req"`
 }
 
 func NewUserServiceWatchCartArgs() *UserServiceWatchCartArgs {
@@ -10754,15 +10754,15 @@ func (p *UserServiceWatchCartArgs) InitDefault() {
 	*p = UserServiceWatchCartArgs{}
 }
 
-var UserServiceWatchCartArgs_Req_DEFAULT *AddToCartRequest
+var UserServiceWatchCartArgs_Req_DEFAULT *WatchCartRequest
 
-func (p *UserServiceWatchCartArgs) GetReq() (v *AddToCartRequest) {
+func (p *UserServiceWatchCartArgs) GetReq() (v *WatchCartRequest) {
 	if !p.IsSetReq() {
 		return UserServiceWatchCartArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *UserServiceWatchCartArgs) SetReq(val *AddToCartRequest) {
+func (p *UserServiceWatchCartArgs) SetReq(val *WatchCartRequest) {
 	p.Req = val
 }
 
@@ -10834,7 +10834,7 @@ ReadStructEndError:
 }
 
 func (p *UserServiceWatchCartArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewAddToCartRequest()
+	p.Req = NewWatchCartRequest()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
@@ -10906,7 +10906,7 @@ func (p *UserServiceWatchCartArgs) DeepEqual(ano *UserServiceWatchCartArgs) bool
 	return true
 }
 
-func (p *UserServiceWatchCartArgs) Field1DeepEqual(src *AddToCartRequest) bool {
+func (p *UserServiceWatchCartArgs) Field1DeepEqual(src *WatchCartRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false

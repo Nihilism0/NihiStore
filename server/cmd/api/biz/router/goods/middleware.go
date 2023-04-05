@@ -23,8 +23,9 @@ func _creategoodsMw() []app.HandlerFunc {
 }
 
 func _deletegoodsMw() []app.HandlerFunc {
-	// your code...
-	return nil
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
 }
 
 func _searchgoodsMw() []app.HandlerFunc {

@@ -1189,14 +1189,14 @@ func (p *WatchFavoritesReq) String() string {
 }
 
 type WatchGoodsInFavoritesReq struct {
-	FavoritesId string `thrift:"favoritesId,1" form:"favoritesId" json:"favoritesId" query:"favoritesId"`
+	FavoritesId int64 `thrift:"favoritesId,1" form:"favoritesId" json:"favoritesId" query:"favoritesId"`
 }
 
 func NewWatchGoodsInFavoritesReq() *WatchGoodsInFavoritesReq {
 	return &WatchGoodsInFavoritesReq{}
 }
 
-func (p *WatchGoodsInFavoritesReq) GetFavoritesId() (v string) {
+func (p *WatchGoodsInFavoritesReq) GetFavoritesId() (v int64) {
 	return p.FavoritesId
 }
 
@@ -1224,7 +1224,7 @@ func (p *WatchGoodsInFavoritesReq) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1264,7 +1264,7 @@ ReadStructEndError:
 }
 
 func (p *WatchGoodsInFavoritesReq) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		p.FavoritesId = v
@@ -1302,10 +1302,10 @@ WriteStructEndError:
 }
 
 func (p *WatchGoodsInFavoritesReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("favoritesId", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("favoritesId", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.FavoritesId); err != nil {
+	if err := oprot.WriteI64(p.FavoritesId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

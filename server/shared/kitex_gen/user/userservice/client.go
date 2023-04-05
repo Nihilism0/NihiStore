@@ -22,7 +22,7 @@ type Client interface {
 	AddAmountCart(ctx context.Context, req *user.AddAmountCartRequest, callOptions ...callopt.Option) (r *user.AddAmountCartResponse, err error)
 	DeleteAmountCart(ctx context.Context, req *user.DeleteAmountCartRequest, callOptions ...callopt.Option) (r *user.DeleteAmountCartResponse, err error)
 	RemoveOutCart(ctx context.Context, req *user.RemoveOutCartRequest, callOptions ...callopt.Option) (r *user.RemoveOutCartResponse, err error)
-	WatchCart(ctx context.Context, req *user.AddToCartRequest, callOptions ...callopt.Option) (r *user.WatchCartResponse, err error)
+	WatchCart(ctx context.Context, req *user.WatchCartRequest, callOptions ...callopt.Option) (r *user.WatchCartResponse, err error)
 	CleanCart(ctx context.Context, req *user.CleanCartRequest, callOptions ...callopt.Option) (r *user.CleanCartResponse, err error)
 }
 
@@ -110,7 +110,7 @@ func (p *kUserServiceClient) RemoveOutCart(ctx context.Context, req *user.Remove
 	return p.kClient.RemoveOutCart(ctx, req)
 }
 
-func (p *kUserServiceClient) WatchCart(ctx context.Context, req *user.AddToCartRequest, callOptions ...callopt.Option) (r *user.WatchCartResponse, err error) {
+func (p *kUserServiceClient) WatchCart(ctx context.Context, req *user.WatchCartRequest, callOptions ...callopt.Option) (r *user.WatchCartResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.WatchCart(ctx, req)
 }
