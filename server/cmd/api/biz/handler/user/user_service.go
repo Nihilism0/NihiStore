@@ -68,7 +68,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 // @router /user/favorites/createfavorites [POST]
 func CreateFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.CreateFavoritesReq
+	var req huser.CreateFavoritesReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -84,7 +84,7 @@ func CreateFavorites(ctx context.Context, c *app.RequestContext) {
 // @router /user/favorites/watchfavorites [GET]
 func WatchFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.WatchFavoritesReq
+	var req huser.WatchFavoritesReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -100,7 +100,7 @@ func WatchFavorites(ctx context.Context, c *app.RequestContext) {
 // @router /user/favorites/watchgoodsinfavorites [GET]
 func WatchGoodsInFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.WatchGoodsInFavoritesReq
+	var req huser.WatchGoodsInFavoritesReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -116,7 +116,7 @@ func WatchGoodsInFavorites(ctx context.Context, c *app.RequestContext) {
 // @router /user/favorites/deletefavorites [DELETE]
 func DeleteFavorites(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.DeleteFavoritesReq
+	var req huser.DeleteFavoritesReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -132,7 +132,7 @@ func DeleteFavorites(ctx context.Context, c *app.RequestContext) {
 // @router /user/favorites/collectgoods [POST]
 func CollectGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.CollectGoodsReq
+	var req huser.CollectGoodsReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -148,7 +148,7 @@ func CollectGoods(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/addtocart [POST]
 func AddToCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.AddToCartReq
+	var req huser.AddToCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -164,7 +164,7 @@ func AddToCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/addamountcart [POST]
 func AddAmounrCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.AddAmountCartReq
+	var req huser.AddAmountCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -180,7 +180,7 @@ func AddAmounrCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/deleteamountcart [DELETE]
 func DeleteAmountCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.DeleteAmountCartReq
+	var req huser.DeleteAmountCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -196,7 +196,7 @@ func DeleteAmountCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/removeoutcart [DELETE]
 func RemoveOutCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.RemoveOutCartReq
+	var req huser.RemoveOutCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -212,7 +212,7 @@ func RemoveOutCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/watchcart [GET]
 func WatchCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.WatchCartReq
+	var req huser.WatchCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -228,7 +228,7 @@ func WatchCart(ctx context.Context, c *app.RequestContext) {
 // @router /user/cart/cleancart [DELETE]
 func CleanCart(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req user.CleanCartReq
+	var req huser.CleanCartReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())

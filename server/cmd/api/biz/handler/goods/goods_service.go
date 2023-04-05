@@ -21,7 +21,7 @@ import (
 // @router /goods/creat [POST]
 func CreateGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req hgoods.CreateGoodsRequest
+	var req hgoods.CreateGoodsReq
 	resp := new(kgoods.CreateGoodsResponse)
 	err = c.BindAndValidate(&req)
 	if err != nil {
@@ -54,7 +54,7 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 // @router /goods/delete [DELETE]
 func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req goods.DeleteGoodsRequest
+	var req hgoods.DeleteGoodsReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -70,7 +70,7 @@ func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 // @router /goods/searchgoodsinfo [GET]
 func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req goods.SearchGoodsInfoRequest
+	var req hgoods.SearchGoodsInfoReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())
@@ -86,7 +86,7 @@ func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
 // @router /goods/searchgoods [GET]
 func SearchGoods(ctx context.Context, c *app.RequestContext) {
 	var err error
-	var req goods.SearchGoodsRequest
+	var req hgoods.SearchGoodsReq
 	err = c.BindAndValidate(&req)
 	if err != nil {
 		c.String(consts.StatusBadRequest, err.Error())

@@ -9,38 +9,38 @@ import (
 	"github.com/apache/thrift/lib/go/thrift"
 )
 
-type CreateGoodsRequest struct {
+type CreateGoodsReq struct {
 	ID               int64       `thrift:"id,1" form:"id" json:"id" query:"id"`
 	GoodsInformation *base.Goods `thrift:"goods_information,2" form:"goods_information" json:"goods_information" query:"goods_information"`
 }
 
-func NewCreateGoodsRequest() *CreateGoodsRequest {
-	return &CreateGoodsRequest{}
+func NewCreateGoodsReq() *CreateGoodsReq {
+	return &CreateGoodsReq{}
 }
 
-func (p *CreateGoodsRequest) GetID() (v int64) {
+func (p *CreateGoodsReq) GetID() (v int64) {
 	return p.ID
 }
 
-var CreateGoodsRequest_GoodsInformation_DEFAULT *base.Goods
+var CreateGoodsReq_GoodsInformation_DEFAULT *base.Goods
 
-func (p *CreateGoodsRequest) GetGoodsInformation() (v *base.Goods) {
+func (p *CreateGoodsReq) GetGoodsInformation() (v *base.Goods) {
 	if !p.IsSetGoodsInformation() {
-		return CreateGoodsRequest_GoodsInformation_DEFAULT
+		return CreateGoodsReq_GoodsInformation_DEFAULT
 	}
 	return p.GoodsInformation
 }
 
-var fieldIDToName_CreateGoodsRequest = map[int16]string{
+var fieldIDToName_CreateGoodsReq = map[int16]string{
 	1: "id",
 	2: "goods_information",
 }
 
-func (p *CreateGoodsRequest) IsSetGoodsInformation() bool {
+func (p *CreateGoodsReq) IsSetGoodsInformation() bool {
 	return p.GoodsInformation != nil
 }
 
-func (p *CreateGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -99,7 +99,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateGoodsRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateGoodsReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -109,7 +109,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CreateGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *CreateGoodsReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
@@ -118,7 +118,7 @@ func (p *CreateGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateGoodsRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *CreateGoodsReq) ReadField2(iprot thrift.TProtocol) error {
 	p.GoodsInformation = base.NewGoods()
 	if err := p.GoodsInformation.Read(iprot); err != nil {
 		return err
@@ -126,9 +126,9 @@ func (p *CreateGoodsRequest) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateGoodsRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateGoodsRequest"); err != nil {
+	if err = oprot.WriteStructBegin("CreateGoodsReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -159,7 +159,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CreateGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -176,7 +176,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *CreateGoodsRequest) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsReq) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("goods_information", thrift.STRUCT, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -193,30 +193,30 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *CreateGoodsRequest) String() string {
+func (p *CreateGoodsReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CreateGoodsRequest(%+v)", *p)
+	return fmt.Sprintf("CreateGoodsReq(%+v)", *p)
 }
 
-type DeleteGoodsRequest struct {
+type DeleteGoodsReq struct {
 	GoodsID int64 `thrift:"goods_id,1" form:"goods_id" json:"goods_id" query:"goods_id"`
 }
 
-func NewDeleteGoodsRequest() *DeleteGoodsRequest {
-	return &DeleteGoodsRequest{}
+func NewDeleteGoodsReq() *DeleteGoodsReq {
+	return &DeleteGoodsReq{}
 }
 
-func (p *DeleteGoodsRequest) GetGoodsID() (v int64) {
+func (p *DeleteGoodsReq) GetGoodsID() (v int64) {
 	return p.GoodsID
 }
 
-var fieldIDToName_DeleteGoodsRequest = map[int16]string{
+var fieldIDToName_DeleteGoodsReq = map[int16]string{
 	1: "goods_id",
 }
 
-func (p *DeleteGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *DeleteGoodsReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -265,7 +265,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeleteGoodsRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_DeleteGoodsReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -275,7 +275,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *DeleteGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *DeleteGoodsReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
@@ -284,9 +284,9 @@ func (p *DeleteGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *DeleteGoodsRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *DeleteGoodsReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("DeleteGoodsRequest"); err != nil {
+	if err = oprot.WriteStructBegin("DeleteGoodsReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -313,7 +313,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *DeleteGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *DeleteGoodsReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("goods_id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -330,30 +330,30 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *DeleteGoodsRequest) String() string {
+func (p *DeleteGoodsReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("DeleteGoodsRequest(%+v)", *p)
+	return fmt.Sprintf("DeleteGoodsReq(%+v)", *p)
 }
 
-type SearchGoodsInfoRequest struct {
+type SearchGoodsInfoReq struct {
 	SearchMsg string `thrift:"search_msg,1" form:"search_msg" json:"search_msg" query:"search_msg"`
 }
 
-func NewSearchGoodsInfoRequest() *SearchGoodsInfoRequest {
-	return &SearchGoodsInfoRequest{}
+func NewSearchGoodsInfoReq() *SearchGoodsInfoReq {
+	return &SearchGoodsInfoReq{}
 }
 
-func (p *SearchGoodsInfoRequest) GetSearchMsg() (v string) {
+func (p *SearchGoodsInfoReq) GetSearchMsg() (v string) {
 	return p.SearchMsg
 }
 
-var fieldIDToName_SearchGoodsInfoRequest = map[int16]string{
+var fieldIDToName_SearchGoodsInfoReq = map[int16]string{
 	1: "search_msg",
 }
 
-func (p *SearchGoodsInfoRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsInfoReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -402,7 +402,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SearchGoodsInfoRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SearchGoodsInfoReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -412,7 +412,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SearchGoodsInfoRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *SearchGoodsInfoReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -421,9 +421,9 @@ func (p *SearchGoodsInfoRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *SearchGoodsInfoRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsInfoReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SearchGoodsInfoRequest"); err != nil {
+	if err = oprot.WriteStructBegin("SearchGoodsInfoReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -450,7 +450,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SearchGoodsInfoRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsInfoReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("search_msg", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -467,30 +467,30 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SearchGoodsInfoRequest) String() string {
+func (p *SearchGoodsInfoReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SearchGoodsInfoRequest(%+v)", *p)
+	return fmt.Sprintf("SearchGoodsInfoReq(%+v)", *p)
 }
 
-type SearchGoodsRequest struct {
+type SearchGoodsReq struct {
 	SearchMsg string `thrift:"search_msg,1" form:"search_msg" json:"search_msg" query:"search_msg"`
 }
 
-func NewSearchGoodsRequest() *SearchGoodsRequest {
-	return &SearchGoodsRequest{}
+func NewSearchGoodsReq() *SearchGoodsReq {
+	return &SearchGoodsReq{}
 }
 
-func (p *SearchGoodsRequest) GetSearchMsg() (v string) {
+func (p *SearchGoodsReq) GetSearchMsg() (v string) {
 	return p.SearchMsg
 }
 
-var fieldIDToName_SearchGoodsRequest = map[int16]string{
+var fieldIDToName_SearchGoodsReq = map[int16]string{
 	1: "search_msg",
 }
 
-func (p *SearchGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsReq) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -539,7 +539,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SearchGoodsRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SearchGoodsReq[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -549,7 +549,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *SearchGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *SearchGoodsReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -558,9 +558,9 @@ func (p *SearchGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *SearchGoodsRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("SearchGoodsRequest"); err != nil {
+	if err = oprot.WriteStructBegin("SearchGoodsReq"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -587,7 +587,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *SearchGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *SearchGoodsReq) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("search_msg", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -604,21 +604,21 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *SearchGoodsRequest) String() string {
+func (p *SearchGoodsReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("SearchGoodsRequest(%+v)", *p)
+	return fmt.Sprintf("SearchGoodsReq(%+v)", *p)
 }
 
 type GoodsService interface {
-	CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *base.NilResponse, err error)
+	CreateGoods(ctx context.Context, req *CreateGoodsReq) (r *base.NilResponse, err error)
 
-	DeleteGoods(ctx context.Context, req *DeleteGoodsRequest) (r *base.NilResponse, err error)
+	DeleteGoods(ctx context.Context, req *DeleteGoodsReq) (r *base.NilResponse, err error)
 
-	SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoRequest) (r *base.NilResponse, err error)
+	SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoReq) (r *base.NilResponse, err error)
 
-	SearchGoods(ctx context.Context, req *SearchGoodsRequest) (r *base.NilResponse, err error)
+	SearchGoods(ctx context.Context, req *SearchGoodsReq) (r *base.NilResponse, err error)
 }
 
 type GoodsServiceClient struct {
@@ -647,7 +647,7 @@ func (p *GoodsServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *GoodsServiceClient) CreateGoods(ctx context.Context, req *CreateGoodsRequest) (r *base.NilResponse, err error) {
+func (p *GoodsServiceClient) CreateGoods(ctx context.Context, req *CreateGoodsReq) (r *base.NilResponse, err error) {
 	var _args GoodsServiceCreateGoodsArgs
 	_args.Req = req
 	var _result GoodsServiceCreateGoodsResult
@@ -656,7 +656,7 @@ func (p *GoodsServiceClient) CreateGoods(ctx context.Context, req *CreateGoodsRe
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *GoodsServiceClient) DeleteGoods(ctx context.Context, req *DeleteGoodsRequest) (r *base.NilResponse, err error) {
+func (p *GoodsServiceClient) DeleteGoods(ctx context.Context, req *DeleteGoodsReq) (r *base.NilResponse, err error) {
 	var _args GoodsServiceDeleteGoodsArgs
 	_args.Req = req
 	var _result GoodsServiceDeleteGoodsResult
@@ -665,7 +665,7 @@ func (p *GoodsServiceClient) DeleteGoods(ctx context.Context, req *DeleteGoodsRe
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *GoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoRequest) (r *base.NilResponse, err error) {
+func (p *GoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoReq) (r *base.NilResponse, err error) {
 	var _args GoodsServiceSearchGoodsInfoArgs
 	_args.Req = req
 	var _result GoodsServiceSearchGoodsInfoResult
@@ -674,7 +674,7 @@ func (p *GoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *SearchGoo
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *GoodsServiceClient) SearchGoods(ctx context.Context, req *SearchGoodsRequest) (r *base.NilResponse, err error) {
+func (p *GoodsServiceClient) SearchGoods(ctx context.Context, req *SearchGoodsReq) (r *base.NilResponse, err error) {
 	var _args GoodsServiceSearchGoodsArgs
 	_args.Req = req
 	var _result GoodsServiceSearchGoodsResult
@@ -921,16 +921,16 @@ func (p *goodsServiceProcessorSearchGoods) Process(ctx context.Context, seqId in
 }
 
 type GoodsServiceCreateGoodsArgs struct {
-	Req *CreateGoodsRequest `thrift:"req,1"`
+	Req *CreateGoodsReq `thrift:"req,1"`
 }
 
 func NewGoodsServiceCreateGoodsArgs() *GoodsServiceCreateGoodsArgs {
 	return &GoodsServiceCreateGoodsArgs{}
 }
 
-var GoodsServiceCreateGoodsArgs_Req_DEFAULT *CreateGoodsRequest
+var GoodsServiceCreateGoodsArgs_Req_DEFAULT *CreateGoodsReq
 
-func (p *GoodsServiceCreateGoodsArgs) GetReq() (v *CreateGoodsRequest) {
+func (p *GoodsServiceCreateGoodsArgs) GetReq() (v *CreateGoodsReq) {
 	if !p.IsSetReq() {
 		return GoodsServiceCreateGoodsArgs_Req_DEFAULT
 	}
@@ -1005,7 +1005,7 @@ ReadStructEndError:
 }
 
 func (p *GoodsServiceCreateGoodsArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCreateGoodsRequest()
+	p.Req = NewCreateGoodsReq()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
@@ -1213,16 +1213,16 @@ func (p *GoodsServiceCreateGoodsResult) String() string {
 }
 
 type GoodsServiceDeleteGoodsArgs struct {
-	Req *DeleteGoodsRequest `thrift:"req,1"`
+	Req *DeleteGoodsReq `thrift:"req,1"`
 }
 
 func NewGoodsServiceDeleteGoodsArgs() *GoodsServiceDeleteGoodsArgs {
 	return &GoodsServiceDeleteGoodsArgs{}
 }
 
-var GoodsServiceDeleteGoodsArgs_Req_DEFAULT *DeleteGoodsRequest
+var GoodsServiceDeleteGoodsArgs_Req_DEFAULT *DeleteGoodsReq
 
-func (p *GoodsServiceDeleteGoodsArgs) GetReq() (v *DeleteGoodsRequest) {
+func (p *GoodsServiceDeleteGoodsArgs) GetReq() (v *DeleteGoodsReq) {
 	if !p.IsSetReq() {
 		return GoodsServiceDeleteGoodsArgs_Req_DEFAULT
 	}
@@ -1297,7 +1297,7 @@ ReadStructEndError:
 }
 
 func (p *GoodsServiceDeleteGoodsArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewDeleteGoodsRequest()
+	p.Req = NewDeleteGoodsReq()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
@@ -1505,16 +1505,16 @@ func (p *GoodsServiceDeleteGoodsResult) String() string {
 }
 
 type GoodsServiceSearchGoodsInfoArgs struct {
-	Req *SearchGoodsInfoRequest `thrift:"req,1"`
+	Req *SearchGoodsInfoReq `thrift:"req,1"`
 }
 
 func NewGoodsServiceSearchGoodsInfoArgs() *GoodsServiceSearchGoodsInfoArgs {
 	return &GoodsServiceSearchGoodsInfoArgs{}
 }
 
-var GoodsServiceSearchGoodsInfoArgs_Req_DEFAULT *SearchGoodsInfoRequest
+var GoodsServiceSearchGoodsInfoArgs_Req_DEFAULT *SearchGoodsInfoReq
 
-func (p *GoodsServiceSearchGoodsInfoArgs) GetReq() (v *SearchGoodsInfoRequest) {
+func (p *GoodsServiceSearchGoodsInfoArgs) GetReq() (v *SearchGoodsInfoReq) {
 	if !p.IsSetReq() {
 		return GoodsServiceSearchGoodsInfoArgs_Req_DEFAULT
 	}
@@ -1589,7 +1589,7 @@ ReadStructEndError:
 }
 
 func (p *GoodsServiceSearchGoodsInfoArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewSearchGoodsInfoRequest()
+	p.Req = NewSearchGoodsInfoReq()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
@@ -1797,16 +1797,16 @@ func (p *GoodsServiceSearchGoodsInfoResult) String() string {
 }
 
 type GoodsServiceSearchGoodsArgs struct {
-	Req *SearchGoodsRequest `thrift:"req,1"`
+	Req *SearchGoodsReq `thrift:"req,1"`
 }
 
 func NewGoodsServiceSearchGoodsArgs() *GoodsServiceSearchGoodsArgs {
 	return &GoodsServiceSearchGoodsArgs{}
 }
 
-var GoodsServiceSearchGoodsArgs_Req_DEFAULT *SearchGoodsRequest
+var GoodsServiceSearchGoodsArgs_Req_DEFAULT *SearchGoodsReq
 
-func (p *GoodsServiceSearchGoodsArgs) GetReq() (v *SearchGoodsRequest) {
+func (p *GoodsServiceSearchGoodsArgs) GetReq() (v *SearchGoodsReq) {
 	if !p.IsSetReq() {
 		return GoodsServiceSearchGoodsArgs_Req_DEFAULT
 	}
@@ -1881,7 +1881,7 @@ ReadStructEndError:
 }
 
 func (p *GoodsServiceSearchGoodsArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewSearchGoodsRequest()
+	p.Req = NewSearchGoodsReq()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
