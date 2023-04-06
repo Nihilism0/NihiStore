@@ -3,11 +3,11 @@
 package user
 
 import (
-	base "NihiStore/server/cmd/api/biz/model/base"
 	huser "NihiStore/server/cmd/api/biz/model/user"
 	"NihiStore/server/cmd/api/config"
 	kuser "NihiStore/server/shared/kitex_gen/user"
 	"context"
+	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
 	"github.com/cloudwego/hertz/pkg/protocol/consts"
@@ -181,6 +181,8 @@ func CollectGoods(ctx context.Context, c *app.RequestContext) {
 		FavoritesId: req.FavoritesId,
 		UserId:      ID.(int64),
 	})
+	fmt.Println("GET")
+	fmt.Println(resp)
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)

@@ -27,17 +27,18 @@ struct SearchGoodsInfoRequest{
 }
 
 struct SearchGoodsInfoResponse{
-    1: string name
+    1: common.BaseResponse base_resp
+    2: list<goods.Name> names
 }
 
-//搜索完全信息
+//得到完全信息
 struct SearchGoodsRequest{
-    1: string search_msg
+    1: i64 id
 }
 
 struct SearchGoodsResponse{
-    1: goods.Goods goods_information
-    2: i64 sales_volume
+    1: goods.GoodsFullInfo goodsFI
+    2: common.BaseResponse base_resp
 }
 
 service GoodsService {

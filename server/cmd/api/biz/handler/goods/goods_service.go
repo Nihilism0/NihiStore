@@ -3,7 +3,6 @@
 package goods
 
 import (
-	base "NihiStore/server/cmd/api/biz/model/base"
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/pkg"
@@ -119,9 +118,7 @@ func SearchGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{
-		SearchMsg: req.SearchMsg,
-	})
+	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{Id: req.GoodsID})
 
 	if err != nil {
 		hlog.Error("rpc user service err!", err)

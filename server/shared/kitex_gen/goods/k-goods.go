@@ -785,8 +785,22 @@ func (p *SearchGoodsInfoResponse) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.STRUCT {
 				l, err = p.FastReadField1(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.LIST {
+				l, err = p.FastReadField2(buf[offset:])
 				offset += l
 				if err != nil {
 					goto ReadFieldError
@@ -836,13 +850,39 @@ ReadStructEndError:
 func (p *SearchGoodsInfoResponse) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	tmp := base.NewBaseResponse()
+	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
+	}
+	p.BaseResp = tmp
+	return offset, nil
+}
 
-		p.Name = v
+func (p *SearchGoodsInfoResponse) FastReadField2(buf []byte) (int, error) {
+	offset := 0
 
+	_, size, l, err := bthrift.Binary.ReadListBegin(buf[offset:])
+	offset += l
+	if err != nil {
+		return offset, err
+	}
+	p.Names = make([]*base.Name, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := base.NewName()
+		if l, err := _elem.FastRead(buf[offset:]); err != nil {
+			return offset, err
+		} else {
+			offset += l
+		}
+
+		p.Names = append(p.Names, _elem)
+	}
+	if l, err := bthrift.Binary.ReadListEnd(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
 	}
 	return offset, nil
 }
@@ -857,6 +897,7 @@ func (p *SearchGoodsInfoResponse) FastWriteNocopy(buf []byte, binaryWriter bthri
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SearchGoodsInfoResponse")
 	if p != nil {
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -868,6 +909,7 @@ func (p *SearchGoodsInfoResponse) BLength() int {
 	l += bthrift.Binary.StructBeginLength("SearchGoodsInfoResponse")
 	if p != nil {
 		l += p.field1Length()
+		l += p.field2Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -876,18 +918,44 @@ func (p *SearchGoodsInfoResponse) BLength() int {
 
 func (p *SearchGoodsInfoResponse) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "name", thrift.STRING, 1)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Name)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "base_resp", thrift.STRUCT, 1)
+	offset += p.BaseResp.FastWriteNocopy(buf[offset:], binaryWriter)
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
 
+func (p *SearchGoodsInfoResponse) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "names", thrift.LIST, 2)
+	listBeginOffset := offset
+	offset += bthrift.Binary.ListBeginLength(thrift.STRUCT, 0)
+	var length int
+	for _, v := range p.Names {
+		length++
+		offset += v.FastWriteNocopy(buf[offset:], binaryWriter)
+	}
+	bthrift.Binary.WriteListBegin(buf[listBeginOffset:], thrift.STRUCT, length)
+	offset += bthrift.Binary.WriteListEnd(buf[offset:])
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
 
 func (p *SearchGoodsInfoResponse) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("name", thrift.STRING, 1)
-	l += bthrift.Binary.StringLengthNocopy(p.Name)
+	l += bthrift.Binary.FieldBeginLength("base_resp", thrift.STRUCT, 1)
+	l += p.BaseResp.BLength()
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
 
+func (p *SearchGoodsInfoResponse) field2Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("names", thrift.LIST, 2)
+	l += bthrift.Binary.ListBeginLength(thrift.STRUCT, len(p.Names))
+	for _, v := range p.Names {
+		l += v.BLength()
+	}
+	l += bthrift.Binary.ListEndLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
@@ -915,7 +983,7 @@ func (p *SearchGoodsRequest) FastRead(buf []byte) (int, error) {
 		}
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				l, err = p.FastReadField1(buf[offset:])
 				offset += l
 				if err != nil {
@@ -966,12 +1034,12 @@ ReadStructEndError:
 func (p *SearchGoodsRequest) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadString(buf[offset:]); err != nil {
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 
-		p.SearchMsg = v
+		p.Id = v
 
 	}
 	return offset, nil
@@ -1006,8 +1074,8 @@ func (p *SearchGoodsRequest) BLength() int {
 
 func (p *SearchGoodsRequest) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "search_msg", thrift.STRING, 1)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.SearchMsg)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "id", thrift.I64, 1)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.Id)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -1015,8 +1083,8 @@ func (p *SearchGoodsRequest) fastWriteField1(buf []byte, binaryWriter bthrift.Bi
 
 func (p *SearchGoodsRequest) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("search_msg", thrift.STRING, 1)
-	l += bthrift.Binary.StringLengthNocopy(p.SearchMsg)
+	l += bthrift.Binary.FieldBeginLength("id", thrift.I64, 1)
+	l += bthrift.Binary.I64Length(p.Id)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -1059,7 +1127,7 @@ func (p *SearchGoodsResponse) FastRead(buf []byte) (int, error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRUCT {
 				l, err = p.FastReadField2(buf[offset:])
 				offset += l
 				if err != nil {
@@ -1110,27 +1178,26 @@ ReadStructEndError:
 func (p *SearchGoodsResponse) FastReadField1(buf []byte) (int, error) {
 	offset := 0
 
-	tmp := base.NewGoods()
+	tmp := base.NewGoodsFullInfo()
 	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
 	}
-	p.GoodsInformation = tmp
+	p.GoodsFI = tmp
 	return offset, nil
 }
 
 func (p *SearchGoodsResponse) FastReadField2(buf []byte) (int, error) {
 	offset := 0
 
-	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+	tmp := base.NewBaseResponse()
+	if l, err := tmp.FastRead(buf[offset:]); err != nil {
 		return offset, err
 	} else {
 		offset += l
-
-		p.SalesVolume = v
-
 	}
+	p.BaseResp = tmp
 	return offset, nil
 }
 
@@ -1143,8 +1210,8 @@ func (p *SearchGoodsResponse) FastWriteNocopy(buf []byte, binaryWriter bthrift.B
 	offset := 0
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SearchGoodsResponse")
 	if p != nil {
-		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
 	offset += bthrift.Binary.WriteStructEnd(buf[offset:])
@@ -1165,34 +1232,32 @@ func (p *SearchGoodsResponse) BLength() int {
 
 func (p *SearchGoodsResponse) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "goods_information", thrift.STRUCT, 1)
-	offset += p.GoodsInformation.FastWriteNocopy(buf[offset:], binaryWriter)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "goodsFI", thrift.STRUCT, 1)
+	offset += p.GoodsFI.FastWriteNocopy(buf[offset:], binaryWriter)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
 
 func (p *SearchGoodsResponse) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "sales_volume", thrift.I64, 2)
-	offset += bthrift.Binary.WriteI64(buf[offset:], p.SalesVolume)
-
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "base_resp", thrift.STRUCT, 2)
+	offset += p.BaseResp.FastWriteNocopy(buf[offset:], binaryWriter)
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
 }
 
 func (p *SearchGoodsResponse) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("goods_information", thrift.STRUCT, 1)
-	l += p.GoodsInformation.BLength()
+	l += bthrift.Binary.FieldBeginLength("goodsFI", thrift.STRUCT, 1)
+	l += p.GoodsFI.BLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }
 
 func (p *SearchGoodsResponse) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("sales_volume", thrift.I64, 2)
-	l += bthrift.Binary.I64Length(p.SalesVolume)
-
+	l += bthrift.Binary.FieldBeginLength("base_resp", thrift.STRUCT, 2)
+	l += p.BaseResp.BLength()
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }

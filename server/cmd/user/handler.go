@@ -10,8 +10,8 @@ import (
 	"NihiStore/server/shared/tools"
 	"context"
 	"fmt"
+	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/golang-jwt/jwt"
-	"gorm.io/gorm"
 	"time"
 )
 
@@ -39,13 +39,10 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now,
 			NotBefore: now,
-			ExpiresAt: now + consts.ThirtyDays,
 			Issuer:    consts.JWTIssuer,
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
-	fmt.Println("DEBUG")
-	fmt.Println(config.GlobalServerConfig.JWTInfo.SigningKey)
 	resp.Token, err = token.SignedString([]byte(config.GlobalServerConfig.JWTInfo.SigningKey))
 	if err != nil {
 		fmt.Println(err)
@@ -104,6 +101,7 @@ func (s *UserServiceImpl) WatchFavorites(ctx context.Context, req *user.WatchFav
 		resp.Favoriteses = append(resp.Favoriteses, &base.Favorites{
 			Name:     v.Name,
 			Describe: v.Describe,
+			Id:       int64(v.ID),
 		})
 	}
 	resp.BaseResp = tools.BuildBaseResp(200, "Find success")
@@ -127,13 +125,13 @@ func (s *UserServiceImpl) WatchGoodsInFavorites(ctx context.Context, req *user.W
 // DeleteFavorites implements the UserServiceImpl interface.
 func (s *UserServiceImpl) DeleteFavorites(ctx context.Context, req *user.DeleteFavoritesRequest) (resp *user.DeleteFavoritesResponse, err error) {
 	resp = new(user.DeleteFavoritesResponse)
-	var collection model.Collection
-	config.DB.Where("id = ? AND user_id = ?", req.FavoritesId, req.UserId).First(&collection)
-	if collection.UserId != req.UserId {
+	var favorites model.Favorites
+	config.DB.Where("id = ? AND user_id = ?", req.FavoritesId, req.UserId).First(&favorites)
+	if favorites.UserId != req.UserId {
 		resp.BaseResp = tools.BuildBaseResp(errx.NoSuchFavorites, "No such favorites")
 		return resp, nil
 	}
-	config.DB.Where("id = ?", collection.ID).Delete(&model.Collection{})
+	config.DB.Unscoped().Delete(&favorites)
 	resp.BaseResp = tools.BuildBaseResp(200, "delete success")
 	return resp, nil
 }
@@ -143,7 +141,7 @@ func (s *UserServiceImpl) CollectGoods(ctx context.Context, req *user.CollectGoo
 	resp = new(user.CollectGoodsResponse)
 	var collection model.Collection
 	var favorites model.Favorites
-	config.DB.Where("favorites_id = ? AND user_id", req.FavoritesId, req.UserId).First(&favorites)
+	config.DB.Where("id = ? AND user_id = ?", req.FavoritesId, req.UserId).First(&favorites)
 	if favorites.UserId != req.UserId {
 		resp.BaseResp = tools.BuildBaseResp(errx.FavoritesAuthFail, "Auth favorites user fail")
 		return resp, nil
@@ -156,7 +154,13 @@ func (s *UserServiceImpl) CollectGoods(ctx context.Context, req *user.CollectGoo
 	collection.GoodsId = req.GoodsId
 	collection.FavoritesId = req.FavoritesId
 	collection.UserId = req.UserId
-	config.DB.Create(&collection)
+	err = config.DB.Create(&collection).Error
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(500, "create fail")
+		return resp, nil
+	}
+	resp.BaseResp = tools.BuildBaseResp(200, "Collect goods success")
 	return resp, nil
 }
 
@@ -186,11 +190,12 @@ func (s *UserServiceImpl) AddAmountCart(ctx context.Context, req *user.AddAmount
 		resp.BaseResp = tools.BuildBaseResp(errx.NoSuchGoodsInCart, "No such goods in cart")
 		return resp, nil
 	}
-	if (cart.Amount + req.Amount) > consts.MaxGoodsAmount {
+	newamount := cart.Amount + req.Amount
+	if (newamount) > consts.MaxGoodsAmount {
 		resp.BaseResp = tools.BuildBaseResp(errx.OutOfMax, "Out of max")
 		return resp, nil
 	}
-	config.DB.Model(&model.Cart{}).Where("user_id = ? AND goods_id", req.UserId, req.GoodsId).Update("amount", gorm.Expr("count + ?", req.Amount))
+	config.DB.Model(&model.Cart{}).Where("user_id = ? AND goods_id = ?", req.UserId, req.GoodsId).Update("amount", newamount)
 	resp.BaseResp = tools.BuildBaseResp(200, "Add cart amount success")
 	return resp, nil
 }
@@ -204,11 +209,12 @@ func (s *UserServiceImpl) DeleteAmountCart(ctx context.Context, req *user.Delete
 		resp.BaseResp = tools.BuildBaseResp(errx.NoSuchGoodsInCart, "No such goods in cart")
 		return resp, nil
 	}
-	if (cart.Amount - req.Amount) < 1 {
+	newamount := cart.Amount - req.Amount
+	if newamount < 1 {
 		resp.BaseResp = tools.BuildBaseResp(errx.OutOfMin, "Out of min")
 		return resp, nil
 	}
-	config.DB.Model(&model.Cart{}).Where("user_id = ? AND goods_id", req.UserId, req.GoodsId).Update("amount", gorm.Expr("count - ?", req.Amount))
+	config.DB.Model(&model.Cart{}).Where("user_id = ? AND goods_id = ?", req.UserId, req.GoodsId).Update("amount", newamount)
 	resp.BaseResp = tools.BuildBaseResp(200, "Delete cart amount success")
 	return resp, nil
 }

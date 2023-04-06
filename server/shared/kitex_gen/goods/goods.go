@@ -973,7 +973,8 @@ func (p *SearchGoodsInfoRequest) Field1DeepEqual(src string) bool {
 }
 
 type SearchGoodsInfoResponse struct {
-	Name string `thrift:"name,1" frugal:"1,default,string" json:"name"`
+	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
+	Names    []*base.Name       `thrift:"names,2" frugal:"2,default,list<base.Name>" json:"names"`
 }
 
 func NewSearchGoodsInfoResponse() *SearchGoodsInfoResponse {
@@ -984,15 +985,32 @@ func (p *SearchGoodsInfoResponse) InitDefault() {
 	*p = SearchGoodsInfoResponse{}
 }
 
-func (p *SearchGoodsInfoResponse) GetName() (v string) {
-	return p.Name
+var SearchGoodsInfoResponse_BaseResp_DEFAULT *base.BaseResponse
+
+func (p *SearchGoodsInfoResponse) GetBaseResp() (v *base.BaseResponse) {
+	if !p.IsSetBaseResp() {
+		return SearchGoodsInfoResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
 }
-func (p *SearchGoodsInfoResponse) SetName(val string) {
-	p.Name = val
+
+func (p *SearchGoodsInfoResponse) GetNames() (v []*base.Name) {
+	return p.Names
+}
+func (p *SearchGoodsInfoResponse) SetBaseResp(val *base.BaseResponse) {
+	p.BaseResp = val
+}
+func (p *SearchGoodsInfoResponse) SetNames(val []*base.Name) {
+	p.Names = val
 }
 
 var fieldIDToName_SearchGoodsInfoResponse = map[int16]string{
-	1: "name",
+	1: "base_resp",
+	2: "names",
+}
+
+func (p *SearchGoodsInfoResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
 }
 
 func (p *SearchGoodsInfoResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1015,8 +1033,18 @@ func (p *SearchGoodsInfoResponse) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -1055,10 +1083,29 @@ ReadStructEndError:
 }
 
 func (p *SearchGoodsInfoResponse) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+	p.BaseResp = base.NewBaseResponse()
+	if err := p.BaseResp.Read(iprot); err != nil {
 		return err
-	} else {
-		p.Name = v
+	}
+	return nil
+}
+
+func (p *SearchGoodsInfoResponse) ReadField2(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	p.Names = make([]*base.Name, 0, size)
+	for i := 0; i < size; i++ {
+		_elem := base.NewName()
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		p.Names = append(p.Names, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
 	}
 	return nil
 }
@@ -1071,6 +1118,10 @@ func (p *SearchGoodsInfoResponse) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -1093,10 +1144,10 @@ WriteStructEndError:
 }
 
 func (p *SearchGoodsInfoResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("name", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Name); err != nil {
+	if err := p.BaseResp.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1107,6 +1158,31 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SearchGoodsInfoResponse) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("names", thrift.LIST, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Names)); err != nil {
+		return err
+	}
+	for _, v := range p.Names {
+		if err := v.Write(oprot); err != nil {
+			return err
+		}
+	}
+	if err := oprot.WriteListEnd(); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
 func (p *SearchGoodsInfoResponse) String() string {
@@ -1122,22 +1198,38 @@ func (p *SearchGoodsInfoResponse) DeepEqual(ano *SearchGoodsInfoResponse) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Name) {
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Names) {
 		return false
 	}
 	return true
 }
 
-func (p *SearchGoodsInfoResponse) Field1DeepEqual(src string) bool {
+func (p *SearchGoodsInfoResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 
-	if strings.Compare(p.Name, src) != 0 {
+	if !p.BaseResp.DeepEqual(src) {
 		return false
+	}
+	return true
+}
+func (p *SearchGoodsInfoResponse) Field2DeepEqual(src []*base.Name) bool {
+
+	if len(p.Names) != len(src) {
+		return false
+	}
+	for i, v := range p.Names {
+		_src := src[i]
+		if !v.DeepEqual(_src) {
+			return false
+		}
 	}
 	return true
 }
 
 type SearchGoodsRequest struct {
-	SearchMsg string `thrift:"search_msg,1" frugal:"1,default,string" json:"search_msg"`
+	Id int64 `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 }
 
 func NewSearchGoodsRequest() *SearchGoodsRequest {
@@ -1148,15 +1240,15 @@ func (p *SearchGoodsRequest) InitDefault() {
 	*p = SearchGoodsRequest{}
 }
 
-func (p *SearchGoodsRequest) GetSearchMsg() (v string) {
-	return p.SearchMsg
+func (p *SearchGoodsRequest) GetId() (v int64) {
+	return p.Id
 }
-func (p *SearchGoodsRequest) SetSearchMsg(val string) {
-	p.SearchMsg = val
+func (p *SearchGoodsRequest) SetId(val int64) {
+	p.Id = val
 }
 
 var fieldIDToName_SearchGoodsRequest = map[int16]string{
-	1: "search_msg",
+	1: "id",
 }
 
 func (p *SearchGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -1179,7 +1271,7 @@ func (p *SearchGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1219,10 +1311,10 @@ ReadStructEndError:
 }
 
 func (p *SearchGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.SearchMsg = v
+		p.Id = v
 	}
 	return nil
 }
@@ -1257,10 +1349,10 @@ WriteStructEndError:
 }
 
 func (p *SearchGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("search_msg", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.SearchMsg); err != nil {
+	if err := oprot.WriteI64(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1286,23 +1378,23 @@ func (p *SearchGoodsRequest) DeepEqual(ano *SearchGoodsRequest) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.SearchMsg) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	return true
 }
 
-func (p *SearchGoodsRequest) Field1DeepEqual(src string) bool {
+func (p *SearchGoodsRequest) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.SearchMsg, src) != 0 {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
 
 type SearchGoodsResponse struct {
-	GoodsInformation *base.Goods `thrift:"goods_information,1" frugal:"1,default,base.Goods" json:"goods_information"`
-	SalesVolume      int64       `thrift:"sales_volume,2" frugal:"2,default,i64" json:"sales_volume"`
+	GoodsFI  *base.GoodsFullInfo `thrift:"goodsFI,1" frugal:"1,default,base.GoodsFullInfo" json:"goodsFI"`
+	BaseResp *base.BaseResponse  `thrift:"base_resp,2" frugal:"2,default,base.BaseResponse" json:"base_resp"`
 }
 
 func NewSearchGoodsResponse() *SearchGoodsResponse {
@@ -1313,32 +1405,41 @@ func (p *SearchGoodsResponse) InitDefault() {
 	*p = SearchGoodsResponse{}
 }
 
-var SearchGoodsResponse_GoodsInformation_DEFAULT *base.Goods
+var SearchGoodsResponse_GoodsFI_DEFAULT *base.GoodsFullInfo
 
-func (p *SearchGoodsResponse) GetGoodsInformation() (v *base.Goods) {
-	if !p.IsSetGoodsInformation() {
-		return SearchGoodsResponse_GoodsInformation_DEFAULT
+func (p *SearchGoodsResponse) GetGoodsFI() (v *base.GoodsFullInfo) {
+	if !p.IsSetGoodsFI() {
+		return SearchGoodsResponse_GoodsFI_DEFAULT
 	}
-	return p.GoodsInformation
+	return p.GoodsFI
 }
 
-func (p *SearchGoodsResponse) GetSalesVolume() (v int64) {
-	return p.SalesVolume
+var SearchGoodsResponse_BaseResp_DEFAULT *base.BaseResponse
+
+func (p *SearchGoodsResponse) GetBaseResp() (v *base.BaseResponse) {
+	if !p.IsSetBaseResp() {
+		return SearchGoodsResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
 }
-func (p *SearchGoodsResponse) SetGoodsInformation(val *base.Goods) {
-	p.GoodsInformation = val
+func (p *SearchGoodsResponse) SetGoodsFI(val *base.GoodsFullInfo) {
+	p.GoodsFI = val
 }
-func (p *SearchGoodsResponse) SetSalesVolume(val int64) {
-	p.SalesVolume = val
+func (p *SearchGoodsResponse) SetBaseResp(val *base.BaseResponse) {
+	p.BaseResp = val
 }
 
 var fieldIDToName_SearchGoodsResponse = map[int16]string{
-	1: "goods_information",
-	2: "sales_volume",
+	1: "goodsFI",
+	2: "base_resp",
 }
 
-func (p *SearchGoodsResponse) IsSetGoodsInformation() bool {
-	return p.GoodsInformation != nil
+func (p *SearchGoodsResponse) IsSetGoodsFI() bool {
+	return p.GoodsFI != nil
+}
+
+func (p *SearchGoodsResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
 }
 
 func (p *SearchGoodsResponse) Read(iprot thrift.TProtocol) (err error) {
@@ -1371,7 +1472,7 @@ func (p *SearchGoodsResponse) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 2:
-			if fieldTypeId == thrift.I64 {
+			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -1411,18 +1512,17 @@ ReadStructEndError:
 }
 
 func (p *SearchGoodsResponse) ReadField1(iprot thrift.TProtocol) error {
-	p.GoodsInformation = base.NewGoods()
-	if err := p.GoodsInformation.Read(iprot); err != nil {
+	p.GoodsFI = base.NewGoodsFullInfo()
+	if err := p.GoodsFI.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (p *SearchGoodsResponse) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadI64(); err != nil {
+	p.BaseResp = base.NewBaseResponse()
+	if err := p.BaseResp.Read(iprot); err != nil {
 		return err
-	} else {
-		p.SalesVolume = v
 	}
 	return nil
 }
@@ -1461,10 +1561,10 @@ WriteStructEndError:
 }
 
 func (p *SearchGoodsResponse) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("goods_information", thrift.STRUCT, 1); err != nil {
+	if err = oprot.WriteFieldBegin("goodsFI", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := p.GoodsInformation.Write(oprot); err != nil {
+	if err := p.GoodsFI.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1478,10 +1578,10 @@ WriteFieldEndError:
 }
 
 func (p *SearchGoodsResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("sales_volume", thrift.I64, 2); err != nil {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.SalesVolume); err != nil {
+	if err := p.BaseResp.Write(oprot); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1507,25 +1607,25 @@ func (p *SearchGoodsResponse) DeepEqual(ano *SearchGoodsResponse) bool {
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.GoodsInformation) {
+	if !p.Field1DeepEqual(ano.GoodsFI) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.SalesVolume) {
-		return false
-	}
-	return true
-}
-
-func (p *SearchGoodsResponse) Field1DeepEqual(src *base.Goods) bool {
-
-	if !p.GoodsInformation.DeepEqual(src) {
+	if !p.Field2DeepEqual(ano.BaseResp) {
 		return false
 	}
 	return true
 }
-func (p *SearchGoodsResponse) Field2DeepEqual(src int64) bool {
 
-	if p.SalesVolume != src {
+func (p *SearchGoodsResponse) Field1DeepEqual(src *base.GoodsFullInfo) bool {
+
+	if !p.GoodsFI.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *SearchGoodsResponse) Field2DeepEqual(src *base.BaseResponse) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
 		return false
 	}
 	return true

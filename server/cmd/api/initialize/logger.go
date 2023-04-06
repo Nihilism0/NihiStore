@@ -37,6 +37,7 @@ func InitLogger() {
 		MaxAge:     10,   // A file can exist for a maximum of 10 days.
 		Compress:   true, // Compress with gzip.
 	}
+
 	if runtime.GOOS == "linux" {
 		logger.SetOutput(lumberjackLogger)
 		logger.SetLevel(hlog.LevelWarn)

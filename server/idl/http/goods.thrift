@@ -15,7 +15,7 @@ struct SearchGoodsInfoReq{
 }
 
 struct SearchGoodsReq{
-    1: string search_msg
+    1: i64 goods_id
 }
 
 service goodsService{
