@@ -3,6 +3,7 @@
 package user
 
 import (
+	base "NihiStore/server/cmd/api/biz/model/base"
 	huser "NihiStore/server/cmd/api/biz/model/user"
 	"NihiStore/server/cmd/api/config"
 	kuser "NihiStore/server/shared/kitex_gen/user"

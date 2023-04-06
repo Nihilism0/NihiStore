@@ -29,4 +29,6 @@ const (
 	UserGroup  = "USER_GROUP"
 	GoodsGroup = "GOODS_GROUP"
 	MySqlDSN   = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+
+	MaxGoodsAmount = 99
 )

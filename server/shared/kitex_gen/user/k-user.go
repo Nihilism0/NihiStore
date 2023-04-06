@@ -4399,9 +4399,9 @@ func (p *WatchCartResponse) FastReadField2(buf []byte) (int, error) {
 	if err != nil {
 		return offset, err
 	}
-	p.Goods = make([]*base.Goods, 0, size)
+	p.Goods = make([]*base.GoodsInCart, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := base.NewGoods()
+		_elem := base.NewGoodsInCart()
 		if l, err := _elem.FastRead(buf[offset:]); err != nil {
 			return offset, err
 		} else {

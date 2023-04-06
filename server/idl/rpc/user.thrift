@@ -137,7 +137,7 @@ struct WatchCartRequest{
 
 struct WatchCartResponse{
     1: common.BaseResponse base_resp
-    2: list<goods.Goods> goods
+    2: list<goods.GoodsInCart> goods
 }
 
 //清空购物车

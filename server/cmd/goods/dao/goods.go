@@ -8,7 +8,7 @@ import (
 func FillGoods(req *goods.CreateGoodsRequest) *model.Goods {
 	return &model.Goods{
 		Name:        req.GoodsInformation.Name,
-		User_Id:     req.Id,
+		UserId:      req.Id,
 		Describe:    req.GoodsInformation.Describe,
 		Cost:        req.GoodsInformation.Cost,
 		SalesVolume: 0,

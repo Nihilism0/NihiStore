@@ -6,4 +6,9 @@ const (
 	PassWordWrong
 	AlreadyExist
 	CreatUserFail
+	NoSuchFavorites
+	FavoritesAuthFail
+	NoSuchGoodsInCart
+	OutOfMax
+	OutOfMin
 )

@@ -5496,8 +5496,8 @@ func (p *WatchCartRequest) Field1DeepEqual(src int64) bool {
 }
 
 type WatchCartResponse struct {
-	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
-	Goods    []*base.Goods      `thrift:"goods,2" frugal:"2,default,list<base.Goods>" json:"goods"`
+	BaseResp *base.BaseResponse  `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
+	Goods    []*base.GoodsInCart `thrift:"goods,2" frugal:"2,default,list<base.GoodsInCart>" json:"goods"`
 }
 
 func NewWatchCartResponse() *WatchCartResponse {
@@ -5517,13 +5517,13 @@ func (p *WatchCartResponse) GetBaseResp() (v *base.BaseResponse) {
 	return p.BaseResp
 }
 
-func (p *WatchCartResponse) GetGoods() (v []*base.Goods) {
+func (p *WatchCartResponse) GetGoods() (v []*base.GoodsInCart) {
 	return p.Goods
 }
 func (p *WatchCartResponse) SetBaseResp(val *base.BaseResponse) {
 	p.BaseResp = val
 }
-func (p *WatchCartResponse) SetGoods(val []*base.Goods) {
+func (p *WatchCartResponse) SetGoods(val []*base.GoodsInCart) {
 	p.Goods = val
 }
 
@@ -5618,9 +5618,9 @@ func (p *WatchCartResponse) ReadField2(iprot thrift.TProtocol) error {
 	if err != nil {
 		return err
 	}
-	p.Goods = make([]*base.Goods, 0, size)
+	p.Goods = make([]*base.GoodsInCart, 0, size)
 	for i := 0; i < size; i++ {
-		_elem := base.NewGoods()
+		_elem := base.NewGoodsInCart()
 		if err := _elem.Read(iprot); err != nil {
 			return err
 		}
@@ -5737,7 +5737,7 @@ func (p *WatchCartResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 	}
 	return true
 }
-func (p *WatchCartResponse) Field2DeepEqual(src []*base.Goods) bool {
+func (p *WatchCartResponse) Field2DeepEqual(src []*base.GoodsInCart) bool {
 
 	if len(p.Goods) != len(src) {
 		return false

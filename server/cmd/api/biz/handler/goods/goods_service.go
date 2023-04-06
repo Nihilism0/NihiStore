@@ -3,6 +3,7 @@
 package goods
 
 import (
+	base "NihiStore/server/cmd/api/biz/model/base"
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/pkg"
