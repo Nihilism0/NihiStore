@@ -592,20 +592,6 @@ func (p *RegisterResponse) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
-		case 2:
-			if fieldTypeId == thrift.BOOL {
-				l, err = p.FastReadField2(buf[offset:])
-				offset += l
-				if err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
-				offset += l
-				if err != nil {
-					goto SkipFieldError
-				}
-			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -654,20 +640,6 @@ func (p *RegisterResponse) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
-func (p *RegisterResponse) FastReadField2(buf []byte) (int, error) {
-	offset := 0
-
-	if v, l, err := bthrift.Binary.ReadBool(buf[offset:]); err != nil {
-		return offset, err
-	} else {
-		offset += l
-
-		p.OK = v
-
-	}
-	return offset, nil
-}
-
 // for compatibility
 func (p *RegisterResponse) FastWrite(buf []byte) int {
 	return 0
@@ -677,7 +649,6 @@ func (p *RegisterResponse) FastWriteNocopy(buf []byte, binaryWriter bthrift.Bina
 	offset := 0
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "RegisterResponse")
 	if p != nil {
-		offset += p.fastWriteField2(buf[offset:], binaryWriter)
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
@@ -690,7 +661,6 @@ func (p *RegisterResponse) BLength() int {
 	l += bthrift.Binary.StructBeginLength("RegisterResponse")
 	if p != nil {
 		l += p.field1Length()
-		l += p.field2Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -705,28 +675,10 @@ func (p *RegisterResponse) fastWriteField1(buf []byte, binaryWriter bthrift.Bina
 	return offset
 }
 
-func (p *RegisterResponse) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
-	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "OK", thrift.BOOL, 2)
-	offset += bthrift.Binary.WriteBool(buf[offset:], p.OK)
-
-	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
-	return offset
-}
-
 func (p *RegisterResponse) field1Length() int {
 	l := 0
 	l += bthrift.Binary.FieldBeginLength("base_resp", thrift.STRUCT, 1)
 	l += p.BaseResp.BLength()
-	l += bthrift.Binary.FieldEndLength()
-	return l
-}
-
-func (p *RegisterResponse) field2Length() int {
-	l := 0
-	l += bthrift.Binary.FieldBeginLength("OK", thrift.BOOL, 2)
-	l += bthrift.Binary.BoolLength(p.OK)
-
 	l += bthrift.Binary.FieldEndLength()
 	return l
 }

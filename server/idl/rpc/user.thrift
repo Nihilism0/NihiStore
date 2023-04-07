@@ -21,7 +21,6 @@ struct RegisterRequest{
 
 struct RegisterResponse {
     1: common.BaseResponse base_resp,
-    2: bool OK
 }
 
 //创建收藏夹

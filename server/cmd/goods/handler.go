@@ -67,6 +67,6 @@ func (s *GoodsServiceImpl) SearchGoods(ctx context.Context, req *goods.SearchGoo
 		Cost:        goods.Cost,
 		SalesVolume: goods.SalesVolume,
 	}
-	resp.BaseResp = tools.BuildBaseResp(200, "Search fullinfo success")
+	resp.BaseResp = tools.BuildBaseResp(200, "Search fullInfo success")
 	return resp, nil
 }

@@ -11,18 +11,35 @@ import (
 	"context"
 	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
-	"github.com/golang-jwt/jwt"
-	"time"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.
-type UserServiceImpl struct{}
+type UserServiceImpl struct {
+	TokenGenerator
+	MysqlUserGenerator
+	MysqlFavoGenerator
+}
+type TokenGenerator interface {
+	CreateJWTtoken(ID int64, isSeller bool) (string, error)
+}
+
+type MysqlUserGenerator interface {
+	SelectUserFromUsername(username string) model.User
+}
+
+type MysqlFavoGenerator interface {
+	SelectFavoFromUserIdAndFavoName(UserId int64, FavoritesName string) model.Favorites
+	SelectFavoInUserId(UserID int64) []model.Favorites
+	SelectCollectionsByUserAndFavo(UserId, FavoritesId int64) []model.Collection
+	SelectFavoByIdAndUserId(FavoritesId, UserId int64) model.Favorites
+	DeleteFavo(favo *model.Favorites)
+	SelectCollectionByAllId(FavoritesId, UserId, GoodsId int64) model.Collection
+}
 
 // Login implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (resp *user.LoginResponse, err error) {
 	resp = new(user.LoginResponse)
-	theUser := model.User{}
-	config.DB.Where("username = ?", req.Username).First(&theUser)
+	theUser := s.MysqlUserGenerator.SelectUserFromUsername(req.Username)
 	if theUser.Username == "" {
 		resp.BaseResp = tools.BuildBaseResp(errx.FindNone, "No such person found")
 		return resp, nil
@@ -31,21 +48,11 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 		resp.BaseResp = tools.BuildBaseResp(errx.PassWordWrong, "Wrong Password")
 		return resp, nil
 	}
-	now := time.Now().Unix()
-	//jwt
-	claim := model.CustomClaims{
-		ID:       int64(theUser.ID),
-		IsSeller: theUser.IsSeller,
-		StandardClaims: jwt.StandardClaims{
-			IssuedAt:  now,
-			NotBefore: now,
-			Issuer:    consts.JWTIssuer,
-		},
-	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
-	resp.Token, err = token.SignedString([]byte(config.GlobalServerConfig.JWTInfo.SigningKey))
+	resp.Token, err = s.TokenGenerator.CreateJWTtoken(int64(theUser.ID), theUser.IsSeller)
 	if err != nil {
 		fmt.Println(err)
+		klog.Error("Create JWT error!", err)
+		return
 	}
 	resp.BaseResp = tools.BuildBaseResp(200, "Login Success")
 	return resp, nil
@@ -54,11 +61,9 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 // Register implements the UserServiceImpl interface.
 func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterRequest) (resp *user.RegisterResponse, err error) {
 	resp = new(user.RegisterResponse)
-	theUser := model.User{}
-	config.DB.Where("username = ?", req.Username).First(&theUser)
+	theUser := s.MysqlUserGenerator.SelectUserFromUsername(req.Username)
 	if theUser.Username != "" {
 		resp.BaseResp = tools.BuildBaseResp(errx.AlreadyExist, "Username already exist")
-		resp.OK = false
 		return resp, nil
 	}
 	theUser.Username = req.Username
@@ -67,27 +72,29 @@ func (s *UserServiceImpl) Register(ctx context.Context, req *user.RegisterReques
 	errMsg := config.DB.Create(&theUser).Error
 	if err != nil {
 		resp.BaseResp = tools.BuildBaseResp(errx.CreatUserFail, errMsg.Error())
-		resp.OK = false
+		klog.Error("Create user fail", err)
 		return resp, nil
 	}
 	resp.BaseResp = tools.BuildBaseResp(200, "Create user success")
-	resp.OK = true
 	return resp, nil
 }
 
 // CreateFavorites implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CreateFavorites(ctx context.Context, req *user.CreateFavoritesRequest) (resp *user.CreateFavoritesResponse, err error) {
 	resp = new(user.CreateFavoritesResponse)
-	var Favorites model.Favorites
-	config.DB.Where("id = ? AND name = ?", req.UserId, req.FavoritesName).First(&Favorites)
-	if Favorites.Name != "" {
+	favorites := s.MysqlFavoGenerator.SelectFavoFromUserIdAndFavoName(req.UserId, req.FavoritesName)
+	if favorites.Name != "" {
 		resp.BaseResp = tools.BuildBaseResp(2, "Favorites already exist")
 		return resp, nil
 	}
-	Favorites.Name = req.FavoritesName
-	Favorites.Describe = req.Describe
-	Favorites.UserId = req.UserId
-	config.DB.Create(&Favorites)
+	favorites.Name = req.FavoritesName
+	favorites.Describe = req.Describe
+	favorites.UserId = req.UserId
+	err = config.DB.Create(&favorites).Error
+	if err != nil {
+
+		return
+	}
 	resp.BaseResp = tools.BuildBaseResp(200, "Create success")
 	return resp, nil
 }
@@ -95,8 +102,7 @@ func (s *UserServiceImpl) CreateFavorites(ctx context.Context, req *user.CreateF
 // WatchFavorites implements the UserServiceImpl interface.
 func (s *UserServiceImpl) WatchFavorites(ctx context.Context, req *user.WatchFavoritesRequset) (resp *user.WatchFavoritesResponse, err error) {
 	resp = new(user.WatchFavoritesResponse)
-	var favoriteses []model.Favorites
-	config.DB.Where("id = ?", req.UserId).Find(&favoriteses)
+	favoriteses := s.MysqlFavoGenerator.SelectFavoInUserId(req.UserId)
 	for _, v := range favoriteses {
 		resp.Favoriteses = append(resp.Favoriteses, &base.Favorites{
 			Name:     v.Name,
@@ -111,8 +117,7 @@ func (s *UserServiceImpl) WatchFavorites(ctx context.Context, req *user.WatchFav
 // WatchGoodsInFavorites implements the UserServiceImpl interface.
 func (s *UserServiceImpl) WatchGoodsInFavorites(ctx context.Context, req *user.WatchGoodsInFavoritesRequest) (resp *user.WatchGoodsInFavoritesResponse, err error) {
 	resp = new(user.WatchGoodsInFavoritesResponse)
-	var collections []model.Collection
-	config.DB.Where("user_id = ? AND favorites_id = ?", req.UserId, req.FavoritesId).Find(&collections)
+	collections := s.MysqlFavoGenerator.SelectCollectionsByUserAndFavo(req.UserId, req.FavoritesId)
 	for _, v := range collections {
 		resp.GoodsIds = append(resp.GoodsIds, &base.GoodsInFavorites{
 			GoodsId: v.GoodsId,
@@ -125,13 +130,12 @@ func (s *UserServiceImpl) WatchGoodsInFavorites(ctx context.Context, req *user.W
 // DeleteFavorites implements the UserServiceImpl interface.
 func (s *UserServiceImpl) DeleteFavorites(ctx context.Context, req *user.DeleteFavoritesRequest) (resp *user.DeleteFavoritesResponse, err error) {
 	resp = new(user.DeleteFavoritesResponse)
-	var favorites model.Favorites
-	config.DB.Where("id = ? AND user_id = ?", req.FavoritesId, req.UserId).First(&favorites)
+	favorites := s.MysqlFavoGenerator.SelectFavoByIdAndUserId(req.FavoritesId, req.UserId)
 	if favorites.UserId != req.UserId {
 		resp.BaseResp = tools.BuildBaseResp(errx.NoSuchFavorites, "No such favorites")
 		return resp, nil
 	}
-	config.DB.Unscoped().Delete(&favorites)
+	s.MysqlFavoGenerator.DeleteFavo(&favorites)
 	resp.BaseResp = tools.BuildBaseResp(200, "delete success")
 	return resp, nil
 }
@@ -139,14 +143,12 @@ func (s *UserServiceImpl) DeleteFavorites(ctx context.Context, req *user.DeleteF
 // CollectGoods implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CollectGoods(ctx context.Context, req *user.CollectGoodsRequest) (resp *user.CollectGoodsResponse, err error) {
 	resp = new(user.CollectGoodsResponse)
-	var collection model.Collection
-	var favorites model.Favorites
-	config.DB.Where("id = ? AND user_id = ?", req.FavoritesId, req.UserId).First(&favorites)
+	favorites := s.MysqlFavoGenerator.SelectFavoByIdAndUserId(req.FavoritesId, req.UserId)
 	if favorites.UserId != req.UserId {
 		resp.BaseResp = tools.BuildBaseResp(errx.FavoritesAuthFail, "Auth favorites user fail")
 		return resp, nil
 	}
-	config.DB.Where("favorites_id = ? AND user_id = ? AND goods_id = ?", req.FavoritesId, req.UserId, req.GoodsId).First(&collection)
+	collection := s.MysqlFavoGenerator.SelectCollectionByAllId(req.FavoritesId, req.UserId, req.GoodsId)
 	if collection.GoodsId == req.GoodsId {
 		resp.BaseResp = tools.BuildBaseResp(errx.AlreadyExist, "Goods already exist")
 		return resp, nil
@@ -252,7 +254,7 @@ func (s *UserServiceImpl) WatchCart(ctx context.Context, req *user.WatchCartRequ
 // CleanCart implements the UserServiceImpl interface.
 func (s *UserServiceImpl) CleanCart(ctx context.Context, req *user.CleanCartRequest) (resp *user.CleanCartResponse, err error) {
 	resp = new(user.CleanCartResponse)
-	config.DB.Unscoped().Where("user_id = ?", req.UserId).Delete(&model.Collection{})
+	config.DB.Unscoped().Where("user_id = ?", req.UserId).Delete(&model.Cart{})
 	resp.BaseResp = tools.BuildBaseResp(200, "Clear success")
 	return resp, nil
 }

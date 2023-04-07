@@ -689,7 +689,6 @@ func (p *RegisterRequest) Field2DeepEqual(src string) bool {
 
 type RegisterResponse struct {
 	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
-	OK       bool               `thrift:"OK,2" frugal:"2,default,bool" json:"OK"`
 }
 
 func NewRegisterResponse() *RegisterResponse {
@@ -708,20 +707,12 @@ func (p *RegisterResponse) GetBaseResp() (v *base.BaseResponse) {
 	}
 	return p.BaseResp
 }
-
-func (p *RegisterResponse) GetOK() (v bool) {
-	return p.OK
-}
 func (p *RegisterResponse) SetBaseResp(val *base.BaseResponse) {
 	p.BaseResp = val
-}
-func (p *RegisterResponse) SetOK(val bool) {
-	p.OK = val
 }
 
 var fieldIDToName_RegisterResponse = map[int16]string{
 	1: "base_resp",
-	2: "OK",
 }
 
 func (p *RegisterResponse) IsSetBaseResp() bool {
@@ -750,16 +741,6 @@ func (p *RegisterResponse) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField1(iprot); err != nil {
-					goto ReadFieldError
-				}
-			} else {
-				if err = iprot.Skip(fieldTypeId); err != nil {
-					goto SkipFieldError
-				}
-			}
-		case 2:
-			if fieldTypeId == thrift.BOOL {
-				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -805,15 +786,6 @@ func (p *RegisterResponse) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *RegisterResponse) ReadField2(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadBool(); err != nil {
-		return err
-	} else {
-		p.OK = v
-	}
-	return nil
-}
-
 func (p *RegisterResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("RegisterResponse"); err != nil {
@@ -822,10 +794,6 @@ func (p *RegisterResponse) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
-			goto WriteFieldError
-		}
-		if err = p.writeField2(oprot); err != nil {
-			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -864,23 +832,6 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *RegisterResponse) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("OK", thrift.BOOL, 2); err != nil {
-		goto WriteFieldBeginError
-	}
-	if err := oprot.WriteBool(p.OK); err != nil {
-		return err
-	}
-	if err = oprot.WriteFieldEnd(); err != nil {
-		goto WriteFieldEndError
-	}
-	return nil
-WriteFieldBeginError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
-WriteFieldEndError:
-	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
-}
-
 func (p *RegisterResponse) String() string {
 	if p == nil {
 		return "<nil>"
@@ -897,22 +848,12 @@ func (p *RegisterResponse) DeepEqual(ano *RegisterResponse) bool {
 	if !p.Field1DeepEqual(ano.BaseResp) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.OK) {
-		return false
-	}
 	return true
 }
 
 func (p *RegisterResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
-		return false
-	}
-	return true
-}
-func (p *RegisterResponse) Field2DeepEqual(src bool) bool {
-
-	if p.OK != src {
 		return false
 	}
 	return true
