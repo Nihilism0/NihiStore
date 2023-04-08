@@ -78,7 +78,7 @@ func CreateFavorites(ctx context.Context, c *app.RequestContext) {
 	ID, _ := c.Get("ID")
 	resp, err = config.GlobalUserClient.CreateFavorites(ctx, &kuser.CreateFavoritesRequest{
 		FavoritesName: req.FavoritesName,
-		Describe:      req.Describe,
+		Description:   req.Description,
 		UserId:        ID.(int64),
 	})
 	if err != nil {

@@ -7,7 +7,7 @@ type Goods struct {
 	Name        string `gorm:"type:varchar(40)"`
 	UserId      int64
 	User        User `gorm:"foreignKey:UserId"`
-	Describe    string
+	Description string
 	Cost        int64
 	SalesVolume int64
 }

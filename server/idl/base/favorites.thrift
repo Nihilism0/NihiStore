@@ -2,7 +2,7 @@ namespace go base
 
 struct Favorites{
     1: string name
-    2: string describe
+    2: string description
     3: i64 id
 }
 

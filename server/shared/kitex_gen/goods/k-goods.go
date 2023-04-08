@@ -668,6 +668,34 @@ func (p *SearchGoodsInfoRequest) FastRead(buf []byte) (int, error) {
 					goto SkipFieldError
 				}
 			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField2(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				l, err = p.FastReadField3(buf[offset:])
+				offset += l
+				if err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
+				offset += l
+				if err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			l, err = bthrift.Binary.Skip(buf[offset:], fieldTypeId)
 			offset += l
@@ -717,6 +745,34 @@ func (p *SearchGoodsInfoRequest) FastReadField1(buf []byte) (int, error) {
 	return offset, nil
 }
 
+func (p *SearchGoodsInfoRequest) FastReadField2(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.Page = v
+
+	}
+	return offset, nil
+}
+
+func (p *SearchGoodsInfoRequest) FastReadField3(buf []byte) (int, error) {
+	offset := 0
+
+	if v, l, err := bthrift.Binary.ReadI64(buf[offset:]); err != nil {
+		return offset, err
+	} else {
+		offset += l
+
+		p.PageAmount = v
+
+	}
+	return offset, nil
+}
+
 // for compatibility
 func (p *SearchGoodsInfoRequest) FastWrite(buf []byte) int {
 	return 0
@@ -726,6 +782,8 @@ func (p *SearchGoodsInfoRequest) FastWriteNocopy(buf []byte, binaryWriter bthrif
 	offset := 0
 	offset += bthrift.Binary.WriteStructBegin(buf[offset:], "SearchGoodsInfoRequest")
 	if p != nil {
+		offset += p.fastWriteField2(buf[offset:], binaryWriter)
+		offset += p.fastWriteField3(buf[offset:], binaryWriter)
 		offset += p.fastWriteField1(buf[offset:], binaryWriter)
 	}
 	offset += bthrift.Binary.WriteFieldStop(buf[offset:])
@@ -738,6 +796,8 @@ func (p *SearchGoodsInfoRequest) BLength() int {
 	l += bthrift.Binary.StructBeginLength("SearchGoodsInfoRequest")
 	if p != nil {
 		l += p.field1Length()
+		l += p.field2Length()
+		l += p.field3Length()
 	}
 	l += bthrift.Binary.FieldStopLength()
 	l += bthrift.Binary.StructEndLength()
@@ -746,8 +806,26 @@ func (p *SearchGoodsInfoRequest) BLength() int {
 
 func (p *SearchGoodsInfoRequest) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "search_msg", thrift.STRING, 1)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "searchMsg", thrift.STRING, 1)
 	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.SearchMsg)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *SearchGoodsInfoRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "page", thrift.I64, 2)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.Page)
+
+	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
+	return offset
+}
+
+func (p *SearchGoodsInfoRequest) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryWriter) int {
+	offset := 0
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "pageAmount", thrift.I64, 3)
+	offset += bthrift.Binary.WriteI64(buf[offset:], p.PageAmount)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -755,8 +833,26 @@ func (p *SearchGoodsInfoRequest) fastWriteField1(buf []byte, binaryWriter bthrif
 
 func (p *SearchGoodsInfoRequest) field1Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("search_msg", thrift.STRING, 1)
+	l += bthrift.Binary.FieldBeginLength("searchMsg", thrift.STRING, 1)
 	l += bthrift.Binary.StringLengthNocopy(p.SearchMsg)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *SearchGoodsInfoRequest) field2Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("page", thrift.I64, 2)
+	l += bthrift.Binary.I64Length(p.Page)
+
+	l += bthrift.Binary.FieldEndLength()
+	return l
+}
+
+func (p *SearchGoodsInfoRequest) field3Length() int {
+	l := 0
+	l += bthrift.Binary.FieldBeginLength("pageAmount", thrift.I64, 3)
+	l += bthrift.Binary.I64Length(p.PageAmount)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

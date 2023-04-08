@@ -3,6 +3,8 @@ package main
 import (
 	"NihiStore/server/cmd/goods/config"
 	"NihiStore/server/cmd/goods/initialize"
+	"NihiStore/server/cmd/goods/pkg/convert"
+	"NihiStore/server/cmd/goods/pkg/mysql"
 	"NihiStore/server/shared/consts"
 	goods "NihiStore/server/shared/kitex_gen/goods/goodsservice"
 	"NihiStore/server/shared/middleware"
@@ -21,7 +23,10 @@ func main() {
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
 	// Create new server.
-	srv := goods.NewServer(&GoodsServiceImpl{},
+	srv := goods.NewServer(&GoodsServiceImpl{
+		ConvertGenerator: &convert.ConvertGenerator{},
+		MysqlGenerator:   &mysql.MysqlGenerator{},
+	},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),
 		server.WithRegistryInfo(info),

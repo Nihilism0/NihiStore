@@ -23,7 +23,9 @@ struct DeleteGoodsResponse{
 
 //搜索局部信息
 struct SearchGoodsInfoRequest{
-    1: string search_msg
+        1: string searchMsg
+        2: i64 page
+        3: i64 pageAmount
 }
 
 struct SearchGoodsInfoResponse{

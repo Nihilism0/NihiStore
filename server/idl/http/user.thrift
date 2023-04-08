@@ -13,7 +13,7 @@ struct RegisterReq {
 
 struct CreateFavoritesReq {
     1: string favoritesName (api.form="favoritesname" api.vd = "len($) > 0 && len($) < 20")
-    2: string describe (api.form="describe" api.vd = "len($) > 0 && len($) < 20")
+    2: string description (api.form="description" api.vd = "len($) > 0 && len($) < 20")
 }
 
 struct DeleteFavoritesReq{

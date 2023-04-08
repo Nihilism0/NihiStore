@@ -144,7 +144,7 @@ func (p *Goods) FastReadField2(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.Describe = v
+		p.Description = v
 
 	}
 	return offset, nil
@@ -206,8 +206,8 @@ func (p *Goods) fastWriteField1(buf []byte, binaryWriter bthrift.BinaryWriter) i
 
 func (p *Goods) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "describe", thrift.STRING, 2)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Describe)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "description", thrift.STRING, 2)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Description)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -233,8 +233,8 @@ func (p *Goods) field1Length() int {
 
 func (p *Goods) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("describe", thrift.STRING, 2)
-	l += bthrift.Binary.StringLengthNocopy(p.Describe)
+	l += bthrift.Binary.FieldBeginLength("description", thrift.STRING, 2)
+	l += bthrift.Binary.StringLengthNocopy(p.Description)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l
@@ -440,7 +440,7 @@ func (p *GoodsFullInfo) FastReadField4(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.Describe = v
+		p.Description = v
 
 	}
 	return offset, nil
@@ -540,8 +540,8 @@ func (p *GoodsFullInfo) fastWriteField3(buf []byte, binaryWriter bthrift.BinaryW
 
 func (p *GoodsFullInfo) fastWriteField4(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "describe", thrift.STRING, 4)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Describe)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "description", thrift.STRING, 4)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Description)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -594,8 +594,8 @@ func (p *GoodsFullInfo) field3Length() int {
 
 func (p *GoodsFullInfo) field4Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("describe", thrift.STRING, 4)
-	l += bthrift.Binary.StringLengthNocopy(p.Describe)
+	l += bthrift.Binary.FieldBeginLength("description", thrift.STRING, 4)
+	l += bthrift.Binary.StringLengthNocopy(p.Description)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

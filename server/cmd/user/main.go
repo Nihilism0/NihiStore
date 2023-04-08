@@ -3,6 +3,7 @@ package main
 import (
 	"NihiStore/server/cmd/user/config"
 	"NihiStore/server/cmd/user/initialize"
+	"NihiStore/server/cmd/user/pkg/convert"
 	"NihiStore/server/cmd/user/pkg/jwt"
 	"NihiStore/server/cmd/user/pkg/mysql"
 	"NihiStore/server/shared/consts"
@@ -26,8 +27,10 @@ func main() {
 	srv := user.NewServer(
 		&UserServiceImpl{
 			TokenGenerator:     &jwt.TokenGenerator{},
+			ConvertGenerator:   &convert.ConvertGenerator{},
 			MysqlUserGenerator: &mysql.MysqlUserGenerator{},
 			MysqlFavoGenerator: &mysql.MysqlFavoGenerator{},
+			MysqlCartGenerator: &mysql.MysqlCartGenerator{},
 		},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),

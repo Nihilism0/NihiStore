@@ -861,7 +861,7 @@ func (p *RegisterResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 
 type CreateFavoritesRequest struct {
 	FavoritesName string `thrift:"favoritesName,1" frugal:"1,default,string" json:"favoritesName"`
-	Describe      string `thrift:"describe,2" frugal:"2,default,string" json:"describe"`
+	Description   string `thrift:"description,2" frugal:"2,default,string" json:"description"`
 	UserId        int64  `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
 }
 
@@ -877,8 +877,8 @@ func (p *CreateFavoritesRequest) GetFavoritesName() (v string) {
 	return p.FavoritesName
 }
 
-func (p *CreateFavoritesRequest) GetDescribe() (v string) {
-	return p.Describe
+func (p *CreateFavoritesRequest) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *CreateFavoritesRequest) GetUserId() (v int64) {
@@ -887,8 +887,8 @@ func (p *CreateFavoritesRequest) GetUserId() (v int64) {
 func (p *CreateFavoritesRequest) SetFavoritesName(val string) {
 	p.FavoritesName = val
 }
-func (p *CreateFavoritesRequest) SetDescribe(val string) {
-	p.Describe = val
+func (p *CreateFavoritesRequest) SetDescription(val string) {
+	p.Description = val
 }
 func (p *CreateFavoritesRequest) SetUserId(val int64) {
 	p.UserId = val
@@ -896,7 +896,7 @@ func (p *CreateFavoritesRequest) SetUserId(val int64) {
 
 var fieldIDToName_CreateFavoritesRequest = map[int16]string{
 	1: "favoritesName",
-	2: "describe",
+	2: "description",
 	3: "userId",
 }
 
@@ -992,7 +992,7 @@ func (p *CreateFavoritesRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -1061,10 +1061,10 @@ WriteFieldEndError:
 }
 
 func (p *CreateFavoritesRequest) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -1110,7 +1110,7 @@ func (p *CreateFavoritesRequest) DeepEqual(ano *CreateFavoritesRequest) bool {
 	if !p.Field1DeepEqual(ano.FavoritesName) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Describe) {
+	if !p.Field2DeepEqual(ano.Description) {
 		return false
 	}
 	if !p.Field3DeepEqual(ano.UserId) {
@@ -1128,7 +1128,7 @@ func (p *CreateFavoritesRequest) Field1DeepEqual(src string) bool {
 }
 func (p *CreateFavoritesRequest) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.Describe, src) != 0 {
+	if strings.Compare(p.Description, src) != 0 {
 		return false
 	}
 	return true

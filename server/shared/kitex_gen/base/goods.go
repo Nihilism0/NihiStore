@@ -9,9 +9,9 @@ import (
 )
 
 type Goods struct {
-	Name     string `thrift:"name,1" frugal:"1,default,string" json:"name"`
-	Describe string `thrift:"describe,2" frugal:"2,default,string" json:"describe"`
-	Cost     int64  `thrift:"cost,3" frugal:"3,default,i64" json:"cost"`
+	Name        string `thrift:"name,1" frugal:"1,default,string" json:"name"`
+	Description string `thrift:"description,2" frugal:"2,default,string" json:"description"`
+	Cost        int64  `thrift:"cost,3" frugal:"3,default,i64" json:"cost"`
 }
 
 func NewGoods() *Goods {
@@ -26,8 +26,8 @@ func (p *Goods) GetName() (v string) {
 	return p.Name
 }
 
-func (p *Goods) GetDescribe() (v string) {
-	return p.Describe
+func (p *Goods) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *Goods) GetCost() (v int64) {
@@ -36,8 +36,8 @@ func (p *Goods) GetCost() (v int64) {
 func (p *Goods) SetName(val string) {
 	p.Name = val
 }
-func (p *Goods) SetDescribe(val string) {
-	p.Describe = val
+func (p *Goods) SetDescription(val string) {
+	p.Description = val
 }
 func (p *Goods) SetCost(val int64) {
 	p.Cost = val
@@ -45,7 +45,7 @@ func (p *Goods) SetCost(val int64) {
 
 var fieldIDToName_Goods = map[int16]string{
 	1: "name",
-	2: "describe",
+	2: "description",
 	3: "cost",
 }
 
@@ -141,7 +141,7 @@ func (p *Goods) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -210,10 +210,10 @@ WriteFieldEndError:
 }
 
 func (p *Goods) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -259,7 +259,7 @@ func (p *Goods) DeepEqual(ano *Goods) bool {
 	if !p.Field1DeepEqual(ano.Name) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Describe) {
+	if !p.Field2DeepEqual(ano.Description) {
 		return false
 	}
 	if !p.Field3DeepEqual(ano.Cost) {
@@ -277,7 +277,7 @@ func (p *Goods) Field1DeepEqual(src string) bool {
 }
 func (p *Goods) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.Describe, src) != 0 {
+	if strings.Compare(p.Description, src) != 0 {
 		return false
 	}
 	return true
@@ -294,7 +294,7 @@ type GoodsFullInfo struct {
 	Id          int64  `thrift:"id,1" frugal:"1,default,i64" json:"id"`
 	Name        string `thrift:"name,2" frugal:"2,default,string" json:"name"`
 	UserId      int64  `thrift:"user_id,3" frugal:"3,default,i64" json:"user_id"`
-	Describe    string `thrift:"describe,4" frugal:"4,default,string" json:"describe"`
+	Description string `thrift:"description,4" frugal:"4,default,string" json:"description"`
 	Cost        int64  `thrift:"cost,5" frugal:"5,default,i64" json:"cost"`
 	SalesVolume int64  `thrift:"sales_volume,6" frugal:"6,default,i64" json:"sales_volume"`
 }
@@ -319,8 +319,8 @@ func (p *GoodsFullInfo) GetUserId() (v int64) {
 	return p.UserId
 }
 
-func (p *GoodsFullInfo) GetDescribe() (v string) {
-	return p.Describe
+func (p *GoodsFullInfo) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *GoodsFullInfo) GetCost() (v int64) {
@@ -339,8 +339,8 @@ func (p *GoodsFullInfo) SetName(val string) {
 func (p *GoodsFullInfo) SetUserId(val int64) {
 	p.UserId = val
 }
-func (p *GoodsFullInfo) SetDescribe(val string) {
-	p.Describe = val
+func (p *GoodsFullInfo) SetDescription(val string) {
+	p.Description = val
 }
 func (p *GoodsFullInfo) SetCost(val int64) {
 	p.Cost = val
@@ -353,7 +353,7 @@ var fieldIDToName_GoodsFullInfo = map[int16]string{
 	1: "id",
 	2: "name",
 	3: "user_id",
-	4: "describe",
+	4: "description",
 	5: "cost",
 	6: "sales_volume",
 }
@@ -498,7 +498,7 @@ func (p *GoodsFullInfo) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -622,10 +622,10 @@ WriteFieldEndError:
 }
 
 func (p *GoodsFullInfo) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 4); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -694,7 +694,7 @@ func (p *GoodsFullInfo) DeepEqual(ano *GoodsFullInfo) bool {
 	if !p.Field3DeepEqual(ano.UserId) {
 		return false
 	}
-	if !p.Field4DeepEqual(ano.Describe) {
+	if !p.Field4DeepEqual(ano.Description) {
 		return false
 	}
 	if !p.Field5DeepEqual(ano.Cost) {
@@ -729,7 +729,7 @@ func (p *GoodsFullInfo) Field3DeepEqual(src int64) bool {
 }
 func (p *GoodsFullInfo) Field4DeepEqual(src string) bool {
 
-	if strings.Compare(p.Describe, src) != 0 {
+	if strings.Compare(p.Description, src) != 0 {
 		return false
 	}
 	return true

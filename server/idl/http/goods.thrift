@@ -7,15 +7,17 @@ struct CreateGoodsReq{
     2: goods.Goods goods_information,
 }
 struct DeleteGoodsReq{
-    1: i64 goods_id,
+    1: i64 goodsId,
 }
 
 struct SearchGoodsInfoReq{
-    1: string search_msg
+    1: string searchMsg
+    2: i64 page
+    3: i64 pageAmount
 }
 
 struct SearchGoodsReq{
-    1: i64 goods_id
+    1: i64 goodsId
 }
 
 service goodsService{

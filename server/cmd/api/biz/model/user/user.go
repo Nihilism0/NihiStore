@@ -377,7 +377,7 @@ func (p *RegisterReq) String() string {
 
 type CreateFavoritesReq struct {
 	FavoritesName string `thrift:"favoritesName,1" form:"favoritesname" json:"favoritesName" vd:"len($) > 0 && len($) < 20"`
-	Describe      string `thrift:"describe,2" form:"describe" json:"describe" vd:"len($) > 0 && len($) < 20"`
+	Description   string `thrift:"description,2" form:"description" json:"description" vd:"len($) > 0 && len($) < 20"`
 }
 
 func NewCreateFavoritesReq() *CreateFavoritesReq {
@@ -388,13 +388,13 @@ func (p *CreateFavoritesReq) GetFavoritesName() (v string) {
 	return p.FavoritesName
 }
 
-func (p *CreateFavoritesReq) GetDescribe() (v string) {
-	return p.Describe
+func (p *CreateFavoritesReq) GetDescription() (v string) {
+	return p.Description
 }
 
 var fieldIDToName_CreateFavoritesReq = map[int16]string{
 	1: "favoritesName",
-	2: "describe",
+	2: "description",
 }
 
 func (p *CreateFavoritesReq) Read(iprot thrift.TProtocol) (err error) {
@@ -479,7 +479,7 @@ func (p *CreateFavoritesReq) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -535,10 +535,10 @@ WriteFieldEndError:
 }
 
 func (p *CreateFavoritesReq) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

@@ -201,19 +201,19 @@ func (p *CreateGoodsReq) String() string {
 }
 
 type DeleteGoodsReq struct {
-	GoodsID int64 `thrift:"goods_id,1" form:"goods_id" json:"goods_id" query:"goods_id"`
+	GoodsId int64 `thrift:"goodsId,1" form:"goodsId" json:"goodsId" query:"goodsId"`
 }
 
 func NewDeleteGoodsReq() *DeleteGoodsReq {
 	return &DeleteGoodsReq{}
 }
 
-func (p *DeleteGoodsReq) GetGoodsID() (v int64) {
-	return p.GoodsID
+func (p *DeleteGoodsReq) GetGoodsId() (v int64) {
+	return p.GoodsId
 }
 
 var fieldIDToName_DeleteGoodsReq = map[int16]string{
-	1: "goods_id",
+	1: "goodsId",
 }
 
 func (p *DeleteGoodsReq) Read(iprot thrift.TProtocol) (err error) {
@@ -279,7 +279,7 @@ func (p *DeleteGoodsReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.GoodsID = v
+		p.GoodsId = v
 	}
 	return nil
 }
@@ -314,10 +314,10 @@ WriteStructEndError:
 }
 
 func (p *DeleteGoodsReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("goods_id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("goodsId", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.GoodsID); err != nil {
+	if err := oprot.WriteI64(p.GoodsId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -338,7 +338,9 @@ func (p *DeleteGoodsReq) String() string {
 }
 
 type SearchGoodsInfoReq struct {
-	SearchMsg string `thrift:"search_msg,1" form:"search_msg" json:"search_msg" query:"search_msg"`
+	SearchMsg  string `thrift:"searchMsg,1" form:"searchMsg" json:"searchMsg" query:"searchMsg"`
+	Page       int64  `thrift:"page,2" form:"page" json:"page" query:"page"`
+	PageAmount int64  `thrift:"pageAmount,3" form:"pageAmount" json:"pageAmount" query:"pageAmount"`
 }
 
 func NewSearchGoodsInfoReq() *SearchGoodsInfoReq {
@@ -349,8 +351,18 @@ func (p *SearchGoodsInfoReq) GetSearchMsg() (v string) {
 	return p.SearchMsg
 }
 
+func (p *SearchGoodsInfoReq) GetPage() (v int64) {
+	return p.Page
+}
+
+func (p *SearchGoodsInfoReq) GetPageAmount() (v int64) {
+	return p.PageAmount
+}
+
 var fieldIDToName_SearchGoodsInfoReq = map[int16]string{
-	1: "search_msg",
+	1: "searchMsg",
+	2: "page",
+	3: "pageAmount",
 }
 
 func (p *SearchGoodsInfoReq) Read(iprot thrift.TProtocol) (err error) {
@@ -375,6 +387,26 @@ func (p *SearchGoodsInfoReq) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -421,6 +453,24 @@ func (p *SearchGoodsInfoReq) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *SearchGoodsInfoReq) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Page = v
+	}
+	return nil
+}
+
+func (p *SearchGoodsInfoReq) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.PageAmount = v
+	}
+	return nil
+}
+
 func (p *SearchGoodsInfoReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("SearchGoodsInfoReq"); err != nil {
@@ -429,6 +479,14 @@ func (p *SearchGoodsInfoReq) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -451,7 +509,7 @@ WriteStructEndError:
 }
 
 func (p *SearchGoodsInfoReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("search_msg", thrift.STRING, 1); err != nil {
+	if err = oprot.WriteFieldBegin("searchMsg", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
 	if err := oprot.WriteString(p.SearchMsg); err != nil {
@@ -467,6 +525,40 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
+func (p *SearchGoodsInfoReq) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("page", thrift.I64, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Page); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *SearchGoodsInfoReq) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("pageAmount", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.PageAmount); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
 func (p *SearchGoodsInfoReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -475,19 +567,19 @@ func (p *SearchGoodsInfoReq) String() string {
 }
 
 type SearchGoodsReq struct {
-	GoodsID int64 `thrift:"goods_id,1" form:"goods_id" json:"goods_id" query:"goods_id"`
+	GoodsId int64 `thrift:"goodsId,1" form:"goodsId" json:"goodsId" query:"goodsId"`
 }
 
 func NewSearchGoodsReq() *SearchGoodsReq {
 	return &SearchGoodsReq{}
 }
 
-func (p *SearchGoodsReq) GetGoodsID() (v int64) {
-	return p.GoodsID
+func (p *SearchGoodsReq) GetGoodsId() (v int64) {
+	return p.GoodsId
 }
 
 var fieldIDToName_SearchGoodsReq = map[int16]string{
-	1: "goods_id",
+	1: "goodsId",
 }
 
 func (p *SearchGoodsReq) Read(iprot thrift.TProtocol) (err error) {
@@ -553,7 +645,7 @@ func (p *SearchGoodsReq) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.GoodsID = v
+		p.GoodsId = v
 	}
 	return nil
 }
@@ -588,10 +680,10 @@ WriteStructEndError:
 }
 
 func (p *SearchGoodsReq) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("goods_id", thrift.I64, 1); err != nil {
+	if err = oprot.WriteFieldBegin("goodsId", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteI64(p.GoodsID); err != nil {
+	if err := oprot.WriteI64(p.GoodsId); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

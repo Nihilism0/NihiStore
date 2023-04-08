@@ -7,8 +7,12 @@ import (
 
 type MysqlUserGenerator struct{}
 
-func (*MysqlUserGenerator) SelectUserFromUsername(username string) model.User {
+func (*MysqlUserGenerator) SelectUserFromUsername(username string) (*model.User, error) {
 	theUser := model.User{}
-	config.DB.Where("username = ?", username).First(&theUser)
-	return theUser
+	err := config.DB.Where("username = ?", username).First(&theUser).Error
+	return &theUser, err
+}
+
+func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
+	config.DB.Create(theUser)
 }

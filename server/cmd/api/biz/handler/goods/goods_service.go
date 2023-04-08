@@ -68,7 +68,7 @@ func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp, err = config.GlobalGoodsClient.DeleteGoods(ctx, &kgoods.DeleteGoodsRequest{
-		GoodsId:  req.GoodsID,
+		GoodsId:  req.GoodsId,
 		SellerId: ID.(int64),
 	})
 
@@ -94,9 +94,10 @@ func SearchGoodsInfo(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp, err = config.GlobalGoodsClient.SearchGoodsInfo(ctx, &kgoods.SearchGoodsInfoRequest{
-		SearchMsg: req.SearchMsg,
+		SearchMsg:  req.SearchMsg,
+		Page:       req.Page,
+		PageAmount: req.PageAmount,
 	})
-
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)
@@ -118,14 +119,12 @@ func SearchGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{Id: req.GoodsID})
-
+	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{Id: req.GoodsId})
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
-
 	c.JSON(200, resp)
 	return
 }

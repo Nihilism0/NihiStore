@@ -8,9 +8,9 @@ import (
 )
 
 type Goods struct {
-	Name     string `thrift:"name,1" form:"name" json:"name" query:"name"`
-	Describe string `thrift:"describe,2" form:"describe" json:"describe" query:"describe"`
-	Cost     int64  `thrift:"cost,3" form:"cost" json:"cost" query:"cost"`
+	Name        string `thrift:"name,1" form:"name" json:"name" query:"name"`
+	Description string `thrift:"description,2" form:"description" json:"description" query:"description"`
+	Cost        int64  `thrift:"cost,3" form:"cost" json:"cost" query:"cost"`
 }
 
 func NewGoods() *Goods {
@@ -21,8 +21,8 @@ func (p *Goods) GetName() (v string) {
 	return p.Name
 }
 
-func (p *Goods) GetDescribe() (v string) {
-	return p.Describe
+func (p *Goods) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *Goods) GetCost() (v int64) {
@@ -31,7 +31,7 @@ func (p *Goods) GetCost() (v int64) {
 
 var fieldIDToName_Goods = map[int16]string{
 	1: "name",
-	2: "describe",
+	2: "description",
 	3: "cost",
 }
 
@@ -127,7 +127,7 @@ func (p *Goods) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -196,10 +196,10 @@ WriteFieldEndError:
 }
 
 func (p *Goods) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -240,7 +240,7 @@ type GoodsFullInfo struct {
 	ID          int64  `thrift:"id,1" form:"id" json:"id" query:"id"`
 	Name        string `thrift:"name,2" form:"name" json:"name" query:"name"`
 	UserID      int64  `thrift:"user_id,3" form:"user_id" json:"user_id" query:"user_id"`
-	Describe    string `thrift:"describe,4" form:"describe" json:"describe" query:"describe"`
+	Description string `thrift:"description,4" form:"description" json:"description" query:"description"`
 	Cost        int64  `thrift:"cost,5" form:"cost" json:"cost" query:"cost"`
 	SalesVolume int64  `thrift:"sales_volume,6" form:"sales_volume" json:"sales_volume" query:"sales_volume"`
 }
@@ -261,8 +261,8 @@ func (p *GoodsFullInfo) GetUserID() (v int64) {
 	return p.UserID
 }
 
-func (p *GoodsFullInfo) GetDescribe() (v string) {
-	return p.Describe
+func (p *GoodsFullInfo) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *GoodsFullInfo) GetCost() (v int64) {
@@ -277,7 +277,7 @@ var fieldIDToName_GoodsFullInfo = map[int16]string{
 	1: "id",
 	2: "name",
 	3: "user_id",
-	4: "describe",
+	4: "description",
 	5: "cost",
 	6: "sales_volume",
 }
@@ -422,7 +422,7 @@ func (p *GoodsFullInfo) ReadField4(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -546,10 +546,10 @@ WriteFieldEndError:
 }
 
 func (p *GoodsFullInfo) writeField4(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 4); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 4); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {

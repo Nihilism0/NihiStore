@@ -804,7 +804,7 @@ func (p *CreateFavoritesRequest) FastReadField2(buf []byte) (int, error) {
 	} else {
 		offset += l
 
-		p.Describe = v
+		p.Description = v
 
 	}
 	return offset, nil
@@ -866,8 +866,8 @@ func (p *CreateFavoritesRequest) fastWriteField1(buf []byte, binaryWriter bthrif
 
 func (p *CreateFavoritesRequest) fastWriteField2(buf []byte, binaryWriter bthrift.BinaryWriter) int {
 	offset := 0
-	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "describe", thrift.STRING, 2)
-	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Describe)
+	offset += bthrift.Binary.WriteFieldBegin(buf[offset:], "description", thrift.STRING, 2)
+	offset += bthrift.Binary.WriteStringNocopy(buf[offset:], binaryWriter, p.Description)
 
 	offset += bthrift.Binary.WriteFieldEnd(buf[offset:])
 	return offset
@@ -893,8 +893,8 @@ func (p *CreateFavoritesRequest) field1Length() int {
 
 func (p *CreateFavoritesRequest) field2Length() int {
 	l := 0
-	l += bthrift.Binary.FieldBeginLength("describe", thrift.STRING, 2)
-	l += bthrift.Binary.StringLengthNocopy(p.Describe)
+	l += bthrift.Binary.FieldBeginLength("description", thrift.STRING, 2)
+	l += bthrift.Binary.StringLengthNocopy(p.Description)
 
 	l += bthrift.Binary.FieldEndLength()
 	return l

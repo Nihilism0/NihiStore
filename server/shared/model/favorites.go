@@ -4,10 +4,10 @@ import "gorm.io/gorm"
 
 type Favorites struct {
 	gorm.Model
-	Name     string `gorm:"type:varchar(40)"`
-	Describe string
-	UserId   int64
-	User     User `gorm:"foreignKey:UserId"`
+	Name        string `gorm:"type:varchar(40)"`
+	Description string
+	UserId      int64
+	User        User `gorm:"foreignKey:UserId"`
 }
 
 type Collection struct {

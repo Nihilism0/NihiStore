@@ -9,9 +9,9 @@ import (
 )
 
 type Favorites struct {
-	Name     string `thrift:"name,1" frugal:"1,default,string" json:"name"`
-	Describe string `thrift:"describe,2" frugal:"2,default,string" json:"describe"`
-	Id       int64  `thrift:"id,3" frugal:"3,default,i64" json:"id"`
+	Name        string `thrift:"name,1" frugal:"1,default,string" json:"name"`
+	Description string `thrift:"description,2" frugal:"2,default,string" json:"description"`
+	Id          int64  `thrift:"id,3" frugal:"3,default,i64" json:"id"`
 }
 
 func NewFavorites() *Favorites {
@@ -26,8 +26,8 @@ func (p *Favorites) GetName() (v string) {
 	return p.Name
 }
 
-func (p *Favorites) GetDescribe() (v string) {
-	return p.Describe
+func (p *Favorites) GetDescription() (v string) {
+	return p.Description
 }
 
 func (p *Favorites) GetId() (v int64) {
@@ -36,8 +36,8 @@ func (p *Favorites) GetId() (v int64) {
 func (p *Favorites) SetName(val string) {
 	p.Name = val
 }
-func (p *Favorites) SetDescribe(val string) {
-	p.Describe = val
+func (p *Favorites) SetDescription(val string) {
+	p.Description = val
 }
 func (p *Favorites) SetId(val int64) {
 	p.Id = val
@@ -45,7 +45,7 @@ func (p *Favorites) SetId(val int64) {
 
 var fieldIDToName_Favorites = map[int16]string{
 	1: "name",
-	2: "describe",
+	2: "description",
 	3: "id",
 }
 
@@ -141,7 +141,7 @@ func (p *Favorites) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
-		p.Describe = v
+		p.Description = v
 	}
 	return nil
 }
@@ -210,10 +210,10 @@ WriteFieldEndError:
 }
 
 func (p *Favorites) writeField2(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("describe", thrift.STRING, 2); err != nil {
+	if err = oprot.WriteFieldBegin("description", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Describe); err != nil {
+	if err := oprot.WriteString(p.Description); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -259,7 +259,7 @@ func (p *Favorites) DeepEqual(ano *Favorites) bool {
 	if !p.Field1DeepEqual(ano.Name) {
 		return false
 	}
-	if !p.Field2DeepEqual(ano.Describe) {
+	if !p.Field2DeepEqual(ano.Description) {
 		return false
 	}
 	if !p.Field3DeepEqual(ano.Id) {
@@ -277,7 +277,7 @@ func (p *Favorites) Field1DeepEqual(src string) bool {
 }
 func (p *Favorites) Field2DeepEqual(src string) bool {
 
-	if strings.Compare(p.Describe, src) != 0 {
+	if strings.Compare(p.Description, src) != 0 {
 		return false
 	}
 	return true
