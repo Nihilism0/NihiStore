@@ -42,3 +42,13 @@ func _updategoodsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _alipayMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _buygoodsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -7,6 +7,10 @@ user:
 
 goods:
 	make servicename=goods generate
+
+pay:
+	make servicename=pay generate
 all:
 	make user
 	make goods
+	make pay

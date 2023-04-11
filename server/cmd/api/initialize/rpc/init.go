@@ -4,4 +4,5 @@ package rpc
 func Init() {
 	initUser()
 	initGoods()
+	initPay()
 }

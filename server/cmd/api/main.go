@@ -15,6 +15,7 @@ func main() {
 	initialize.InitLogger()
 	r, info := initialize.InitNacos()
 	corsCfg := initialize.InitCors()
+	initialize.InitAliPay()
 	rpc.Init()
 	h := server.New(
 		server.WithALPN(true),

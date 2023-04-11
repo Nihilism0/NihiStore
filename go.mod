@@ -15,6 +15,8 @@ require (
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20230219092456-5e6c84962323
 	github.com/kitex-contrib/registry-nacos v0.1.0
 	github.com/nacos-group/nacos-sdk-go v1.1.4
+	github.com/smartwalle/alipay/v3 v3.2.1
+	github.com/smartwalle/xid v1.0.6
 	github.com/spf13/viper v1.15.0
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1
 	gorm.io/driver/mysql v1.4.7
@@ -59,6 +61,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
+	github.com/smartwalle/ncrypto v1.0.0 // indirect
 	github.com/spf13/afero v1.9.3 // indirect
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect

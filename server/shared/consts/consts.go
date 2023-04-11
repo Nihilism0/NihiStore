@@ -20,6 +20,7 @@ const (
 	ApiConfigPath   = "config.yaml"
 	UserConfigPath  = "config.yaml"
 	GoodsConfigPath = "config.yaml"
+	PayConfigPath   = "config.yaml"
 
 	NacosLogDir   = "tmp/nacos/log"
 	NacosCacheDir = "tmp/nacos/cache"
@@ -28,7 +29,9 @@ const (
 	ApiGroup   = "API_GROUP"
 	UserGroup  = "USER_GROUP"
 	GoodsGroup = "GOODS_GROUP"
-	MySqlDSN   = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+
+	PayGroup = "PAY_GROUP"
+	MySqlDSN = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
 	MaxGoodsAmount = 99
 )
