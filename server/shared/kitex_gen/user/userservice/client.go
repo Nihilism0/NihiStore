@@ -24,6 +24,7 @@ type Client interface {
 	RemoveOutCart(ctx context.Context, req *user.RemoveOutCartRequest, callOptions ...callopt.Option) (r *user.RemoveOutCartResponse, err error)
 	WatchCart(ctx context.Context, req *user.WatchCartRequest, callOptions ...callopt.Option) (r *user.WatchCartResponse, err error)
 	CleanCart(ctx context.Context, req *user.CleanCartRequest, callOptions ...callopt.Option) (r *user.CleanCartResponse, err error)
+	BeSeller(ctx context.Context, req *user.BeSellerRequest, callOptions ...callopt.Option) (r *user.BeSellerResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -118,4 +119,9 @@ func (p *kUserServiceClient) WatchCart(ctx context.Context, req *user.WatchCartR
 func (p *kUserServiceClient) CleanCart(ctx context.Context, req *user.CleanCartRequest, callOptions ...callopt.Option) (r *user.CleanCartResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.CleanCart(ctx, req)
+}
+
+func (p *kUserServiceClient) BeSeller(ctx context.Context, req *user.BeSellerRequest, callOptions ...callopt.Option) (r *user.BeSellerResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.BeSeller(ctx, req)
 }

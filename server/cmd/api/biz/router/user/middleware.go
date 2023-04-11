@@ -95,3 +95,9 @@ func _watchgoodsinfavoritesMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _besellerMw() []app.HandlerFunc {
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
+}

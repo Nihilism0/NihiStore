@@ -16,3 +16,7 @@ func (*MysqlUserGenerator) SelectUserFromUsername(username string) (*model.User,
 func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
 	config.DB.Create(theUser)
 }
+
+func (*MysqlUserGenerator) BeSeller(UserId int64) {
+	config.DB.Model(&model.User{}).Where("id = ?", UserId).Update("is_seller", true)
+}

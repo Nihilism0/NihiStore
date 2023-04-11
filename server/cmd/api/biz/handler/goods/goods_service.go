@@ -31,7 +31,7 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 	ID, _ := c.Get("ID")
 	if auth.(bool) != true {
 		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
-		c.JSON(200, resp)
+		c.JSON(errx.AuthSellerFail, resp)
 		return
 	}
 	resp, err = config.GlobalGoodsClient.CreateGoods(ctx, &kgoods.CreateGoodsRequest{
@@ -64,7 +64,7 @@ func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 	ID, _ := c.Get("ID")
 	if auth.(bool) != true {
 		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
-		c.JSON(200, resp)
+		c.JSON(errx.AuthSellerFail, resp)
 		return
 	}
 	resp, err = config.GlobalGoodsClient.DeleteGoods(ctx, &kgoods.DeleteGoodsRequest{
@@ -120,6 +120,38 @@ func SearchGoods(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp, err = config.GlobalGoodsClient.SearchGoods(ctx, &kgoods.SearchGoodsRequest{Id: req.GoodsId})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(200, resp)
+	return
+}
+
+// UpdateGoods .
+// @router /goods/update [PUT]
+func UpdateGoods(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req hgoods.UpdateGoodsReq
+	resp := new(kgoods.UpdateGoodsResponse)
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	auth, _ := c.Get("IsSeller")
+	ID, _ := c.Get("ID")
+	if auth.(bool) != true {
+		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
+		c.JSON(errx.AuthSellerFail, resp)
+		return
+	}
+	resp, err = config.GlobalGoodsClient.UpdateGoods(ctx, &kgoods.UpdateGoodsRequest{
+		Id:               req.ID,
+		GoodsInformation: pkg.ConvertGoodsInformation(req.GoodsInformation),
+		UserId:           ID.(int64),
+	})
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)

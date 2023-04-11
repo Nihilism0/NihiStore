@@ -60,6 +60,8 @@ struct WatchCartReq{}
 
 struct CleanCartReq{}
 
+struct BeSellerReq{}
+
 service userService {
     common.NilResponse Login(1: LoginReq request) (api.get="/user/login")
     common.NilResponse Register(1: RegisterReq request) (api.post="/user/register")
@@ -74,4 +76,5 @@ service userService {
     common.NilResponse RemoveOutCart(1: RemoveOutCartReq request) (api.delete="/user/cart/removeoutcart")
     common.NilResponse WatchCart(1: WatchCartReq request) (api.get="/user/cart/watchcart")
     common.NilResponse CleanCart(1: CleanCartReq request) (api.delete="/user/cart/cleancart")
+    common.NilResponse BeSeller(1:BeSellerReq request) (api.put="/user/beseller")
 }

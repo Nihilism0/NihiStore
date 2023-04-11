@@ -808,6 +808,468 @@ func (p *DeleteGoodsResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 	return true
 }
 
+type UpdateGoodsRequest struct {
+	Id               int64       `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	GoodsInformation *base.Goods `thrift:"goods_information,2" frugal:"2,default,base.Goods" json:"goods_information"`
+	UserId           int64       `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
+}
+
+func NewUpdateGoodsRequest() *UpdateGoodsRequest {
+	return &UpdateGoodsRequest{}
+}
+
+func (p *UpdateGoodsRequest) InitDefault() {
+	*p = UpdateGoodsRequest{}
+}
+
+func (p *UpdateGoodsRequest) GetId() (v int64) {
+	return p.Id
+}
+
+var UpdateGoodsRequest_GoodsInformation_DEFAULT *base.Goods
+
+func (p *UpdateGoodsRequest) GetGoodsInformation() (v *base.Goods) {
+	if !p.IsSetGoodsInformation() {
+		return UpdateGoodsRequest_GoodsInformation_DEFAULT
+	}
+	return p.GoodsInformation
+}
+
+func (p *UpdateGoodsRequest) GetUserId() (v int64) {
+	return p.UserId
+}
+func (p *UpdateGoodsRequest) SetId(val int64) {
+	p.Id = val
+}
+func (p *UpdateGoodsRequest) SetGoodsInformation(val *base.Goods) {
+	p.GoodsInformation = val
+}
+func (p *UpdateGoodsRequest) SetUserId(val int64) {
+	p.UserId = val
+}
+
+var fieldIDToName_UpdateGoodsRequest = map[int16]string{
+	1: "id",
+	2: "goods_information",
+	3: "userId",
+}
+
+func (p *UpdateGoodsRequest) IsSetGoodsInformation() bool {
+	return p.GoodsInformation != nil
+}
+
+func (p *UpdateGoodsRequest) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateGoodsRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UpdateGoodsRequest) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *UpdateGoodsRequest) ReadField2(iprot thrift.TProtocol) error {
+	p.GoodsInformation = base.NewGoods()
+	if err := p.GoodsInformation.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UpdateGoodsRequest) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = v
+	}
+	return nil
+}
+
+func (p *UpdateGoodsRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UpdateGoodsRequest"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UpdateGoodsRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UpdateGoodsRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("goods_information", thrift.STRUCT, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.GoodsInformation.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *UpdateGoodsRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("userId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *UpdateGoodsRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UpdateGoodsRequest(%+v)", *p)
+}
+
+func (p *UpdateGoodsRequest) DeepEqual(ano *UpdateGoodsRequest) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.GoodsInformation) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.UserId) {
+		return false
+	}
+	return true
+}
+
+func (p *UpdateGoodsRequest) Field1DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *UpdateGoodsRequest) Field2DeepEqual(src *base.Goods) bool {
+
+	if !p.GoodsInformation.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *UpdateGoodsRequest) Field3DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+
+type UpdateGoodsResponse struct {
+	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
+}
+
+func NewUpdateGoodsResponse() *UpdateGoodsResponse {
+	return &UpdateGoodsResponse{}
+}
+
+func (p *UpdateGoodsResponse) InitDefault() {
+	*p = UpdateGoodsResponse{}
+}
+
+var UpdateGoodsResponse_BaseResp_DEFAULT *base.BaseResponse
+
+func (p *UpdateGoodsResponse) GetBaseResp() (v *base.BaseResponse) {
+	if !p.IsSetBaseResp() {
+		return UpdateGoodsResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+func (p *UpdateGoodsResponse) SetBaseResp(val *base.BaseResponse) {
+	p.BaseResp = val
+}
+
+var fieldIDToName_UpdateGoodsResponse = map[int16]string{
+	1: "base_resp",
+}
+
+func (p *UpdateGoodsResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *UpdateGoodsResponse) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_UpdateGoodsResponse[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *UpdateGoodsResponse) ReadField1(iprot thrift.TProtocol) error {
+	p.BaseResp = base.NewBaseResponse()
+	if err := p.BaseResp.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *UpdateGoodsResponse) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UpdateGoodsResponse"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *UpdateGoodsResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *UpdateGoodsResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("UpdateGoodsResponse(%+v)", *p)
+}
+
+func (p *UpdateGoodsResponse) DeepEqual(ano *UpdateGoodsResponse) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	return true
+}
+
+func (p *UpdateGoodsResponse) Field1DeepEqual(src *base.BaseResponse) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
 type SearchGoodsInfoRequest struct {
 	SearchMsg  string `thrift:"searchMsg,1" frugal:"1,default,string" json:"searchMsg"`
 	Page       int64  `thrift:"page,2" frugal:"2,default,i64" json:"page"`
@@ -1754,6 +2216,8 @@ type GoodsService interface {
 
 	DeleteGoods(ctx context.Context, req *DeleteGoodsRequest) (r *DeleteGoodsResponse, err error)
 
+	UpdateGoods(ctx context.Context, req *UpdateGoodsRequest) (r *UpdateGoodsResponse, err error)
+
 	SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoRequest) (r *SearchGoodsInfoResponse, err error)
 
 	SearchGoods(ctx context.Context, req *SearchGoodsRequest) (r *SearchGoodsResponse, err error)
@@ -1803,6 +2267,15 @@ func (p *GoodsServiceClient) DeleteGoods(ctx context.Context, req *DeleteGoodsRe
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *GoodsServiceClient) UpdateGoods(ctx context.Context, req *UpdateGoodsRequest) (r *UpdateGoodsResponse, err error) {
+	var _args GoodsServiceUpdateGoodsArgs
+	_args.Req = req
+	var _result GoodsServiceUpdateGoodsResult
+	if err = p.Client_().Call(ctx, "UpdateGoods", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 func (p *GoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *SearchGoodsInfoRequest) (r *SearchGoodsInfoResponse, err error) {
 	var _args GoodsServiceSearchGoodsInfoArgs
 	_args.Req = req
@@ -1844,6 +2317,7 @@ func NewGoodsServiceProcessor(handler GoodsService) *GoodsServiceProcessor {
 	self := &GoodsServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
 	self.AddToProcessorMap("CreateGoods", &goodsServiceProcessorCreateGoods{handler: handler})
 	self.AddToProcessorMap("DeleteGoods", &goodsServiceProcessorDeleteGoods{handler: handler})
+	self.AddToProcessorMap("UpdateGoods", &goodsServiceProcessorUpdateGoods{handler: handler})
 	self.AddToProcessorMap("SearchGoodsInfo", &goodsServiceProcessorSearchGoodsInfo{handler: handler})
 	self.AddToProcessorMap("SearchGoods", &goodsServiceProcessorSearchGoods{handler: handler})
 	return self
@@ -1945,6 +2419,54 @@ func (p *goodsServiceProcessorDeleteGoods) Process(ctx context.Context, seqId in
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("DeleteGoods", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type goodsServiceProcessorUpdateGoods struct {
+	handler GoodsService
+}
+
+func (p *goodsServiceProcessorUpdateGoods) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := GoodsServiceUpdateGoodsArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("UpdateGoods", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := GoodsServiceUpdateGoodsResult{}
+	var retval *UpdateGoodsResponse
+	if retval, err2 = p.handler.UpdateGoods(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing UpdateGoods: "+err2.Error())
+		oprot.WriteMessageBegin("UpdateGoods", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("UpdateGoods", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -2743,6 +3265,352 @@ func (p *GoodsServiceDeleteGoodsResult) DeepEqual(ano *GoodsServiceDeleteGoodsRe
 }
 
 func (p *GoodsServiceDeleteGoodsResult) Field0DeepEqual(src *DeleteGoodsResponse) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type GoodsServiceUpdateGoodsArgs struct {
+	Req *UpdateGoodsRequest `thrift:"req,1" frugal:"1,default,UpdateGoodsRequest" json:"req"`
+}
+
+func NewGoodsServiceUpdateGoodsArgs() *GoodsServiceUpdateGoodsArgs {
+	return &GoodsServiceUpdateGoodsArgs{}
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) InitDefault() {
+	*p = GoodsServiceUpdateGoodsArgs{}
+}
+
+var GoodsServiceUpdateGoodsArgs_Req_DEFAULT *UpdateGoodsRequest
+
+func (p *GoodsServiceUpdateGoodsArgs) GetReq() (v *UpdateGoodsRequest) {
+	if !p.IsSetReq() {
+		return GoodsServiceUpdateGoodsArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *GoodsServiceUpdateGoodsArgs) SetReq(val *UpdateGoodsRequest) {
+	p.Req = val
+}
+
+var fieldIDToName_GoodsServiceUpdateGoodsArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GoodsServiceUpdateGoodsArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewUpdateGoodsRequest()
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UpdateGoods_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GoodsServiceUpdateGoodsArgs(%+v)", *p)
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) DeepEqual(ano *GoodsServiceUpdateGoodsArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *GoodsServiceUpdateGoodsArgs) Field1DeepEqual(src *UpdateGoodsRequest) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type GoodsServiceUpdateGoodsResult struct {
+	Success *UpdateGoodsResponse `thrift:"success,0,optional" frugal:"0,optional,UpdateGoodsResponse" json:"success,omitempty"`
+}
+
+func NewGoodsServiceUpdateGoodsResult() *GoodsServiceUpdateGoodsResult {
+	return &GoodsServiceUpdateGoodsResult{}
+}
+
+func (p *GoodsServiceUpdateGoodsResult) InitDefault() {
+	*p = GoodsServiceUpdateGoodsResult{}
+}
+
+var GoodsServiceUpdateGoodsResult_Success_DEFAULT *UpdateGoodsResponse
+
+func (p *GoodsServiceUpdateGoodsResult) GetSuccess() (v *UpdateGoodsResponse) {
+	if !p.IsSetSuccess() {
+		return GoodsServiceUpdateGoodsResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *GoodsServiceUpdateGoodsResult) SetSuccess(x interface{}) {
+	p.Success = x.(*UpdateGoodsResponse)
+}
+
+var fieldIDToName_GoodsServiceUpdateGoodsResult = map[int16]string{
+	0: "success",
+}
+
+func (p *GoodsServiceUpdateGoodsResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *GoodsServiceUpdateGoodsResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GoodsServiceUpdateGoodsResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewUpdateGoodsResponse()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *GoodsServiceUpdateGoodsResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("UpdateGoods_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *GoodsServiceUpdateGoodsResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GoodsServiceUpdateGoodsResult(%+v)", *p)
+}
+
+func (p *GoodsServiceUpdateGoodsResult) DeepEqual(ano *GoodsServiceUpdateGoodsResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *GoodsServiceUpdateGoodsResult) Field0DeepEqual(src *UpdateGoodsResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

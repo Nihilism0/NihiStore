@@ -21,6 +21,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	methods := map[string]kitex.MethodInfo{
 		"CreateGoods":     kitex.NewMethodInfo(createGoodsHandler, newGoodsServiceCreateGoodsArgs, newGoodsServiceCreateGoodsResult, false),
 		"DeleteGoods":     kitex.NewMethodInfo(deleteGoodsHandler, newGoodsServiceDeleteGoodsArgs, newGoodsServiceDeleteGoodsResult, false),
+		"UpdateGoods":     kitex.NewMethodInfo(updateGoodsHandler, newGoodsServiceUpdateGoodsArgs, newGoodsServiceUpdateGoodsResult, false),
 		"SearchGoodsInfo": kitex.NewMethodInfo(searchGoodsInfoHandler, newGoodsServiceSearchGoodsInfoArgs, newGoodsServiceSearchGoodsInfoResult, false),
 		"SearchGoods":     kitex.NewMethodInfo(searchGoodsHandler, newGoodsServiceSearchGoodsArgs, newGoodsServiceSearchGoodsResult, false),
 	}
@@ -72,6 +73,24 @@ func newGoodsServiceDeleteGoodsArgs() interface{} {
 
 func newGoodsServiceDeleteGoodsResult() interface{} {
 	return goods.NewGoodsServiceDeleteGoodsResult()
+}
+
+func updateGoodsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*goods.GoodsServiceUpdateGoodsArgs)
+	realResult := result.(*goods.GoodsServiceUpdateGoodsResult)
+	success, err := handler.(goods.GoodsService).UpdateGoods(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newGoodsServiceUpdateGoodsArgs() interface{} {
+	return goods.NewGoodsServiceUpdateGoodsArgs()
+}
+
+func newGoodsServiceUpdateGoodsResult() interface{} {
+	return goods.NewGoodsServiceUpdateGoodsResult()
 }
 
 func searchGoodsInfoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
@@ -135,6 +154,16 @@ func (p *kClient) DeleteGoods(ctx context.Context, req *goods.DeleteGoodsRequest
 	_args.Req = req
 	var _result goods.GoodsServiceDeleteGoodsResult
 	if err = p.c.Call(ctx, "DeleteGoods", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest) (r *goods.UpdateGoodsResponse, err error) {
+	var _args goods.GoodsServiceUpdateGoodsArgs
+	_args.Req = req
+	var _result goods.GoodsServiceUpdateGoodsResult
+	if err = p.c.Call(ctx, "UpdateGoods", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

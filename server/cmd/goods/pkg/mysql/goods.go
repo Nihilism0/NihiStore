@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"NihiStore/server/cmd/goods/config"
+	"NihiStore/server/shared/kitex_gen/base"
 	"NihiStore/server/shared/kitex_gen/goods"
 	"NihiStore/server/shared/model"
 	"fmt"
@@ -37,4 +38,8 @@ func (*MysqlGenerator) SelectGoodsById(Id int64) *model.Goods {
 	var Goods model.Goods
 	config.DB.Where("id = ?", Id).First(&Goods)
 	return &Goods
+}
+
+func (*MysqlGenerator) UpdateGoods(ID int64, Goods *base.Goods) {
+	config.DB.Model(&model.Goods{}).Where("id = ?", ID).Updates(Goods)
 }

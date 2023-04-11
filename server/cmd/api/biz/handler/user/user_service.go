@@ -338,3 +338,27 @@ func CleanCart(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(consts.StatusOK, resp)
 }
+
+// BeSeller .
+// @router /user/beseller [PUT]
+func BeSeller(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req huser.BeSellerReq
+	resp := new(kuser.BeSellerResponse)
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.BeSeller(ctx, &kuser.BeSellerRequest{
+		UserId: ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	c.JSON(consts.StatusOK, resp)
+}

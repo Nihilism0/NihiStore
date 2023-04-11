@@ -37,3 +37,8 @@ func _searchgoodsinfoMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _updategoodsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

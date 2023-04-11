@@ -148,6 +148,15 @@ struct CleanCartResponse {
     1: common.BaseResponse base_resp
 }
 
+//变为商家
+
+struct BeSellerRequest{
+    1: i64 userId
+}
+
+struct BeSellerResponse{
+    1: common.BaseResponse base_resp
+}
 
 
 service UserService {
@@ -164,4 +173,5 @@ service UserService {
     RemoveOutCartResponse RemoveOutCart(1:RemoveOutCartRequest req)
     WatchCartResponse WatchCart(1:WatchCartRequest req)
     CleanCartResponse CleanCart(1:CleanCartRequest req)
+    BeSellerResponse BeSeller(1:BeSellerRequest req)
 }

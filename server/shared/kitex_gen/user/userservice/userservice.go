@@ -32,6 +32,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"RemoveOutCart":         kitex.NewMethodInfo(removeOutCartHandler, newUserServiceRemoveOutCartArgs, newUserServiceRemoveOutCartResult, false),
 		"WatchCart":             kitex.NewMethodInfo(watchCartHandler, newUserServiceWatchCartArgs, newUserServiceWatchCartResult, false),
 		"CleanCart":             kitex.NewMethodInfo(cleanCartHandler, newUserServiceCleanCartArgs, newUserServiceCleanCartResult, false),
+		"BeSeller":              kitex.NewMethodInfo(beSellerHandler, newUserServiceBeSellerArgs, newUserServiceBeSellerResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -281,6 +282,24 @@ func newUserServiceCleanCartResult() interface{} {
 	return user.NewUserServiceCleanCartResult()
 }
 
+func beSellerHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceBeSellerArgs)
+	realResult := result.(*user.UserServiceBeSellerResult)
+	success, err := handler.(user.UserService).BeSeller(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceBeSellerArgs() interface{} {
+	return user.NewUserServiceBeSellerArgs()
+}
+
+func newUserServiceBeSellerResult() interface{} {
+	return user.NewUserServiceBeSellerResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -416,6 +435,16 @@ func (p *kClient) CleanCart(ctx context.Context, req *user.CleanCartRequest) (r 
 	_args.Req = req
 	var _result user.UserServiceCleanCartResult
 	if err = p.c.Call(ctx, "CleanCart", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) BeSeller(ctx context.Context, req *user.BeSellerRequest) (r *user.BeSellerResponse, err error) {
+	var _args user.UserServiceBeSellerArgs
+	_args.Req = req
+	var _result user.UserServiceBeSellerResult
+	if err = p.c.Call(ctx, "BeSeller", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

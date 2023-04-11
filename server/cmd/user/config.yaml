@@ -1,7 +1,7 @@
-host: 'xxx'
+host: '49.234.42.190'
 port: 8848
-namespace: 'xxx'
-user: 'xxx'
-password: 'xxx'
+namespace: '134d3c21-d2d7-47c7-997a-20a94c46ada7'
+user: 'nacos'
+password: 'nacos'
 dataid: 'user_srv'
 group: 'USER_GROUP'

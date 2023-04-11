@@ -23,5 +23,6 @@ func Register(r *server.Hertz) {
 		_goods.DELETE("/delete", append(_deletegoodsMw(), goods.DeleteGoods)...)
 		_goods.GET("/searchgoods", append(_searchgoodsMw(), goods.SearchGoods)...)
 		_goods.GET("/searchgoodsinfo", append(_searchgoodsinfoMw(), goods.SearchGoodsInfo)...)
+		_goods.PUT("/update", append(_updategoodsMw(), goods.UpdateGoods)...)
 	}
 }

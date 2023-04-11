@@ -21,6 +21,17 @@ struct DeleteGoodsResponse{
     1:common.BaseResponse base_resp
 }
 
+//更新商品
+struct UpdateGoodsRequest{
+    1: i64  id,
+    2: goods.Goods goods_information,
+    3: i64 userId
+}
+
+struct UpdateGoodsResponse{
+    1: common.BaseResponse base_resp
+}
+
 //搜索局部信息
 struct SearchGoodsInfoRequest{
         1: string searchMsg
@@ -46,6 +57,7 @@ struct SearchGoodsResponse{
 service GoodsService {
     CreateGoodsResponse CreateGoods(1:CreateGoodsRequest req),
     DeleteGoodsResponse DeleteGoods(1:DeleteGoodsRequest req)
+    UpdateGoodsResponse UpdateGoods(1:UpdateGoodsRequest req)
     SearchGoodsInfoResponse SearchGoodsInfo(1:SearchGoodsInfoRequest req),
     SearchGoodsResponse SearchGoods(1:SearchGoodsRequest req),
 }

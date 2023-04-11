@@ -26,6 +26,7 @@ type MysqlGenerator interface {
 	DeleteGoods(goods *model.Goods)
 	SearchGoodsInfo(req *goods.SearchGoodsInfoRequest) *[]model.Goods
 	SelectGoodsById(Id int64) *model.Goods
+	UpdateGoods(ID int64, Goods *base.Goods)
 }
 
 // CreateGoods implements the GoodsServiceImpl interface.
@@ -70,5 +71,18 @@ func (s *GoodsServiceImpl) SearchGoods(ctx context.Context, req *goods.SearchGoo
 	Goods := s.MysqlGenerator.SelectGoodsById(req.Id)
 	resp.GoodsFI = s.ConvertGenerator.ConvertGoodsFullInfo(Goods)
 	resp.BaseResp = tools.BuildBaseResp(200, "Search full info success")
+	return resp, nil
+}
+
+// UpdateGoods implements the GoodsServiceImpl interface.
+func (s *GoodsServiceImpl) UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest) (resp *goods.UpdateGoodsResponse, err error) {
+	resp = new(goods.UpdateGoodsResponse)
+	Goods := s.MysqlGenerator.SelectGoodsById(req.Id)
+	if Goods.UserId != req.UserId {
+		resp.BaseResp = tools.BuildBaseResp(errx.AuthSellerFail, "Goods is not belong to you")
+		return resp, nil
+	}
+	s.MysqlGenerator.UpdateGoods(req.Id, req.GoodsInformation)
+	resp.BaseResp = tools.BuildBaseResp(200, "Update success")
 	return resp, nil
 }

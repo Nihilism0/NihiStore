@@ -13,6 +13,7 @@ import (
 type Client interface {
 	CreateGoods(ctx context.Context, req *goods.CreateGoodsRequest, callOptions ...callopt.Option) (r *goods.CreateGoodsResponse, err error)
 	DeleteGoods(ctx context.Context, req *goods.DeleteGoodsRequest, callOptions ...callopt.Option) (r *goods.DeleteGoodsResponse, err error)
+	UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest, callOptions ...callopt.Option) (r *goods.UpdateGoodsResponse, err error)
 	SearchGoodsInfo(ctx context.Context, req *goods.SearchGoodsInfoRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsInfoResponse, err error)
 	SearchGoods(ctx context.Context, req *goods.SearchGoodsRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsResponse, err error)
 }
@@ -54,6 +55,11 @@ func (p *kGoodsServiceClient) CreateGoods(ctx context.Context, req *goods.Create
 func (p *kGoodsServiceClient) DeleteGoods(ctx context.Context, req *goods.DeleteGoodsRequest, callOptions ...callopt.Option) (r *goods.DeleteGoodsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.DeleteGoods(ctx, req)
+}
+
+func (p *kGoodsServiceClient) UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest, callOptions ...callopt.Option) (r *goods.UpdateGoodsResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UpdateGoods(ctx, req)
 }
 
 func (p *kGoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *goods.SearchGoodsInfoRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsInfoResponse, err error) {

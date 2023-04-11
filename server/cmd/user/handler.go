@@ -10,6 +10,7 @@ import (
 	"NihiStore/server/shared/tools"
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
+	"net/http"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.
@@ -32,6 +33,7 @@ type ConvertGenerator interface {
 type MysqlUserGenerator interface {
 	SelectUserFromUsername(username string) (*model.User, error)
 	CreateUser(theUser *model.User)
+	BeSeller(UserId int64)
 }
 
 type MysqlFavoGenerator interface {
@@ -259,6 +261,14 @@ func (s *UserServiceImpl) WatchCart(ctx context.Context, req *user.WatchCartRequ
 func (s *UserServiceImpl) CleanCart(ctx context.Context, req *user.CleanCartRequest) (resp *user.CleanCartResponse, err error) {
 	resp = new(user.CleanCartResponse)
 	s.MysqlCartGenerator.RemoveAllCart(req.UserId)
-	resp.BaseResp = tools.BuildBaseResp(200, "Clear success")
+	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Clear success")
+	return resp, nil
+}
+
+// BeSeller implements the UserServiceImpl interface.
+func (s *UserServiceImpl) BeSeller(ctx context.Context, req *user.BeSellerRequest) (resp *user.BeSellerResponse, err error) {
+	resp = new(user.BeSellerResponse)
+	s.MysqlUserGenerator.BeSeller(req.UserId)
+	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Update seller success")
 	return resp, nil
 }
