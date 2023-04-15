@@ -19,6 +19,7 @@ type ServerConfig struct {
 	Host         string       `mapstructure:"host" json:"host"`
 	Port         int          `mapstructure:"port" json:"port"`
 	JWTInfo      JWTConfig    `mapstructure:"jwt" json:"jwt"`
+	MqInfo       MqConfig     `mapstructure:"mq_info" json:"mq_info"`
 	AlipayInfo   AlipayConfig `mapstructure:"alipay" json:"alipay"`
 	UserSrvInfo  RPCSrvConfig `mapstructure:"user_srv" json:"user_srv"`
 	GoodsSrvInfo RPCSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
@@ -35,4 +36,8 @@ type AlipayConfig struct {
 	KServerPort   string `mapstructure:"kServerPort" json:"kServerPort"`
 	KServerDomain string `mapstructure:"kServerDomain" json:"kServerDomain"`
 	EncryptKey    string `mapstructure:"EncryptKey" json:"EncryptKey"`
+}
+
+type MqConfig struct {
+	Address string `mapstructure:"address" json:"address"`
 }

@@ -3,11 +3,11 @@ package main
 import (
 	"NihiStore/server/cmd/pay/config"
 	"NihiStore/server/cmd/pay/initialize"
+	"NihiStore/server/cmd/pay/initialize/mq"
 	"NihiStore/server/cmd/pay/pkg/Parse"
 	"NihiStore/server/shared/consts"
 	pay "NihiStore/server/shared/kitex_gen/pay/payservice"
 	"NihiStore/server/shared/middleware"
-	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -23,6 +23,10 @@ func main() {
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
 	initialize.InitAliPay()
+	err := mq.InitConsumer("Pay", "order", config.GlobalServerConfig.MqInfo.Address)
+	if err != nil {
+		return
+	}
 	// Create new server.
 	srv := pay.NewServer(
 		&PayServiceImpl{
@@ -36,8 +40,7 @@ func main() {
 		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.Name}),
 	)
-	fmt.Println(config.GlobalServerConfig.AlipayInfo.KAppId)
-	err := srv.Run()
+	err = srv.Run()
 	if err != nil {
 		klog.Fatal(err)
 	}

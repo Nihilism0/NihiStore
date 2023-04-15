@@ -6029,7 +6029,8 @@ func (p *CleanCartResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 }
 
 type BeSellerRequest struct {
-	UserId int64 `thrift:"userId,1" frugal:"1,default,i64" json:"userId"`
+	UserId      int64  `thrift:"userId,1" frugal:"1,default,i64" json:"userId"`
+	SellerAliId string `thrift:"sellerAliId,2" frugal:"2,default,string" json:"sellerAliId"`
 }
 
 func NewBeSellerRequest() *BeSellerRequest {
@@ -6043,12 +6044,20 @@ func (p *BeSellerRequest) InitDefault() {
 func (p *BeSellerRequest) GetUserId() (v int64) {
 	return p.UserId
 }
+
+func (p *BeSellerRequest) GetSellerAliId() (v string) {
+	return p.SellerAliId
+}
 func (p *BeSellerRequest) SetUserId(val int64) {
 	p.UserId = val
+}
+func (p *BeSellerRequest) SetSellerAliId(val string) {
+	p.SellerAliId = val
 }
 
 var fieldIDToName_BeSellerRequest = map[int16]string{
 	1: "userId",
+	2: "sellerAliId",
 }
 
 func (p *BeSellerRequest) Read(iprot thrift.TProtocol) (err error) {
@@ -6073,6 +6082,16 @@ func (p *BeSellerRequest) Read(iprot thrift.TProtocol) (err error) {
 		case 1:
 			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else {
@@ -6119,6 +6138,15 @@ func (p *BeSellerRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
+func (p *BeSellerRequest) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.SellerAliId = v
+	}
+	return nil
+}
+
 func (p *BeSellerRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
 	if err = oprot.WriteStructBegin("BeSellerRequest"); err != nil {
@@ -6127,6 +6155,10 @@ func (p *BeSellerRequest) Write(oprot thrift.TProtocol) (err error) {
 	if p != nil {
 		if err = p.writeField1(oprot); err != nil {
 			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
 			goto WriteFieldError
 		}
 
@@ -6165,6 +6197,23 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
+func (p *BeSellerRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("sellerAliId", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.SellerAliId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
 func (p *BeSellerRequest) String() string {
 	if p == nil {
 		return "<nil>"
@@ -6181,12 +6230,22 @@ func (p *BeSellerRequest) DeepEqual(ano *BeSellerRequest) bool {
 	if !p.Field1DeepEqual(ano.UserId) {
 		return false
 	}
+	if !p.Field2DeepEqual(ano.SellerAliId) {
+		return false
+	}
 	return true
 }
 
 func (p *BeSellerRequest) Field1DeepEqual(src int64) bool {
 
 	if p.UserId != src {
+		return false
+	}
+	return true
+}
+func (p *BeSellerRequest) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.SellerAliId, src) != 0 {
 		return false
 	}
 	return true

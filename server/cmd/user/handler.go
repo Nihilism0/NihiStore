@@ -33,7 +33,7 @@ type ConvertGenerator interface {
 type MysqlUserGenerator interface {
 	SelectUserFromUsername(username string) (*model.User, error)
 	CreateUser(theUser *model.User)
-	BeSeller(UserId int64)
+	BeSeller(in *user.BeSellerRequest)
 }
 
 type MysqlFavoGenerator interface {
@@ -268,7 +268,7 @@ func (s *UserServiceImpl) CleanCart(ctx context.Context, req *user.CleanCartRequ
 // BeSeller implements the UserServiceImpl interface.
 func (s *UserServiceImpl) BeSeller(ctx context.Context, req *user.BeSellerRequest) (resp *user.BeSellerResponse, err error) {
 	resp = new(user.BeSellerResponse)
-	s.MysqlUserGenerator.BeSeller(req.UserId)
+	s.MysqlUserGenerator.BeSeller(req)
 	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Update seller success")
 	return resp, nil
 }

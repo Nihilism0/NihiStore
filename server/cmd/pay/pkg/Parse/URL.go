@@ -17,7 +17,7 @@ func (*ParseGenerator) GetTradeNo(userId, GoodsId int64) string {
 	return strconv.FormatInt(userId, 10) + "-" + strconv.FormatInt(GoodsId, 10) + "-" + tradeNo
 }
 
-func (*ParseGenerator) GetUrl(in *pay.BuyGoodsRequest, tradeNo string) *url.URL {
+func (*ParseGenerator) GetUrl(in *pay.BuyGoodsRequest, tradeNo, SellerAliId string) *url.URL {
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = config.GlobalServerConfig.AlipayInfo.KServerDomain + "/alipay/notify"
 	p.ReturnURL = config.GlobalServerConfig.AlipayInfo.KServerDomain + "/alipay/callback"
@@ -25,7 +25,9 @@ func (*ParseGenerator) GetUrl(in *pay.BuyGoodsRequest, tradeNo string) *url.URL 
 	p.OutTradeNo = tradeNo
 	p.TotalAmount = in.TotalAmount
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
-
+	if SellerAliId != "" {
+		p.SellerId = SellerAliId
+	}
 	URL, _ := config.AliClient.TradePagePay(p)
 	return URL
 }

@@ -15,18 +15,20 @@ type PayServiceImpl struct {
 }
 
 type MysqlPayGenerator interface {
+	GetSellerAliId(ID int64) string
 }
 
 type ParseGenerator interface {
 	GetTradeNo(userId, GoodsId int64) string
-	GetUrl(in *pay.BuyGoodsRequest, tradeNo string) *url.URL
+	GetUrl(in *pay.BuyGoodsRequest, tradeNo, SellerAliId string) *url.URL
 }
 
 // BuyGoods implements the PayServiceImpl interface.
 func (s *PayServiceImpl) BuyGoods(ctx context.Context, req *pay.BuyGoodsRequest) (resp *pay.BuyGoodsResponse, err error) {
 	resp = new(pay.BuyGoodsResponse)
 	var tradeNo = s.ParseGenerator.GetTradeNo(req.UserId, req.GoodsId)
-	URL := s.ParseGenerator.GetUrl(req, tradeNo)
+	SellerAliId := s.MysqlPayGenerator.GetSellerAliId(req.UserId)
+	URL := s.ParseGenerator.GetUrl(req, tradeNo, SellerAliId)
 	urlStr := URL.String()
 	resp.URL = urlStr
 	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Get pay URL success")

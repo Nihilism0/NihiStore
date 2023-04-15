@@ -6,7 +6,9 @@ import (
 	hpay "NihiStore/server/cmd/api/biz/model/pay"
 	"NihiStore/server/cmd/api/config"
 	kpay "NihiStore/server/shared/kitex_gen/pay"
+	"NihiStore/server/shared/mq"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/adaptor"
@@ -27,12 +29,12 @@ func BuyGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	//ID, _ := c.Get("ID")
+	ID, _ := c.Get("ID")
 	resp, err = config.GlobalPayClient.BuyGoods(ctx, &kpay.BuyGoodsRequest{
 		Subject:     req.Subject,
 		TotalAmount: req.TotalAmount,
 		GoodsId:     req.GoodsId,
-		UserId:      66,
+		UserId:      ID.(int64),
 	})
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
@@ -62,15 +64,15 @@ func Notify(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	noti, err := config.AliClient.GetTradeNotification(req)
-
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, utils.H{})
 		return
 	}
-	fmt.Println("HEHEHEHE")
-	fmt.Println(noti.OutTradeNo)
-	fmt.Println("HEHEHEHE")
-	fmt.Println(noti.TradeStatus)
-	fmt.Println(noti.SellerId)
+	data, err := json.Marshal(noti)
+	if err != nil {
+		hlog.Error("marshal noti err!")
+		return
+	}
+	mq.Producer("Pay", string(data), config.GlobalServerConfig.MqInfo.Address)
 	c.String(http.StatusOK, "success")
 }

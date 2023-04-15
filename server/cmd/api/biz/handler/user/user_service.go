@@ -352,7 +352,8 @@ func BeSeller(ctx context.Context, c *app.RequestContext) {
 	}
 	ID, _ := c.Get("ID")
 	resp, err = config.GlobalUserClient.BeSeller(ctx, &kuser.BeSellerRequest{
-		UserId: ID.(int64),
+		UserId:      ID.(int64),
+		SellerAliId: req.SellerAliId,
 	})
 	if err != nil {
 		hlog.Error("rpc user service err!", err)

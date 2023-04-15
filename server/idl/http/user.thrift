@@ -60,7 +60,9 @@ struct WatchCartReq{}
 
 struct CleanCartReq{}
 
-struct BeSellerReq{}
+struct BeSellerReq{
+    1: string sellerAliId
+}
 
 service userService {
     common.NilResponse Login(1: LoginReq request) (api.get="/user/login")

@@ -152,6 +152,7 @@ struct CleanCartResponse {
 
 struct BeSellerRequest{
     1: i64 userId
+    2: string sellerAliId
 }
 
 struct BeSellerResponse{

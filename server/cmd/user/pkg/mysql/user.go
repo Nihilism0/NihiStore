@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"NihiStore/server/cmd/user/config"
+	"NihiStore/server/shared/kitex_gen/user"
 	"NihiStore/server/shared/model"
 )
 
@@ -17,6 +18,6 @@ func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
 	config.DB.Create(theUser)
 }
 
-func (*MysqlUserGenerator) BeSeller(UserId int64) {
-	config.DB.Model(&model.User{}).Where("id = ?", UserId).Update("is_seller", true)
+func (*MysqlUserGenerator) BeSellerBeSeller(in *user.BeSellerRequest) {
+	config.DB.Model(&model.User{}).Where("id = ?", in.UserId).Updates(&model.User{IsSeller: true, SellerAliId: in.SellerAliId})
 }

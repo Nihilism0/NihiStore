@@ -4,7 +4,8 @@ import "gorm.io/gorm"
 
 type User struct {
 	gorm.Model
-	Username string `gorm:"type:varchar(40)"`
-	Password string
-	IsSeller bool
+	Username    string `gorm:"type:varchar(40)"`
+	Password    string
+	IsSeller    bool
+	SellerAliId string
 }
