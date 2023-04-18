@@ -1,12 +1,10 @@
 package main
 
 import (
-	"NihiStore/server/cmd/goods/config"
-	"NihiStore/server/cmd/goods/initialize"
-	"NihiStore/server/cmd/goods/pkg/convert"
-	"NihiStore/server/cmd/goods/pkg/mysql"
+	"NihiStore/server/cmd/oss/config"
+	"NihiStore/server/cmd/oss/initialize"
 	"NihiStore/server/shared/consts"
-	goods "NihiStore/server/shared/kitex_gen/goods/goodsservice"
+	oss "NihiStore/server/shared/kitex_gen/oss/ossservice"
 	"NihiStore/server/shared/middleware"
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -24,6 +22,10 @@ func main() {
 	IP, Port := initialize.InitFlag()
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
+	err := initialize.InitMinio()
+	if err != nil {
+		klog.Fatal(err)
+	}
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
@@ -31,10 +33,8 @@ func main() {
 	)
 	defer p.Shutdown(context.Background())
 	// Create new server.
-	srv := goods.NewServer(&GoodsServiceImpl{
-		ConvertGenerator: &convert.ConvertGenerator{},
-		MysqlGenerator:   &mysql.MysqlGenerator{},
-	},
+	srv := oss.NewServer(
+		&OSSServiceImpl{},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),
 		server.WithRegistryInfo(info),
@@ -43,8 +43,7 @@ func main() {
 		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.Name}),
 	)
-
-	err := srv.Run()
+	err = srv.Run()
 	if err != nil {
 		klog.Fatal(err)
 	}

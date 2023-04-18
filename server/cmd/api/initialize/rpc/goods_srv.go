@@ -13,6 +13,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
+	"gorm.io/plugin/opentelemetry/provider"
 )
 
 func initGoods() {
@@ -43,6 +44,13 @@ func initGoods() {
 	if err != nil {
 		klog.Fatalf("new consul client failed: %s", err.Error())
 	}
+	// init OpenTelemetry
+	provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(config.GlobalServerConfig.GoodsSrvInfo.Name),
+		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
+	)
+
 	// create a new client
 	c, err := goodsservice.NewClient(
 		config.GlobalServerConfig.GoodsSrvInfo.Name,

@@ -11,6 +11,7 @@ import (
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
+	"strconv"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.
@@ -34,6 +35,7 @@ type MysqlUserGenerator interface {
 	SelectUserFromUsername(username string) (*model.User, error)
 	CreateUser(theUser *model.User)
 	BeSeller(in *user.BeSellerRequest)
+	GetSellerByGoods(goodsId int64) int64
 }
 
 type MysqlFavoGenerator interface {
@@ -270,5 +272,15 @@ func (s *UserServiceImpl) BeSeller(ctx context.Context, req *user.BeSellerReques
 	resp = new(user.BeSellerResponse)
 	s.MysqlUserGenerator.BeSeller(req)
 	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Update seller success")
+	return resp, nil
+}
+
+// GetSellerByGoods implements the UserServiceImpl interface.
+func (s *UserServiceImpl) GetSellerByGoods(ctx context.Context, req *user.GetSellerByGoodsRequest) (resp *user.GetSellerByGoodsResponse, err error) {
+	resp = new(user.GetSellerByGoodsResponse)
+	num, _ := strconv.ParseInt(req.GoodsId, 10, 64)
+	resp.SellerId = strconv.FormatInt(s.MysqlUserGenerator.GetSellerByGoods(num), 10)
+	resp.BaseResp.StatusCode = http.StatusOK
+	resp.BaseResp.StatusMsg = "Find seller by goodsId success"
 	return resp, nil
 }

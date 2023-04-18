@@ -4,8 +4,9 @@ type Shoplist struct {
 }
 
 type Order struct {
+	GoodsId     string
 	OutTradeNo  string
-	BuyerId     int64
+	BuyerId     string
 	BuyerAliId  string
 	SellerId    int64
 	SellerAliId string

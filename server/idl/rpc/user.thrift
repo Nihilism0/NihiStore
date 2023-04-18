@@ -159,6 +159,14 @@ struct BeSellerResponse{
     1: common.BaseResponse base_resp
 }
 
+struct GetSellerByGoodsRequest{
+    1: string goodsId
+}
+
+struct GetSellerByGoodsResponse{
+    1: common.BaseResponse base_resp
+    2: string SellerId
+}
 
 service UserService {
     LoginResponse Login(1:LoginRequest req)
@@ -175,4 +183,5 @@ service UserService {
     WatchCartResponse WatchCart(1:WatchCartRequest req)
     CleanCartResponse CleanCart(1:CleanCartRequest req)
     BeSellerResponse BeSeller(1:BeSellerRequest req)
+    GetSellerByGoodsResponse GetSellerByGoods(1:GetSellerByGoodsRequest req)
 }

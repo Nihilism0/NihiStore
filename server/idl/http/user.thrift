@@ -64,6 +64,9 @@ struct BeSellerReq{
     1: string sellerAliId
 }
 
+struct GetSellerByGoodsReq{
+    1: string goodsId
+}
 service userService {
     common.NilResponse Login(1: LoginReq request) (api.get="/user/login")
     common.NilResponse Register(1: RegisterReq request) (api.post="/user/register")
@@ -79,4 +82,5 @@ service userService {
     common.NilResponse WatchCart(1: WatchCartReq request) (api.get="/user/cart/watchcart")
     common.NilResponse CleanCart(1: CleanCartReq request) (api.delete="/user/cart/cleancart")
     common.NilResponse BeSeller(1:BeSellerReq request) (api.put="/user/beseller")
+    common.NilResponse GetSellerByGoods(1:GetSellerByGoodsReq request) (api.get="/user/getsellerbygoods")
 }

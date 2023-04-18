@@ -18,6 +18,12 @@ func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
 	config.DB.Create(theUser)
 }
 
-func (*MysqlUserGenerator) BeSellerBeSeller(in *user.BeSellerRequest) {
+func (*MysqlUserGenerator) BeSeller(in *user.BeSellerRequest) {
 	config.DB.Model(&model.User{}).Where("id = ?", in.UserId).Updates(&model.User{IsSeller: true, SellerAliId: in.SellerAliId})
+}
+
+func (*MysqlUserGenerator) GetSellerByGoods(goodsId int64) int64 {
+	var goods model.Goods
+	config.DB.Where("id = ?", goodsId).First(&goods)
+	return goods.UserId
 }

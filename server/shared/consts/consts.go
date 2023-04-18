@@ -21,6 +21,7 @@ const (
 	UserConfigPath  = "config.yaml"
 	GoodsConfigPath = "config.yaml"
 	PayConfigPath   = "config.yaml"
+	OSSConfigPath   = "config.yaml"
 
 	NacosLogDir   = "tmp/nacos/log"
 	NacosCacheDir = "tmp/nacos/cache"
@@ -29,9 +30,11 @@ const (
 	ApiGroup   = "API_GROUP"
 	UserGroup  = "USER_GROUP"
 	GoodsGroup = "GOODS_GROUP"
+	PayGroup   = "PAY_GROUP"
+	OSSGroup   = "OSS_GROUP"
 
-	PayGroup = "PAY_GROUP"
-	MySqlDSN = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
+	OSSSnowflakeNode = 1
+	MySqlDSN         = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
 
 	MaxGoodsAmount = 99
 )

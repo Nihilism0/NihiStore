@@ -6,7 +6,9 @@ import (
 	hpay "NihiStore/server/cmd/api/biz/model/pay"
 	"NihiStore/server/cmd/api/config"
 	kpay "NihiStore/server/shared/kitex_gen/pay"
+	"NihiStore/server/shared/model"
 	"NihiStore/server/shared/mq"
+	"NihiStore/server/shared/tools"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -68,7 +70,20 @@ func Notify(ctx context.Context, c *app.RequestContext) {
 		c.JSON(http.StatusInternalServerError, utils.H{})
 		return
 	}
-	data, err := json.Marshal(noti)
+	buyerId, goodsId := tools.ParseOutTradeNo(noti.OutTradeNo)
+	data, err := json.Marshal(&model.Order{
+		GoodsId:     goodsId,
+		OutTradeNo:  noti.OutTradeNo,
+		BuyerId:     buyerId,
+		BuyerAliId:  noti.BuyerId,
+		SellerId:    0,
+		SellerAliId: noti.SellerId,
+		TradeNo:     noti.TradeNo,
+		TradeStatus: string(noti.TradeStatus),
+		Subject:     noti.Subject,
+		GmtCreate:   noti.GmtCreate,
+		GmtPayment:  noti.GmtPayment,
+	})
 	if err != nil {
 		hlog.Error("marshal noti err!")
 		return

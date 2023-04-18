@@ -10,7 +10,12 @@ goods:
 
 pay:
 	make servicename=pay generate
+
+oss:
+	make servicename=oss generate
+
 all:
 	make user
 	make goods
 	make pay
+	make oss

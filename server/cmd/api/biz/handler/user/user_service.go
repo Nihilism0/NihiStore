@@ -363,3 +363,26 @@ func BeSeller(ctx context.Context, c *app.RequestContext) {
 
 	c.JSON(consts.StatusOK, resp)
 }
+
+// GetSellerByGoods .
+// @router /user/getsellerbygoods [GET]
+func GetSellerByGoods(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req huser.GetSellerByGoodsReq
+	resp := new(kuser.GetSellerByGoodsResponse)
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	resp, err = config.GlobalUserClient.GetSellerByGoods(ctx, &kuser.GetSellerByGoodsRequest{
+		req.GoodsId,
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+
+	c.JSON(consts.StatusOK, resp)
+}

@@ -7,7 +7,7 @@ import (
 
 var (
 	DB                 *gorm.DB
-	MinioClient        *minio.Client
 	GlobalServerConfig ServerConfig
 	GlobalNacosConfig  NacosConfig
+	MinioClient        *minio.Client
 )

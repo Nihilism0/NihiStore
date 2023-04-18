@@ -101,3 +101,8 @@ func _besellerMw() []app.HandlerFunc {
 		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
 	}
 }
+
+func _getsellerbygoodsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -33,6 +33,7 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"WatchCart":             kitex.NewMethodInfo(watchCartHandler, newUserServiceWatchCartArgs, newUserServiceWatchCartResult, false),
 		"CleanCart":             kitex.NewMethodInfo(cleanCartHandler, newUserServiceCleanCartArgs, newUserServiceCleanCartResult, false),
 		"BeSeller":              kitex.NewMethodInfo(beSellerHandler, newUserServiceBeSellerArgs, newUserServiceBeSellerResult, false),
+		"GetSellerByGoods":      kitex.NewMethodInfo(getSellerByGoodsHandler, newUserServiceGetSellerByGoodsArgs, newUserServiceGetSellerByGoodsResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -300,6 +301,24 @@ func newUserServiceBeSellerResult() interface{} {
 	return user.NewUserServiceBeSellerResult()
 }
 
+func getSellerByGoodsHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetSellerByGoodsArgs)
+	realResult := result.(*user.UserServiceGetSellerByGoodsResult)
+	success, err := handler.(user.UserService).GetSellerByGoods(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetSellerByGoodsArgs() interface{} {
+	return user.NewUserServiceGetSellerByGoodsArgs()
+}
+
+func newUserServiceGetSellerByGoodsResult() interface{} {
+	return user.NewUserServiceGetSellerByGoodsResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -445,6 +464,16 @@ func (p *kClient) BeSeller(ctx context.Context, req *user.BeSellerRequest) (r *u
 	_args.Req = req
 	var _result user.UserServiceBeSellerResult
 	if err = p.c.Call(ctx, "BeSeller", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetSellerByGoods(ctx context.Context, req *user.GetSellerByGoodsRequest) (r *user.GetSellerByGoodsResponse, err error) {
+	var _args user.UserServiceGetSellerByGoodsArgs
+	_args.Req = req
+	var _result user.UserServiceGetSellerByGoodsResult
+	if err = p.c.Call(ctx, "GetSellerByGoods", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

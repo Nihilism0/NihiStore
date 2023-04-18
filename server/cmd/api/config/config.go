@@ -20,10 +20,15 @@ type ServerConfig struct {
 	Port         int          `mapstructure:"port" json:"port"`
 	JWTInfo      JWTConfig    `mapstructure:"jwt" json:"jwt"`
 	MqInfo       MqConfig     `mapstructure:"mq_info" json:"mq_info"`
+	OtelInfo     OtelConfig   `mapstructure:"otel" json:"otel"`
 	AlipayInfo   AlipayConfig `mapstructure:"alipay" json:"alipay"`
 	UserSrvInfo  RPCSrvConfig `mapstructure:"user_srv" json:"user_srv"`
 	GoodsSrvInfo RPCSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 	PaySrvInfo   RPCSrvConfig `mapstructure:"pay_srv" json:"pay_srv"`
+}
+
+type OtelConfig struct {
+	EndPoint string `mapstructure:"endpoint" json:"endpoint"`
 }
 
 type RPCSrvConfig struct {
