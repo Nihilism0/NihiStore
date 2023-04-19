@@ -26,6 +26,8 @@ type Client interface {
 	CleanCart(ctx context.Context, req *user.CleanCartRequest, callOptions ...callopt.Option) (r *user.CleanCartResponse, err error)
 	BeSeller(ctx context.Context, req *user.BeSellerRequest, callOptions ...callopt.Option) (r *user.BeSellerResponse, err error)
 	GetSellerByGoods(ctx context.Context, req *user.GetSellerByGoodsRequest, callOptions ...callopt.Option) (r *user.GetSellerByGoodsResponse, err error)
+	UploadHead(ctx context.Context, req *user.UploadHeadRequest, callOptions ...callopt.Option) (r *user.UploadHeadResponse, err error)
+	GetHead(ctx context.Context, req *user.GetHeadRequest, callOptions ...callopt.Option) (r *user.GetHeadRespnse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -130,4 +132,14 @@ func (p *kUserServiceClient) BeSeller(ctx context.Context, req *user.BeSellerReq
 func (p *kUserServiceClient) GetSellerByGoods(ctx context.Context, req *user.GetSellerByGoodsRequest, callOptions ...callopt.Option) (r *user.GetSellerByGoodsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.GetSellerByGoods(ctx, req)
+}
+
+func (p *kUserServiceClient) UploadHead(ctx context.Context, req *user.UploadHeadRequest, callOptions ...callopt.Option) (r *user.UploadHeadResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UploadHead(ctx, req)
+}
+
+func (p *kUserServiceClient) GetHead(ctx context.Context, req *user.GetHeadRequest, callOptions ...callopt.Option) (r *user.GetHeadRespnse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetHead(ctx, req)
 }

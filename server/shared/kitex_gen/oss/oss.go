@@ -10,39 +10,48 @@ import (
 	"strings"
 )
 
-type CreateOSSRequest struct {
+type CreateGoodsOSSRequest struct {
 	Path       string `thrift:"path,1" frugal:"1,default,string" json:"path"`
 	TimeoutSec int32  `thrift:"timeout_sec,2" frugal:"2,default,i32" json:"timeout_sec"`
+	GoodsId    int64  `thrift:"goodsId,3" frugal:"3,default,i64" json:"goodsId"`
 }
 
-func NewCreateOSSRequest() *CreateOSSRequest {
-	return &CreateOSSRequest{}
+func NewCreateGoodsOSSRequest() *CreateGoodsOSSRequest {
+	return &CreateGoodsOSSRequest{}
 }
 
-func (p *CreateOSSRequest) InitDefault() {
-	*p = CreateOSSRequest{}
+func (p *CreateGoodsOSSRequest) InitDefault() {
+	*p = CreateGoodsOSSRequest{}
 }
 
-func (p *CreateOSSRequest) GetPath() (v string) {
+func (p *CreateGoodsOSSRequest) GetPath() (v string) {
 	return p.Path
 }
 
-func (p *CreateOSSRequest) GetTimeoutSec() (v int32) {
+func (p *CreateGoodsOSSRequest) GetTimeoutSec() (v int32) {
 	return p.TimeoutSec
 }
-func (p *CreateOSSRequest) SetPath(val string) {
+
+func (p *CreateGoodsOSSRequest) GetGoodsId() (v int64) {
+	return p.GoodsId
+}
+func (p *CreateGoodsOSSRequest) SetPath(val string) {
 	p.Path = val
 }
-func (p *CreateOSSRequest) SetTimeoutSec(val int32) {
+func (p *CreateGoodsOSSRequest) SetTimeoutSec(val int32) {
 	p.TimeoutSec = val
 }
-
-var fieldIDToName_CreateOSSRequest = map[int16]string{
-	1: "path",
-	2: "timeout_sec",
+func (p *CreateGoodsOSSRequest) SetGoodsId(val int64) {
+	p.GoodsId = val
 }
 
-func (p *CreateOSSRequest) Read(iprot thrift.TProtocol) (err error) {
+var fieldIDToName_CreateGoodsOSSRequest = map[int16]string{
+	1: "path",
+	2: "timeout_sec",
+	3: "goodsId",
+}
+
+func (p *CreateGoodsOSSRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -81,6 +90,16 @@ func (p *CreateOSSRequest) Read(iprot thrift.TProtocol) (err error) {
 					goto SkipFieldError
 				}
 			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -101,7 +120,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateOSSRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateGoodsOSSRequest[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -111,7 +130,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CreateOSSRequest) ReadField1(iprot thrift.TProtocol) error {
+func (p *CreateGoodsOSSRequest) ReadField1(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -120,7 +139,7 @@ func (p *CreateOSSRequest) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateOSSRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *CreateGoodsOSSRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
@@ -129,9 +148,18 @@ func (p *CreateOSSRequest) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateOSSRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSRequest) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.GoodsId = v
+	}
+	return nil
+}
+
+func (p *CreateGoodsOSSRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOSSRequest"); err != nil {
+	if err = oprot.WriteStructBegin("CreateGoodsOSSRequest"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -141,6 +169,10 @@ func (p *CreateOSSRequest) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 
@@ -162,7 +194,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CreateOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("path", thrift.STRING, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -179,7 +211,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *CreateOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("timeout_sec", thrift.I32, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -196,14 +228,31 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *CreateOSSRequest) String() string {
+func (p *CreateGoodsOSSRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("goodsId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.GoodsId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *CreateGoodsOSSRequest) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CreateOSSRequest(%+v)", *p)
+	return fmt.Sprintf("CreateGoodsOSSRequest(%+v)", *p)
 }
 
-func (p *CreateOSSRequest) DeepEqual(ano *CreateOSSRequest) bool {
+func (p *CreateGoodsOSSRequest) DeepEqual(ano *CreateGoodsOSSRequest) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -215,75 +264,85 @@ func (p *CreateOSSRequest) DeepEqual(ano *CreateOSSRequest) bool {
 	if !p.Field2DeepEqual(ano.TimeoutSec) {
 		return false
 	}
+	if !p.Field3DeepEqual(ano.GoodsId) {
+		return false
+	}
 	return true
 }
 
-func (p *CreateOSSRequest) Field1DeepEqual(src string) bool {
+func (p *CreateGoodsOSSRequest) Field1DeepEqual(src string) bool {
 
 	if strings.Compare(p.Path, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *CreateOSSRequest) Field2DeepEqual(src int32) bool {
+func (p *CreateGoodsOSSRequest) Field2DeepEqual(src int32) bool {
 
 	if p.TimeoutSec != src {
 		return false
 	}
 	return true
 }
+func (p *CreateGoodsOSSRequest) Field3DeepEqual(src int64) bool {
 
-type CreateOSSResponse struct {
+	if p.GoodsId != src {
+		return false
+	}
+	return true
+}
+
+type CreateGoodsOSSResponse struct {
 	BaseResp  *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
 	UploadUrl string             `thrift:"uploadUrl,2" frugal:"2,default,string" json:"uploadUrl"`
-	Id        string             `thrift:"id,3" frugal:"3,default,string" json:"id"`
+	Id        int64              `thrift:"id,3" frugal:"3,default,i64" json:"id"`
 }
 
-func NewCreateOSSResponse() *CreateOSSResponse {
-	return &CreateOSSResponse{}
+func NewCreateGoodsOSSResponse() *CreateGoodsOSSResponse {
+	return &CreateGoodsOSSResponse{}
 }
 
-func (p *CreateOSSResponse) InitDefault() {
-	*p = CreateOSSResponse{}
+func (p *CreateGoodsOSSResponse) InitDefault() {
+	*p = CreateGoodsOSSResponse{}
 }
 
-var CreateOSSResponse_BaseResp_DEFAULT *base.BaseResponse
+var CreateGoodsOSSResponse_BaseResp_DEFAULT *base.BaseResponse
 
-func (p *CreateOSSResponse) GetBaseResp() (v *base.BaseResponse) {
+func (p *CreateGoodsOSSResponse) GetBaseResp() (v *base.BaseResponse) {
 	if !p.IsSetBaseResp() {
-		return CreateOSSResponse_BaseResp_DEFAULT
+		return CreateGoodsOSSResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
 }
 
-func (p *CreateOSSResponse) GetUploadUrl() (v string) {
+func (p *CreateGoodsOSSResponse) GetUploadUrl() (v string) {
 	return p.UploadUrl
 }
 
-func (p *CreateOSSResponse) GetId() (v string) {
+func (p *CreateGoodsOSSResponse) GetId() (v int64) {
 	return p.Id
 }
-func (p *CreateOSSResponse) SetBaseResp(val *base.BaseResponse) {
+func (p *CreateGoodsOSSResponse) SetBaseResp(val *base.BaseResponse) {
 	p.BaseResp = val
 }
-func (p *CreateOSSResponse) SetUploadUrl(val string) {
+func (p *CreateGoodsOSSResponse) SetUploadUrl(val string) {
 	p.UploadUrl = val
 }
-func (p *CreateOSSResponse) SetId(val string) {
+func (p *CreateGoodsOSSResponse) SetId(val int64) {
 	p.Id = val
 }
 
-var fieldIDToName_CreateOSSResponse = map[int16]string{
+var fieldIDToName_CreateGoodsOSSResponse = map[int16]string{
 	1: "base_resp",
 	2: "uploadUrl",
 	3: "id",
 }
 
-func (p *CreateOSSResponse) IsSetBaseResp() bool {
+func (p *CreateGoodsOSSResponse) IsSetBaseResp() bool {
 	return p.BaseResp != nil
 }
 
-func (p *CreateOSSResponse) Read(iprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -323,7 +382,7 @@ func (p *CreateOSSResponse) Read(iprot thrift.TProtocol) (err error) {
 				}
 			}
 		case 3:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField3(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -352,7 +411,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateOSSResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateGoodsOSSResponse[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -362,7 +421,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *CreateOSSResponse) ReadField1(iprot thrift.TProtocol) error {
+func (p *CreateGoodsOSSResponse) ReadField1(iprot thrift.TProtocol) error {
 	p.BaseResp = base.NewBaseResponse()
 	if err := p.BaseResp.Read(iprot); err != nil {
 		return err
@@ -370,7 +429,7 @@ func (p *CreateOSSResponse) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateOSSResponse) ReadField2(iprot thrift.TProtocol) error {
+func (p *CreateGoodsOSSResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -379,8 +438,8 @@ func (p *CreateOSSResponse) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateOSSResponse) ReadField3(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+func (p *CreateGoodsOSSResponse) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
 		p.Id = v
@@ -388,9 +447,9 @@ func (p *CreateOSSResponse) ReadField3(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *CreateOSSResponse) Write(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOSSResponse"); err != nil {
+	if err = oprot.WriteStructBegin("CreateGoodsOSSResponse"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -425,7 +484,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *CreateOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -442,7 +501,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *CreateOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *CreateGoodsOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("uploadUrl", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -459,11 +518,11 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *CreateOSSResponse) writeField3(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("id", thrift.STRING, 3); err != nil {
+func (p *CreateGoodsOSSResponse) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 3); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Id); err != nil {
+	if err := oprot.WriteI64(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -476,14 +535,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
-func (p *CreateOSSResponse) String() string {
+func (p *CreateGoodsOSSResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("CreateOSSResponse(%+v)", *p)
+	return fmt.Sprintf("CreateGoodsOSSResponse(%+v)", *p)
 }
 
-func (p *CreateOSSResponse) DeepEqual(ano *CreateOSSResponse) bool {
+func (p *CreateGoodsOSSResponse) DeepEqual(ano *CreateGoodsOSSResponse) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -501,61 +560,61 @@ func (p *CreateOSSResponse) DeepEqual(ano *CreateOSSResponse) bool {
 	return true
 }
 
-func (p *CreateOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
+func (p *CreateGoodsOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
 		return false
 	}
 	return true
 }
-func (p *CreateOSSResponse) Field2DeepEqual(src string) bool {
+func (p *CreateGoodsOSSResponse) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.UploadUrl, src) != 0 {
 		return false
 	}
 	return true
 }
-func (p *CreateOSSResponse) Field3DeepEqual(src string) bool {
+func (p *CreateGoodsOSSResponse) Field3DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Id, src) != 0 {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
 
-type GetOSSRequest struct {
-	Path       string `thrift:"path,1" frugal:"1,default,string" json:"path"`
-	TimeoutSec int32  `thrift:"timeout_sec,2" frugal:"2,default,i32" json:"timeout_sec"`
+type GetGoodsOSSRequest struct {
+	Id         int64 `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	TimeoutSec int32 `thrift:"timeout_sec,2" frugal:"2,default,i32" json:"timeout_sec"`
 }
 
-func NewGetOSSRequest() *GetOSSRequest {
-	return &GetOSSRequest{}
+func NewGetGoodsOSSRequest() *GetGoodsOSSRequest {
+	return &GetGoodsOSSRequest{}
 }
 
-func (p *GetOSSRequest) InitDefault() {
-	*p = GetOSSRequest{}
+func (p *GetGoodsOSSRequest) InitDefault() {
+	*p = GetGoodsOSSRequest{}
 }
 
-func (p *GetOSSRequest) GetPath() (v string) {
-	return p.Path
+func (p *GetGoodsOSSRequest) GetId() (v int64) {
+	return p.Id
 }
 
-func (p *GetOSSRequest) GetTimeoutSec() (v int32) {
+func (p *GetGoodsOSSRequest) GetTimeoutSec() (v int32) {
 	return p.TimeoutSec
 }
-func (p *GetOSSRequest) SetPath(val string) {
-	p.Path = val
+func (p *GetGoodsOSSRequest) SetId(val int64) {
+	p.Id = val
 }
-func (p *GetOSSRequest) SetTimeoutSec(val int32) {
+func (p *GetGoodsOSSRequest) SetTimeoutSec(val int32) {
 	p.TimeoutSec = val
 }
 
-var fieldIDToName_GetOSSRequest = map[int16]string{
-	1: "path",
+var fieldIDToName_GetGoodsOSSRequest = map[int16]string{
+	1: "id",
 	2: "timeout_sec",
 }
 
-func (p *GetOSSRequest) Read(iprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSRequest) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -575,7 +634,7 @@ func (p *GetOSSRequest) Read(iprot thrift.TProtocol) (err error) {
 
 		switch fieldId {
 		case 1:
-			if fieldTypeId == thrift.STRING {
+			if fieldTypeId == thrift.I64 {
 				if err = p.ReadField1(iprot); err != nil {
 					goto ReadFieldError
 				}
@@ -614,7 +673,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetOSSRequest[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetGoodsOSSRequest[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -624,16 +683,16 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GetOSSRequest) ReadField1(iprot thrift.TProtocol) error {
-	if v, err := iprot.ReadString(); err != nil {
+func (p *GetGoodsOSSRequest) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
 		return err
 	} else {
-		p.Path = v
+		p.Id = v
 	}
 	return nil
 }
 
-func (p *GetOSSRequest) ReadField2(iprot thrift.TProtocol) error {
+func (p *GetGoodsOSSRequest) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadI32(); err != nil {
 		return err
 	} else {
@@ -642,9 +701,9 @@ func (p *GetOSSRequest) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetOSSRequest) Write(oprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSRequest) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetOSSRequest"); err != nil {
+	if err = oprot.WriteStructBegin("GetGoodsOSSRequest"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -675,11 +734,11 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GetOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
-	if err = oprot.WriteFieldBegin("path", thrift.STRING, 1); err != nil {
+func (p *GetGoodsOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
 		goto WriteFieldBeginError
 	}
-	if err := oprot.WriteString(p.Path); err != nil {
+	if err := oprot.WriteI64(p.Id); err != nil {
 		return err
 	}
 	if err = oprot.WriteFieldEnd(); err != nil {
@@ -692,7 +751,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GetOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("timeout_sec", thrift.I32, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -709,20 +768,20 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *GetOSSRequest) String() string {
+func (p *GetGoodsOSSRequest) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetOSSRequest(%+v)", *p)
+	return fmt.Sprintf("GetGoodsOSSRequest(%+v)", *p)
 }
 
-func (p *GetOSSRequest) DeepEqual(ano *GetOSSRequest) bool {
+func (p *GetGoodsOSSRequest) DeepEqual(ano *GetGoodsOSSRequest) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
 		return false
 	}
-	if !p.Field1DeepEqual(ano.Path) {
+	if !p.Field1DeepEqual(ano.Id) {
 		return false
 	}
 	if !p.Field2DeepEqual(ano.TimeoutSec) {
@@ -731,14 +790,14 @@ func (p *GetOSSRequest) DeepEqual(ano *GetOSSRequest) bool {
 	return true
 }
 
-func (p *GetOSSRequest) Field1DeepEqual(src string) bool {
+func (p *GetGoodsOSSRequest) Field1DeepEqual(src int64) bool {
 
-	if strings.Compare(p.Path, src) != 0 {
+	if p.Id != src {
 		return false
 	}
 	return true
 }
-func (p *GetOSSRequest) Field2DeepEqual(src int32) bool {
+func (p *GetGoodsOSSRequest) Field2DeepEqual(src int32) bool {
 
 	if p.TimeoutSec != src {
 		return false
@@ -746,48 +805,48 @@ func (p *GetOSSRequest) Field2DeepEqual(src int32) bool {
 	return true
 }
 
-type GetOSSResponse struct {
+type GetGoodsOSSResponse struct {
 	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
 	Url      string             `thrift:"url,2" frugal:"2,default,string" json:"url"`
 }
 
-func NewGetOSSResponse() *GetOSSResponse {
-	return &GetOSSResponse{}
+func NewGetGoodsOSSResponse() *GetGoodsOSSResponse {
+	return &GetGoodsOSSResponse{}
 }
 
-func (p *GetOSSResponse) InitDefault() {
-	*p = GetOSSResponse{}
+func (p *GetGoodsOSSResponse) InitDefault() {
+	*p = GetGoodsOSSResponse{}
 }
 
-var GetOSSResponse_BaseResp_DEFAULT *base.BaseResponse
+var GetGoodsOSSResponse_BaseResp_DEFAULT *base.BaseResponse
 
-func (p *GetOSSResponse) GetBaseResp() (v *base.BaseResponse) {
+func (p *GetGoodsOSSResponse) GetBaseResp() (v *base.BaseResponse) {
 	if !p.IsSetBaseResp() {
-		return GetOSSResponse_BaseResp_DEFAULT
+		return GetGoodsOSSResponse_BaseResp_DEFAULT
 	}
 	return p.BaseResp
 }
 
-func (p *GetOSSResponse) GetUrl() (v string) {
+func (p *GetGoodsOSSResponse) GetUrl() (v string) {
 	return p.Url
 }
-func (p *GetOSSResponse) SetBaseResp(val *base.BaseResponse) {
+func (p *GetGoodsOSSResponse) SetBaseResp(val *base.BaseResponse) {
 	p.BaseResp = val
 }
-func (p *GetOSSResponse) SetUrl(val string) {
+func (p *GetGoodsOSSResponse) SetUrl(val string) {
 	p.Url = val
 }
 
-var fieldIDToName_GetOSSResponse = map[int16]string{
+var fieldIDToName_GetGoodsOSSResponse = map[int16]string{
 	1: "base_resp",
 	2: "url",
 }
 
-func (p *GetOSSResponse) IsSetBaseResp() bool {
+func (p *GetGoodsOSSResponse) IsSetBaseResp() bool {
 	return p.BaseResp != nil
 }
 
-func (p *GetOSSResponse) Read(iprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSResponse) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -846,7 +905,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetOSSResponse[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetGoodsOSSResponse[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -856,7 +915,7 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *GetOSSResponse) ReadField1(iprot thrift.TProtocol) error {
+func (p *GetGoodsOSSResponse) ReadField1(iprot thrift.TProtocol) error {
 	p.BaseResp = base.NewBaseResponse()
 	if err := p.BaseResp.Read(iprot); err != nil {
 		return err
@@ -864,7 +923,7 @@ func (p *GetOSSResponse) ReadField1(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetOSSResponse) ReadField2(iprot thrift.TProtocol) error {
+func (p *GetGoodsOSSResponse) ReadField2(iprot thrift.TProtocol) error {
 	if v, err := iprot.ReadString(); err != nil {
 		return err
 	} else {
@@ -873,9 +932,9 @@ func (p *GetOSSResponse) ReadField2(iprot thrift.TProtocol) error {
 	return nil
 }
 
-func (p *GetOSSResponse) Write(oprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSResponse) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetOSSResponse"); err != nil {
+	if err = oprot.WriteStructBegin("GetGoodsOSSResponse"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -906,7 +965,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *GetOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -923,7 +982,7 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *GetOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
+func (p *GetGoodsOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("url", thrift.STRING, 2); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -940,14 +999,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
 }
 
-func (p *GetOSSResponse) String() string {
+func (p *GetGoodsOSSResponse) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("GetOSSResponse(%+v)", *p)
+	return fmt.Sprintf("GetGoodsOSSResponse(%+v)", *p)
 }
 
-func (p *GetOSSResponse) DeepEqual(ano *GetOSSResponse) bool {
+func (p *GetGoodsOSSResponse) DeepEqual(ano *GetGoodsOSSResponse) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -962,14 +1021,1040 @@ func (p *GetOSSResponse) DeepEqual(ano *GetOSSResponse) bool {
 	return true
 }
 
-func (p *GetOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
+func (p *GetGoodsOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
 
 	if !p.BaseResp.DeepEqual(src) {
 		return false
 	}
 	return true
 }
-func (p *GetOSSResponse) Field2DeepEqual(src string) bool {
+func (p *GetGoodsOSSResponse) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.Url, src) != 0 {
+		return false
+	}
+	return true
+}
+
+type CreateHeadOSSRequest struct {
+	Path       string `thrift:"path,1" frugal:"1,default,string" json:"path"`
+	TimeoutSec int32  `thrift:"timeout_sec,2" frugal:"2,default,i32" json:"timeout_sec"`
+	UserId     int64  `thrift:"userId,3" frugal:"3,default,i64" json:"userId"`
+}
+
+func NewCreateHeadOSSRequest() *CreateHeadOSSRequest {
+	return &CreateHeadOSSRequest{}
+}
+
+func (p *CreateHeadOSSRequest) InitDefault() {
+	*p = CreateHeadOSSRequest{}
+}
+
+func (p *CreateHeadOSSRequest) GetPath() (v string) {
+	return p.Path
+}
+
+func (p *CreateHeadOSSRequest) GetTimeoutSec() (v int32) {
+	return p.TimeoutSec
+}
+
+func (p *CreateHeadOSSRequest) GetUserId() (v int64) {
+	return p.UserId
+}
+func (p *CreateHeadOSSRequest) SetPath(val string) {
+	p.Path = val
+}
+func (p *CreateHeadOSSRequest) SetTimeoutSec(val int32) {
+	p.TimeoutSec = val
+}
+func (p *CreateHeadOSSRequest) SetUserId(val int64) {
+	p.UserId = val
+}
+
+var fieldIDToName_CreateHeadOSSRequest = map[int16]string{
+	1: "path",
+	2: "timeout_sec",
+	3: "userId",
+}
+
+func (p *CreateHeadOSSRequest) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateHeadOSSRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CreateHeadOSSRequest) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Path = v
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSRequest) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		p.TimeoutSec = v
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSRequest) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.UserId = v
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateHeadOSSRequest"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CreateHeadOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("path", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Path); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("timeout_sec", thrift.I32, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(p.TimeoutSec); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSRequest) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("userId", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.UserId); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CreateHeadOSSRequest(%+v)", *p)
+}
+
+func (p *CreateHeadOSSRequest) DeepEqual(ano *CreateHeadOSSRequest) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Path) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.TimeoutSec) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.UserId) {
+		return false
+	}
+	return true
+}
+
+func (p *CreateHeadOSSRequest) Field1DeepEqual(src string) bool {
+
+	if strings.Compare(p.Path, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CreateHeadOSSRequest) Field2DeepEqual(src int32) bool {
+
+	if p.TimeoutSec != src {
+		return false
+	}
+	return true
+}
+func (p *CreateHeadOSSRequest) Field3DeepEqual(src int64) bool {
+
+	if p.UserId != src {
+		return false
+	}
+	return true
+}
+
+type CreateHeadOSSResponse struct {
+	BaseResp  *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
+	UploadUrl string             `thrift:"uploadUrl,2" frugal:"2,default,string" json:"uploadUrl"`
+	Id        int64              `thrift:"id,3" frugal:"3,default,i64" json:"id"`
+}
+
+func NewCreateHeadOSSResponse() *CreateHeadOSSResponse {
+	return &CreateHeadOSSResponse{}
+}
+
+func (p *CreateHeadOSSResponse) InitDefault() {
+	*p = CreateHeadOSSResponse{}
+}
+
+var CreateHeadOSSResponse_BaseResp_DEFAULT *base.BaseResponse
+
+func (p *CreateHeadOSSResponse) GetBaseResp() (v *base.BaseResponse) {
+	if !p.IsSetBaseResp() {
+		return CreateHeadOSSResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+
+func (p *CreateHeadOSSResponse) GetUploadUrl() (v string) {
+	return p.UploadUrl
+}
+
+func (p *CreateHeadOSSResponse) GetId() (v int64) {
+	return p.Id
+}
+func (p *CreateHeadOSSResponse) SetBaseResp(val *base.BaseResponse) {
+	p.BaseResp = val
+}
+func (p *CreateHeadOSSResponse) SetUploadUrl(val string) {
+	p.UploadUrl = val
+}
+func (p *CreateHeadOSSResponse) SetId(val int64) {
+	p.Id = val
+}
+
+var fieldIDToName_CreateHeadOSSResponse = map[int16]string{
+	1: "base_resp",
+	2: "uploadUrl",
+	3: "id",
+}
+
+func (p *CreateHeadOSSResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *CreateHeadOSSResponse) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_CreateHeadOSSResponse[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *CreateHeadOSSResponse) ReadField1(iprot thrift.TProtocol) error {
+	p.BaseResp = base.NewBaseResponse()
+	if err := p.BaseResp.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSResponse) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.UploadUrl = v
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSResponse) ReadField3(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *CreateHeadOSSResponse) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateHeadOSSResponse"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *CreateHeadOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("uploadUrl", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.UploadUrl); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSResponse) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *CreateHeadOSSResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("CreateHeadOSSResponse(%+v)", *p)
+}
+
+func (p *CreateHeadOSSResponse) DeepEqual(ano *CreateHeadOSSResponse) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.UploadUrl) {
+		return false
+	}
+	if !p.Field3DeepEqual(ano.Id) {
+		return false
+	}
+	return true
+}
+
+func (p *CreateHeadOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *CreateHeadOSSResponse) Field2DeepEqual(src string) bool {
+
+	if strings.Compare(p.UploadUrl, src) != 0 {
+		return false
+	}
+	return true
+}
+func (p *CreateHeadOSSResponse) Field3DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+
+type GetHeadOSSRequest struct {
+	Id         int64 `thrift:"id,1" frugal:"1,default,i64" json:"id"`
+	TimeoutSec int32 `thrift:"timeout_sec,2" frugal:"2,default,i32" json:"timeout_sec"`
+}
+
+func NewGetHeadOSSRequest() *GetHeadOSSRequest {
+	return &GetHeadOSSRequest{}
+}
+
+func (p *GetHeadOSSRequest) InitDefault() {
+	*p = GetHeadOSSRequest{}
+}
+
+func (p *GetHeadOSSRequest) GetId() (v int64) {
+	return p.Id
+}
+
+func (p *GetHeadOSSRequest) GetTimeoutSec() (v int32) {
+	return p.TimeoutSec
+}
+func (p *GetHeadOSSRequest) SetId(val int64) {
+	p.Id = val
+}
+func (p *GetHeadOSSRequest) SetTimeoutSec(val int32) {
+	p.TimeoutSec = val
+}
+
+var fieldIDToName_GetHeadOSSRequest = map[int16]string{
+	1: "id",
+	2: "timeout_sec",
+}
+
+func (p *GetHeadOSSRequest) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetHeadOSSRequest[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *GetHeadOSSRequest) ReadField1(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		p.Id = v
+	}
+	return nil
+}
+
+func (p *GetHeadOSSRequest) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		p.TimeoutSec = v
+	}
+	return nil
+}
+
+func (p *GetHeadOSSRequest) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetHeadOSSRequest"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *GetHeadOSSRequest) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Id); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *GetHeadOSSRequest) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("timeout_sec", thrift.I32, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(p.TimeoutSec); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *GetHeadOSSRequest) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetHeadOSSRequest(%+v)", *p)
+}
+
+func (p *GetHeadOSSRequest) DeepEqual(ano *GetHeadOSSRequest) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Id) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.TimeoutSec) {
+		return false
+	}
+	return true
+}
+
+func (p *GetHeadOSSRequest) Field1DeepEqual(src int64) bool {
+
+	if p.Id != src {
+		return false
+	}
+	return true
+}
+func (p *GetHeadOSSRequest) Field2DeepEqual(src int32) bool {
+
+	if p.TimeoutSec != src {
+		return false
+	}
+	return true
+}
+
+type GetHeadOSSResponse struct {
+	BaseResp *base.BaseResponse `thrift:"base_resp,1" frugal:"1,default,base.BaseResponse" json:"base_resp"`
+	Url      string             `thrift:"url,2" frugal:"2,default,string" json:"url"`
+}
+
+func NewGetHeadOSSResponse() *GetHeadOSSResponse {
+	return &GetHeadOSSResponse{}
+}
+
+func (p *GetHeadOSSResponse) InitDefault() {
+	*p = GetHeadOSSResponse{}
+}
+
+var GetHeadOSSResponse_BaseResp_DEFAULT *base.BaseResponse
+
+func (p *GetHeadOSSResponse) GetBaseResp() (v *base.BaseResponse) {
+	if !p.IsSetBaseResp() {
+		return GetHeadOSSResponse_BaseResp_DEFAULT
+	}
+	return p.BaseResp
+}
+
+func (p *GetHeadOSSResponse) GetUrl() (v string) {
+	return p.Url
+}
+func (p *GetHeadOSSResponse) SetBaseResp(val *base.BaseResponse) {
+	p.BaseResp = val
+}
+func (p *GetHeadOSSResponse) SetUrl(val string) {
+	p.Url = val
+}
+
+var fieldIDToName_GetHeadOSSResponse = map[int16]string{
+	1: "base_resp",
+	2: "url",
+}
+
+func (p *GetHeadOSSResponse) IsSetBaseResp() bool {
+	return p.BaseResp != nil
+}
+
+func (p *GetHeadOSSResponse) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_GetHeadOSSResponse[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *GetHeadOSSResponse) ReadField1(iprot thrift.TProtocol) error {
+	p.BaseResp = base.NewBaseResponse()
+	if err := p.BaseResp.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *GetHeadOSSResponse) ReadField2(iprot thrift.TProtocol) error {
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		p.Url = v
+	}
+	return nil
+}
+
+func (p *GetHeadOSSResponse) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetHeadOSSResponse"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *GetHeadOSSResponse) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("base_resp", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.BaseResp.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *GetHeadOSSResponse) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("url", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Url); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *GetHeadOSSResponse) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("GetHeadOSSResponse(%+v)", *p)
+}
+
+func (p *GetHeadOSSResponse) DeepEqual(ano *GetHeadOSSResponse) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.BaseResp) {
+		return false
+	}
+	if !p.Field2DeepEqual(ano.Url) {
+		return false
+	}
+	return true
+}
+
+func (p *GetHeadOSSResponse) Field1DeepEqual(src *base.BaseResponse) bool {
+
+	if !p.BaseResp.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+func (p *GetHeadOSSResponse) Field2DeepEqual(src string) bool {
 
 	if strings.Compare(p.Url, src) != 0 {
 		return false
@@ -978,9 +2063,13 @@ func (p *GetOSSResponse) Field2DeepEqual(src string) bool {
 }
 
 type OSSService interface {
-	CreateOSS(ctx context.Context, req *CreateOSSRequest) (r *CreateOSSResponse, err error)
+	CreateGoodsOSS(ctx context.Context, req *CreateGoodsOSSRequest) (r *CreateGoodsOSSResponse, err error)
 
-	GetOSS(ctx context.Context, req *GetOSSRequest) (r *GetOSSResponse, err error)
+	GetGoodsOSS(ctx context.Context, req *GetGoodsOSSRequest) (r *GetGoodsOSSResponse, err error)
+
+	CreateHeadOSS(ctx context.Context, req *CreateHeadOSSRequest) (r *CreateHeadOSSResponse, err error)
+
+	GetHeadOSS(ctx context.Context, req *GetHeadOSSRequest) (r *GetHeadOSSResponse, err error)
 }
 
 type OSSServiceClient struct {
@@ -1009,20 +2098,38 @@ func (p *OSSServiceClient) Client_() thrift.TClient {
 	return p.c
 }
 
-func (p *OSSServiceClient) CreateOSS(ctx context.Context, req *CreateOSSRequest) (r *CreateOSSResponse, err error) {
-	var _args OSSServiceCreateOSSArgs
+func (p *OSSServiceClient) CreateGoodsOSS(ctx context.Context, req *CreateGoodsOSSRequest) (r *CreateGoodsOSSResponse, err error) {
+	var _args OSSServiceCreateGoodsOSSArgs
 	_args.Req = req
-	var _result OSSServiceCreateOSSResult
-	if err = p.Client_().Call(ctx, "CreateOSS", &_args, &_result); err != nil {
+	var _result OSSServiceCreateGoodsOSSResult
+	if err = p.Client_().Call(ctx, "CreateGoodsOSS", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
-func (p *OSSServiceClient) GetOSS(ctx context.Context, req *GetOSSRequest) (r *GetOSSResponse, err error) {
-	var _args OSSServiceGetOSSArgs
+func (p *OSSServiceClient) GetGoodsOSS(ctx context.Context, req *GetGoodsOSSRequest) (r *GetGoodsOSSResponse, err error) {
+	var _args OSSServiceGetGoodsOSSArgs
 	_args.Req = req
-	var _result OSSServiceGetOSSResult
-	if err = p.Client_().Call(ctx, "GetOSS", &_args, &_result); err != nil {
+	var _result OSSServiceGetGoodsOSSResult
+	if err = p.Client_().Call(ctx, "GetGoodsOSS", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *OSSServiceClient) CreateHeadOSS(ctx context.Context, req *CreateHeadOSSRequest) (r *CreateHeadOSSResponse, err error) {
+	var _args OSSServiceCreateHeadOSSArgs
+	_args.Req = req
+	var _result OSSServiceCreateHeadOSSResult
+	if err = p.Client_().Call(ctx, "CreateHeadOSS", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+func (p *OSSServiceClient) GetHeadOSS(ctx context.Context, req *GetHeadOSSRequest) (r *GetHeadOSSResponse, err error) {
+	var _args OSSServiceGetHeadOSSArgs
+	_args.Req = req
+	var _result OSSServiceGetHeadOSSResult
+	if err = p.Client_().Call(ctx, "GetHeadOSS", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
@@ -1048,8 +2155,10 @@ func (p *OSSServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunctio
 
 func NewOSSServiceProcessor(handler OSSService) *OSSServiceProcessor {
 	self := &OSSServiceProcessor{handler: handler, processorMap: make(map[string]thrift.TProcessorFunction)}
-	self.AddToProcessorMap("CreateOSS", &oSSServiceProcessorCreateOSS{handler: handler})
-	self.AddToProcessorMap("GetOSS", &oSSServiceProcessorGetOSS{handler: handler})
+	self.AddToProcessorMap("CreateGoodsOSS", &oSSServiceProcessorCreateGoodsOSS{handler: handler})
+	self.AddToProcessorMap("GetGoodsOSS", &oSSServiceProcessorGetGoodsOSS{handler: handler})
+	self.AddToProcessorMap("CreateHeadOSS", &oSSServiceProcessorCreateHeadOSS{handler: handler})
+	self.AddToProcessorMap("GetHeadOSS", &oSSServiceProcessorGetHeadOSS{handler: handler})
 	return self
 }
 func (p *OSSServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -1070,16 +2179,16 @@ func (p *OSSServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.T
 	return false, x
 }
 
-type oSSServiceProcessorCreateOSS struct {
+type oSSServiceProcessorCreateGoodsOSS struct {
 	handler OSSService
 }
 
-func (p *oSSServiceProcessorCreateOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := OSSServiceCreateOSSArgs{}
+func (p *oSSServiceProcessorCreateGoodsOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := OSSServiceCreateGoodsOSSArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("CreateOSS", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("CreateGoodsOSS", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -1088,11 +2197,11 @@ func (p *oSSServiceProcessorCreateOSS) Process(ctx context.Context, seqId int32,
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := OSSServiceCreateOSSResult{}
-	var retval *CreateOSSResponse
-	if retval, err2 = p.handler.CreateOSS(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateOSS: "+err2.Error())
-		oprot.WriteMessageBegin("CreateOSS", thrift.EXCEPTION, seqId)
+	result := OSSServiceCreateGoodsOSSResult{}
+	var retval *CreateGoodsOSSResponse
+	if retval, err2 = p.handler.CreateGoodsOSS(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateGoodsOSS: "+err2.Error())
+		oprot.WriteMessageBegin("CreateGoodsOSS", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -1100,7 +2209,7 @@ func (p *oSSServiceProcessorCreateOSS) Process(ctx context.Context, seqId int32,
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("CreateOSS", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("CreateGoodsOSS", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1118,16 +2227,16 @@ func (p *oSSServiceProcessorCreateOSS) Process(ctx context.Context, seqId int32,
 	return true, err
 }
 
-type oSSServiceProcessorGetOSS struct {
+type oSSServiceProcessorGetGoodsOSS struct {
 	handler OSSService
 }
 
-func (p *oSSServiceProcessorGetOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
-	args := OSSServiceGetOSSArgs{}
+func (p *oSSServiceProcessorGetGoodsOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := OSSServiceGetGoodsOSSArgs{}
 	if err = args.Read(iprot); err != nil {
 		iprot.ReadMessageEnd()
 		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
-		oprot.WriteMessageBegin("GetOSS", thrift.EXCEPTION, seqId)
+		oprot.WriteMessageBegin("GetGoodsOSS", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -1136,11 +2245,11 @@ func (p *oSSServiceProcessorGetOSS) Process(ctx context.Context, seqId int32, ip
 
 	iprot.ReadMessageEnd()
 	var err2 error
-	result := OSSServiceGetOSSResult{}
-	var retval *GetOSSResponse
-	if retval, err2 = p.handler.GetOSS(ctx, args.Req); err2 != nil {
-		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetOSS: "+err2.Error())
-		oprot.WriteMessageBegin("GetOSS", thrift.EXCEPTION, seqId)
+	result := OSSServiceGetGoodsOSSResult{}
+	var retval *GetGoodsOSSResponse
+	if retval, err2 = p.handler.GetGoodsOSS(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetGoodsOSS: "+err2.Error())
+		oprot.WriteMessageBegin("GetGoodsOSS", thrift.EXCEPTION, seqId)
 		x.Write(oprot)
 		oprot.WriteMessageEnd()
 		oprot.Flush(ctx)
@@ -1148,7 +2257,7 @@ func (p *oSSServiceProcessorGetOSS) Process(ctx context.Context, seqId int32, ip
 	} else {
 		result.Success = retval
 	}
-	if err2 = oprot.WriteMessageBegin("GetOSS", thrift.REPLY, seqId); err2 != nil {
+	if err2 = oprot.WriteMessageBegin("GetGoodsOSS", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -1166,39 +2275,135 @@ func (p *oSSServiceProcessorGetOSS) Process(ctx context.Context, seqId int32, ip
 	return true, err
 }
 
-type OSSServiceCreateOSSArgs struct {
-	Req *CreateOSSRequest `thrift:"req,1" frugal:"1,default,CreateOSSRequest" json:"req"`
+type oSSServiceProcessorCreateHeadOSS struct {
+	handler OSSService
 }
 
-func NewOSSServiceCreateOSSArgs() *OSSServiceCreateOSSArgs {
-	return &OSSServiceCreateOSSArgs{}
+func (p *oSSServiceProcessorCreateHeadOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := OSSServiceCreateHeadOSSArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("CreateHeadOSS", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := OSSServiceCreateHeadOSSResult{}
+	var retval *CreateHeadOSSResponse
+	if retval, err2 = p.handler.CreateHeadOSS(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing CreateHeadOSS: "+err2.Error())
+		oprot.WriteMessageBegin("CreateHeadOSS", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("CreateHeadOSS", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
 }
 
-func (p *OSSServiceCreateOSSArgs) InitDefault() {
-	*p = OSSServiceCreateOSSArgs{}
+type oSSServiceProcessorGetHeadOSS struct {
+	handler OSSService
 }
 
-var OSSServiceCreateOSSArgs_Req_DEFAULT *CreateOSSRequest
+func (p *oSSServiceProcessorGetHeadOSS) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := OSSServiceGetHeadOSSArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("GetHeadOSS", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
 
-func (p *OSSServiceCreateOSSArgs) GetReq() (v *CreateOSSRequest) {
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := OSSServiceGetHeadOSSResult{}
+	var retval *GetHeadOSSResponse
+	if retval, err2 = p.handler.GetHeadOSS(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing GetHeadOSS: "+err2.Error())
+		oprot.WriteMessageBegin("GetHeadOSS", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("GetHeadOSS", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type OSSServiceCreateGoodsOSSArgs struct {
+	Req *CreateGoodsOSSRequest `thrift:"req,1" frugal:"1,default,CreateGoodsOSSRequest" json:"req"`
+}
+
+func NewOSSServiceCreateGoodsOSSArgs() *OSSServiceCreateGoodsOSSArgs {
+	return &OSSServiceCreateGoodsOSSArgs{}
+}
+
+func (p *OSSServiceCreateGoodsOSSArgs) InitDefault() {
+	*p = OSSServiceCreateGoodsOSSArgs{}
+}
+
+var OSSServiceCreateGoodsOSSArgs_Req_DEFAULT *CreateGoodsOSSRequest
+
+func (p *OSSServiceCreateGoodsOSSArgs) GetReq() (v *CreateGoodsOSSRequest) {
 	if !p.IsSetReq() {
-		return OSSServiceCreateOSSArgs_Req_DEFAULT
+		return OSSServiceCreateGoodsOSSArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *OSSServiceCreateOSSArgs) SetReq(val *CreateOSSRequest) {
+func (p *OSSServiceCreateGoodsOSSArgs) SetReq(val *CreateGoodsOSSRequest) {
 	p.Req = val
 }
 
-var fieldIDToName_OSSServiceCreateOSSArgs = map[int16]string{
+var fieldIDToName_OSSServiceCreateGoodsOSSArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *OSSServiceCreateOSSArgs) IsSetReq() bool {
+func (p *OSSServiceCreateGoodsOSSArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *OSSServiceCreateOSSArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1247,7 +2452,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateOSSArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateGoodsOSSArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1257,17 +2462,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewCreateOSSRequest()
+func (p *OSSServiceCreateGoodsOSSArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewCreateGoodsOSSRequest()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *OSSServiceCreateOSSArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOSS_args"); err != nil {
+	if err = oprot.WriteStructBegin("CreateGoodsOSS_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1294,7 +2499,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1311,14 +2516,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSArgs) String() string {
+func (p *OSSServiceCreateGoodsOSSArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("OSSServiceCreateOSSArgs(%+v)", *p)
+	return fmt.Sprintf("OSSServiceCreateGoodsOSSArgs(%+v)", *p)
 }
 
-func (p *OSSServiceCreateOSSArgs) DeepEqual(ano *OSSServiceCreateOSSArgs) bool {
+func (p *OSSServiceCreateGoodsOSSArgs) DeepEqual(ano *OSSServiceCreateGoodsOSSArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1330,7 +2535,7 @@ func (p *OSSServiceCreateOSSArgs) DeepEqual(ano *OSSServiceCreateOSSArgs) bool {
 	return true
 }
 
-func (p *OSSServiceCreateOSSArgs) Field1DeepEqual(src *CreateOSSRequest) bool {
+func (p *OSSServiceCreateGoodsOSSArgs) Field1DeepEqual(src *CreateGoodsOSSRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1338,39 +2543,39 @@ func (p *OSSServiceCreateOSSArgs) Field1DeepEqual(src *CreateOSSRequest) bool {
 	return true
 }
 
-type OSSServiceCreateOSSResult struct {
-	Success *CreateOSSResponse `thrift:"success,0,optional" frugal:"0,optional,CreateOSSResponse" json:"success,omitempty"`
+type OSSServiceCreateGoodsOSSResult struct {
+	Success *CreateGoodsOSSResponse `thrift:"success,0,optional" frugal:"0,optional,CreateGoodsOSSResponse" json:"success,omitempty"`
 }
 
-func NewOSSServiceCreateOSSResult() *OSSServiceCreateOSSResult {
-	return &OSSServiceCreateOSSResult{}
+func NewOSSServiceCreateGoodsOSSResult() *OSSServiceCreateGoodsOSSResult {
+	return &OSSServiceCreateGoodsOSSResult{}
 }
 
-func (p *OSSServiceCreateOSSResult) InitDefault() {
-	*p = OSSServiceCreateOSSResult{}
+func (p *OSSServiceCreateGoodsOSSResult) InitDefault() {
+	*p = OSSServiceCreateGoodsOSSResult{}
 }
 
-var OSSServiceCreateOSSResult_Success_DEFAULT *CreateOSSResponse
+var OSSServiceCreateGoodsOSSResult_Success_DEFAULT *CreateGoodsOSSResponse
 
-func (p *OSSServiceCreateOSSResult) GetSuccess() (v *CreateOSSResponse) {
+func (p *OSSServiceCreateGoodsOSSResult) GetSuccess() (v *CreateGoodsOSSResponse) {
 	if !p.IsSetSuccess() {
-		return OSSServiceCreateOSSResult_Success_DEFAULT
+		return OSSServiceCreateGoodsOSSResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *OSSServiceCreateOSSResult) SetSuccess(x interface{}) {
-	p.Success = x.(*CreateOSSResponse)
+func (p *OSSServiceCreateGoodsOSSResult) SetSuccess(x interface{}) {
+	p.Success = x.(*CreateGoodsOSSResponse)
 }
 
-var fieldIDToName_OSSServiceCreateOSSResult = map[int16]string{
+var fieldIDToName_OSSServiceCreateGoodsOSSResult = map[int16]string{
 	0: "success",
 }
 
-func (p *OSSServiceCreateOSSResult) IsSetSuccess() bool {
+func (p *OSSServiceCreateGoodsOSSResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *OSSServiceCreateOSSResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1419,7 +2624,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateOSSResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateGoodsOSSResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1429,17 +2634,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewCreateOSSResponse()
+func (p *OSSServiceCreateGoodsOSSResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewCreateGoodsOSSResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *OSSServiceCreateOSSResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("CreateOSS_result"); err != nil {
+	if err = oprot.WriteStructBegin("CreateGoodsOSS_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1466,7 +2671,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceCreateGoodsOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -1485,14 +2690,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *OSSServiceCreateOSSResult) String() string {
+func (p *OSSServiceCreateGoodsOSSResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("OSSServiceCreateOSSResult(%+v)", *p)
+	return fmt.Sprintf("OSSServiceCreateGoodsOSSResult(%+v)", *p)
 }
 
-func (p *OSSServiceCreateOSSResult) DeepEqual(ano *OSSServiceCreateOSSResult) bool {
+func (p *OSSServiceCreateGoodsOSSResult) DeepEqual(ano *OSSServiceCreateGoodsOSSResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1504,7 +2709,7 @@ func (p *OSSServiceCreateOSSResult) DeepEqual(ano *OSSServiceCreateOSSResult) bo
 	return true
 }
 
-func (p *OSSServiceCreateOSSResult) Field0DeepEqual(src *CreateOSSResponse) bool {
+func (p *OSSServiceCreateGoodsOSSResult) Field0DeepEqual(src *CreateGoodsOSSResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false
@@ -1512,39 +2717,39 @@ func (p *OSSServiceCreateOSSResult) Field0DeepEqual(src *CreateOSSResponse) bool
 	return true
 }
 
-type OSSServiceGetOSSArgs struct {
-	Req *GetOSSRequest `thrift:"req,1" frugal:"1,default,GetOSSRequest" json:"req"`
+type OSSServiceGetGoodsOSSArgs struct {
+	Req *GetGoodsOSSRequest `thrift:"req,1" frugal:"1,default,GetGoodsOSSRequest" json:"req"`
 }
 
-func NewOSSServiceGetOSSArgs() *OSSServiceGetOSSArgs {
-	return &OSSServiceGetOSSArgs{}
+func NewOSSServiceGetGoodsOSSArgs() *OSSServiceGetGoodsOSSArgs {
+	return &OSSServiceGetGoodsOSSArgs{}
 }
 
-func (p *OSSServiceGetOSSArgs) InitDefault() {
-	*p = OSSServiceGetOSSArgs{}
+func (p *OSSServiceGetGoodsOSSArgs) InitDefault() {
+	*p = OSSServiceGetGoodsOSSArgs{}
 }
 
-var OSSServiceGetOSSArgs_Req_DEFAULT *GetOSSRequest
+var OSSServiceGetGoodsOSSArgs_Req_DEFAULT *GetGoodsOSSRequest
 
-func (p *OSSServiceGetOSSArgs) GetReq() (v *GetOSSRequest) {
+func (p *OSSServiceGetGoodsOSSArgs) GetReq() (v *GetGoodsOSSRequest) {
 	if !p.IsSetReq() {
-		return OSSServiceGetOSSArgs_Req_DEFAULT
+		return OSSServiceGetGoodsOSSArgs_Req_DEFAULT
 	}
 	return p.Req
 }
-func (p *OSSServiceGetOSSArgs) SetReq(val *GetOSSRequest) {
+func (p *OSSServiceGetGoodsOSSArgs) SetReq(val *GetGoodsOSSRequest) {
 	p.Req = val
 }
 
-var fieldIDToName_OSSServiceGetOSSArgs = map[int16]string{
+var fieldIDToName_OSSServiceGetGoodsOSSArgs = map[int16]string{
 	1: "req",
 }
 
-func (p *OSSServiceGetOSSArgs) IsSetReq() bool {
+func (p *OSSServiceGetGoodsOSSArgs) IsSetReq() bool {
 	return p.Req != nil
 }
 
-func (p *OSSServiceGetOSSArgs) Read(iprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSArgs) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1593,7 +2798,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetOSSArgs[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetGoodsOSSArgs[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1603,17 +2808,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSArgs) ReadField1(iprot thrift.TProtocol) error {
-	p.Req = NewGetOSSRequest()
+func (p *OSSServiceGetGoodsOSSArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewGetGoodsOSSRequest()
 	if err := p.Req.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *OSSServiceGetOSSArgs) Write(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSArgs) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetOSS_args"); err != nil {
+	if err = oprot.WriteStructBegin("GetGoodsOSS_args"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1640,7 +2845,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
 	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
 		goto WriteFieldBeginError
 	}
@@ -1657,14 +2862,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSArgs) String() string {
+func (p *OSSServiceGetGoodsOSSArgs) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("OSSServiceGetOSSArgs(%+v)", *p)
+	return fmt.Sprintf("OSSServiceGetGoodsOSSArgs(%+v)", *p)
 }
 
-func (p *OSSServiceGetOSSArgs) DeepEqual(ano *OSSServiceGetOSSArgs) bool {
+func (p *OSSServiceGetGoodsOSSArgs) DeepEqual(ano *OSSServiceGetGoodsOSSArgs) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1676,7 +2881,7 @@ func (p *OSSServiceGetOSSArgs) DeepEqual(ano *OSSServiceGetOSSArgs) bool {
 	return true
 }
 
-func (p *OSSServiceGetOSSArgs) Field1DeepEqual(src *GetOSSRequest) bool {
+func (p *OSSServiceGetGoodsOSSArgs) Field1DeepEqual(src *GetGoodsOSSRequest) bool {
 
 	if !p.Req.DeepEqual(src) {
 		return false
@@ -1684,39 +2889,39 @@ func (p *OSSServiceGetOSSArgs) Field1DeepEqual(src *GetOSSRequest) bool {
 	return true
 }
 
-type OSSServiceGetOSSResult struct {
-	Success *GetOSSResponse `thrift:"success,0,optional" frugal:"0,optional,GetOSSResponse" json:"success,omitempty"`
+type OSSServiceGetGoodsOSSResult struct {
+	Success *GetGoodsOSSResponse `thrift:"success,0,optional" frugal:"0,optional,GetGoodsOSSResponse" json:"success,omitempty"`
 }
 
-func NewOSSServiceGetOSSResult() *OSSServiceGetOSSResult {
-	return &OSSServiceGetOSSResult{}
+func NewOSSServiceGetGoodsOSSResult() *OSSServiceGetGoodsOSSResult {
+	return &OSSServiceGetGoodsOSSResult{}
 }
 
-func (p *OSSServiceGetOSSResult) InitDefault() {
-	*p = OSSServiceGetOSSResult{}
+func (p *OSSServiceGetGoodsOSSResult) InitDefault() {
+	*p = OSSServiceGetGoodsOSSResult{}
 }
 
-var OSSServiceGetOSSResult_Success_DEFAULT *GetOSSResponse
+var OSSServiceGetGoodsOSSResult_Success_DEFAULT *GetGoodsOSSResponse
 
-func (p *OSSServiceGetOSSResult) GetSuccess() (v *GetOSSResponse) {
+func (p *OSSServiceGetGoodsOSSResult) GetSuccess() (v *GetGoodsOSSResponse) {
 	if !p.IsSetSuccess() {
-		return OSSServiceGetOSSResult_Success_DEFAULT
+		return OSSServiceGetGoodsOSSResult_Success_DEFAULT
 	}
 	return p.Success
 }
-func (p *OSSServiceGetOSSResult) SetSuccess(x interface{}) {
-	p.Success = x.(*GetOSSResponse)
+func (p *OSSServiceGetGoodsOSSResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetGoodsOSSResponse)
 }
 
-var fieldIDToName_OSSServiceGetOSSResult = map[int16]string{
+var fieldIDToName_OSSServiceGetGoodsOSSResult = map[int16]string{
 	0: "success",
 }
 
-func (p *OSSServiceGetOSSResult) IsSetSuccess() bool {
+func (p *OSSServiceGetGoodsOSSResult) IsSetSuccess() bool {
 	return p.Success != nil
 }
 
-func (p *OSSServiceGetOSSResult) Read(iprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSResult) Read(iprot thrift.TProtocol) (err error) {
 
 	var fieldTypeId thrift.TType
 	var fieldId int16
@@ -1765,7 +2970,7 @@ ReadStructBeginError:
 ReadFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
 ReadFieldError:
-	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetOSSResult[fieldId]), err)
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetGoodsOSSResult[fieldId]), err)
 SkipFieldError:
 	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
 
@@ -1775,17 +2980,17 @@ ReadStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSResult) ReadField0(iprot thrift.TProtocol) error {
-	p.Success = NewGetOSSResponse()
+func (p *OSSServiceGetGoodsOSSResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewGetGoodsOSSResponse()
 	if err := p.Success.Read(iprot); err != nil {
 		return err
 	}
 	return nil
 }
 
-func (p *OSSServiceGetOSSResult) Write(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSResult) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
-	if err = oprot.WriteStructBegin("GetOSS_result"); err != nil {
+	if err = oprot.WriteStructBegin("GetGoodsOSS_result"); err != nil {
 		goto WriteStructBeginError
 	}
 	if p != nil {
@@ -1812,7 +3017,7 @@ WriteStructEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
+func (p *OSSServiceGetGoodsOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
 	if p.IsSetSuccess() {
 		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
 			goto WriteFieldBeginError
@@ -1831,14 +3036,14 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
 }
 
-func (p *OSSServiceGetOSSResult) String() string {
+func (p *OSSServiceGetGoodsOSSResult) String() string {
 	if p == nil {
 		return "<nil>"
 	}
-	return fmt.Sprintf("OSSServiceGetOSSResult(%+v)", *p)
+	return fmt.Sprintf("OSSServiceGetGoodsOSSResult(%+v)", *p)
 }
 
-func (p *OSSServiceGetOSSResult) DeepEqual(ano *OSSServiceGetOSSResult) bool {
+func (p *OSSServiceGetGoodsOSSResult) DeepEqual(ano *OSSServiceGetGoodsOSSResult) bool {
 	if p == ano {
 		return true
 	} else if p == nil || ano == nil {
@@ -1850,7 +3055,699 @@ func (p *OSSServiceGetOSSResult) DeepEqual(ano *OSSServiceGetOSSResult) bool {
 	return true
 }
 
-func (p *OSSServiceGetOSSResult) Field0DeepEqual(src *GetOSSResponse) bool {
+func (p *OSSServiceGetGoodsOSSResult) Field0DeepEqual(src *GetGoodsOSSResponse) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type OSSServiceCreateHeadOSSArgs struct {
+	Req *CreateHeadOSSRequest `thrift:"req,1" frugal:"1,default,CreateHeadOSSRequest" json:"req"`
+}
+
+func NewOSSServiceCreateHeadOSSArgs() *OSSServiceCreateHeadOSSArgs {
+	return &OSSServiceCreateHeadOSSArgs{}
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) InitDefault() {
+	*p = OSSServiceCreateHeadOSSArgs{}
+}
+
+var OSSServiceCreateHeadOSSArgs_Req_DEFAULT *CreateHeadOSSRequest
+
+func (p *OSSServiceCreateHeadOSSArgs) GetReq() (v *CreateHeadOSSRequest) {
+	if !p.IsSetReq() {
+		return OSSServiceCreateHeadOSSArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *OSSServiceCreateHeadOSSArgs) SetReq(val *CreateHeadOSSRequest) {
+	p.Req = val
+}
+
+var fieldIDToName_OSSServiceCreateHeadOSSArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateHeadOSSArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewCreateHeadOSSRequest()
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateHeadOSS_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OSSServiceCreateHeadOSSArgs(%+v)", *p)
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) DeepEqual(ano *OSSServiceCreateHeadOSSArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *OSSServiceCreateHeadOSSArgs) Field1DeepEqual(src *CreateHeadOSSRequest) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type OSSServiceCreateHeadOSSResult struct {
+	Success *CreateHeadOSSResponse `thrift:"success,0,optional" frugal:"0,optional,CreateHeadOSSResponse" json:"success,omitempty"`
+}
+
+func NewOSSServiceCreateHeadOSSResult() *OSSServiceCreateHeadOSSResult {
+	return &OSSServiceCreateHeadOSSResult{}
+}
+
+func (p *OSSServiceCreateHeadOSSResult) InitDefault() {
+	*p = OSSServiceCreateHeadOSSResult{}
+}
+
+var OSSServiceCreateHeadOSSResult_Success_DEFAULT *CreateHeadOSSResponse
+
+func (p *OSSServiceCreateHeadOSSResult) GetSuccess() (v *CreateHeadOSSResponse) {
+	if !p.IsSetSuccess() {
+		return OSSServiceCreateHeadOSSResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *OSSServiceCreateHeadOSSResult) SetSuccess(x interface{}) {
+	p.Success = x.(*CreateHeadOSSResponse)
+}
+
+var fieldIDToName_OSSServiceCreateHeadOSSResult = map[int16]string{
+	0: "success",
+}
+
+func (p *OSSServiceCreateHeadOSSResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *OSSServiceCreateHeadOSSResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceCreateHeadOSSResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewCreateHeadOSSResponse()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *OSSServiceCreateHeadOSSResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("CreateHeadOSS_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *OSSServiceCreateHeadOSSResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OSSServiceCreateHeadOSSResult(%+v)", *p)
+}
+
+func (p *OSSServiceCreateHeadOSSResult) DeepEqual(ano *OSSServiceCreateHeadOSSResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *OSSServiceCreateHeadOSSResult) Field0DeepEqual(src *CreateHeadOSSResponse) bool {
+
+	if !p.Success.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type OSSServiceGetHeadOSSArgs struct {
+	Req *GetHeadOSSRequest `thrift:"req,1" frugal:"1,default,GetHeadOSSRequest" json:"req"`
+}
+
+func NewOSSServiceGetHeadOSSArgs() *OSSServiceGetHeadOSSArgs {
+	return &OSSServiceGetHeadOSSArgs{}
+}
+
+func (p *OSSServiceGetHeadOSSArgs) InitDefault() {
+	*p = OSSServiceGetHeadOSSArgs{}
+}
+
+var OSSServiceGetHeadOSSArgs_Req_DEFAULT *GetHeadOSSRequest
+
+func (p *OSSServiceGetHeadOSSArgs) GetReq() (v *GetHeadOSSRequest) {
+	if !p.IsSetReq() {
+		return OSSServiceGetHeadOSSArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+func (p *OSSServiceGetHeadOSSArgs) SetReq(val *GetHeadOSSRequest) {
+	p.Req = val
+}
+
+var fieldIDToName_OSSServiceGetHeadOSSArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *OSSServiceGetHeadOSSArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *OSSServiceGetHeadOSSArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetHeadOSSArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSArgs) ReadField1(iprot thrift.TProtocol) error {
+	p.Req = NewGetHeadOSSRequest()
+	if err := p.Req.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *OSSServiceGetHeadOSSArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetHeadOSS_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OSSServiceGetHeadOSSArgs(%+v)", *p)
+}
+
+func (p *OSSServiceGetHeadOSSArgs) DeepEqual(ano *OSSServiceGetHeadOSSArgs) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field1DeepEqual(ano.Req) {
+		return false
+	}
+	return true
+}
+
+func (p *OSSServiceGetHeadOSSArgs) Field1DeepEqual(src *GetHeadOSSRequest) bool {
+
+	if !p.Req.DeepEqual(src) {
+		return false
+	}
+	return true
+}
+
+type OSSServiceGetHeadOSSResult struct {
+	Success *GetHeadOSSResponse `thrift:"success,0,optional" frugal:"0,optional,GetHeadOSSResponse" json:"success,omitempty"`
+}
+
+func NewOSSServiceGetHeadOSSResult() *OSSServiceGetHeadOSSResult {
+	return &OSSServiceGetHeadOSSResult{}
+}
+
+func (p *OSSServiceGetHeadOSSResult) InitDefault() {
+	*p = OSSServiceGetHeadOSSResult{}
+}
+
+var OSSServiceGetHeadOSSResult_Success_DEFAULT *GetHeadOSSResponse
+
+func (p *OSSServiceGetHeadOSSResult) GetSuccess() (v *GetHeadOSSResponse) {
+	if !p.IsSetSuccess() {
+		return OSSServiceGetHeadOSSResult_Success_DEFAULT
+	}
+	return p.Success
+}
+func (p *OSSServiceGetHeadOSSResult) SetSuccess(x interface{}) {
+	p.Success = x.(*GetHeadOSSResponse)
+}
+
+var fieldIDToName_OSSServiceGetHeadOSSResult = map[int16]string{
+	0: "success",
+}
+
+func (p *OSSServiceGetHeadOSSResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *OSSServiceGetHeadOSSResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else {
+				if err = iprot.Skip(fieldTypeId); err != nil {
+					goto SkipFieldError
+				}
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OSSServiceGetHeadOSSResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSResult) ReadField0(iprot thrift.TProtocol) error {
+	p.Success = NewGetHeadOSSResponse()
+	if err := p.Success.Read(iprot); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (p *OSSServiceGetHeadOSSResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("GetHeadOSS_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *OSSServiceGetHeadOSSResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OSSServiceGetHeadOSSResult(%+v)", *p)
+}
+
+func (p *OSSServiceGetHeadOSSResult) DeepEqual(ano *OSSServiceGetHeadOSSResult) bool {
+	if p == ano {
+		return true
+	} else if p == nil || ano == nil {
+		return false
+	}
+	if !p.Field0DeepEqual(ano.Success) {
+		return false
+	}
+	return true
+}
+
+func (p *OSSServiceGetHeadOSSResult) Field0DeepEqual(src *GetHeadOSSResponse) bool {
 
 	if !p.Success.DeepEqual(src) {
 		return false

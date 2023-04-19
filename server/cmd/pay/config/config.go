@@ -13,6 +13,7 @@ type NacosConfig struct {
 type ServerConfig struct {
 	Name       string       `mapstructure:"name" json:"name"`
 	Host       string       `mapstructure:"host" json:"host"`
+	OtelInfo   OtelConfig   `mapstructure:"otel" json:"otel"`
 	MysqlInfo  MysqlConfig  `mapstructure:"mysql" json:"mysql"`
 	JWTInfo    JWTConfig    `mapstructure:"jwt" json:"jwt"`
 	MqInfo     MqConfig     `mapstructure:"mq_info" json:"mq_info"`
@@ -41,4 +42,8 @@ type AlipayConfig struct {
 
 type MqConfig struct {
 	Address string `mapstructure:"address" json:"address"`
+}
+
+type OtelConfig struct {
+	EndPoint string `mapstructure:"endpoint" json:"endpoint"`
 }

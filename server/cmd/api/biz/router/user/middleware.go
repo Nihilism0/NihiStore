@@ -106,3 +106,15 @@ func _getsellerbygoodsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getheadMw() []app.HandlerFunc {
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
+}
+
+func _uploadheadMw() []app.HandlerFunc {
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
+}

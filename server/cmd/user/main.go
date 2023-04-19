@@ -9,11 +9,13 @@ import (
 	"NihiStore/server/shared/consts"
 	user "NihiStore/server/shared/kitex_gen/user/userservice"
 	"NihiStore/server/shared/middleware"
+	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/utils"
 	"github.com/cloudwego/kitex/server"
+	"gorm.io/plugin/opentelemetry/provider"
 	"net"
 	"strconv"
 )
@@ -23,6 +25,14 @@ func main() {
 	IP, Port := initialize.InitFlag()
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
+
+	p := provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(config.GlobalServerConfig.Name),
+		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
+	)
+	defer p.Shutdown(context.Background())
+	ossClient := initialize.InitOSS()
 	// Create new server.
 	srv := user.NewServer(
 		&UserServiceImpl{
@@ -31,6 +41,7 @@ func main() {
 			MysqlUserGenerator: &mysql.MysqlUserGenerator{},
 			MysqlFavoGenerator: &mysql.MysqlFavoGenerator{},
 			MysqlCartGenerator: &mysql.MysqlCartGenerator{},
+			OSSManager:         ossClient,
 		},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),

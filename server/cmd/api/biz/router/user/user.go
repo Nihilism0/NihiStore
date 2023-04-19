@@ -20,9 +20,11 @@ func Register(r *server.Hertz) {
 	{
 		_user := root.Group("/user", _userMw()...)
 		_user.PUT("/beseller", append(_besellerMw(), user.BeSeller)...)
+		_user.GET("/gethead", append(_getheadMw(), user.GetHead)...)
 		_user.GET("/getsellerbygoods", append(_getsellerbygoodsMw(), user.GetSellerByGoods)...)
 		_user.GET("/login", append(_loginMw(), user.Login)...)
 		_user.POST("/register", append(_registerMw(), user.Register)...)
+		_user.POST("/uploadhead", append(_uploadheadMw(), user.UploadHead)...)
 		{
 			_cart := _user.Group("/cart", _cartMw()...)
 			_cart.PUT("/addamountcart", append(__dd_mounrcartMw(), user.AddAmounrCart)...)

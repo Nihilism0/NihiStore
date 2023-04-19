@@ -2,28 +2,54 @@ namespace go oss
 
 include "../base/common.thrift"
 
-struct CreateOSSRequest{
+struct CreateGoodsOSSRequest{
     1: string path,
     2: i32 timeout_sec,
+    3: i64 goodsId
 }
 
-struct CreateOSSResponse{
+struct CreateGoodsOSSResponse{
     1: common.BaseResponse base_resp,
     2: string uploadUrl,
-    3: string id,
+    3: i64 id,
 }
 
-struct GetOSSRequest{
-    1: string path,
+struct GetGoodsOSSRequest{
+    1: i64 id,
     2: i32 timeout_sec
 }
 
-struct GetOSSResponse{
+struct GetGoodsOSSResponse{
     1: common.BaseResponse base_resp,
     2: string url
 }
 
+struct CreateHeadOSSRequest{
+    1: string path,
+    2: i32 timeout_sec,
+    3: i64 userId
+}
+
+struct CreateHeadOSSResponse{
+    1: common.BaseResponse base_resp,
+    2: string uploadUrl,
+    3: i64 id,
+}
+
+struct GetHeadOSSRequest{
+    1: i64 id,
+    2: i32 timeout_sec
+}
+
+struct GetHeadOSSResponse{
+    1: common.BaseResponse base_resp,
+    2: string url
+}
+
+
 service OSSService{
-    CreateOSSResponse CreateOSS(1: CreateOSSRequest req),
-    GetOSSResponse GetOSS(1: GetOSSRequest req),
+    CreateGoodsOSSResponse CreateGoodsOSS(1: CreateGoodsOSSRequest req),
+    GetGoodsOSSResponse GetGoodsOSS(1: GetGoodsOSSRequest req),
+    CreateHeadOSSResponse CreateHeadOSS(1: CreateHeadOSSRequest req),
+    GetHeadOSSResponse GetHeadOSS(1: GetHeadOSSRequest req),
 }

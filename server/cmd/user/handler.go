@@ -5,10 +5,12 @@ import (
 	"NihiStore/server/shared/consts"
 	"NihiStore/server/shared/errx"
 	"NihiStore/server/shared/kitex_gen/base"
+	"NihiStore/server/shared/kitex_gen/oss"
 	user "NihiStore/server/shared/kitex_gen/user"
 	"NihiStore/server/shared/model"
 	"NihiStore/server/shared/tools"
 	"context"
+	"github.com/cloudwego/kitex/client/callopt"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
 	"strconv"
@@ -21,6 +23,7 @@ type UserServiceImpl struct {
 	MysqlUserGenerator
 	MysqlFavoGenerator
 	MysqlCartGenerator
+	OSSManager
 }
 type TokenGenerator interface {
 	CreateJWTtoken(ID int64, isSeller bool) (string, error)
@@ -54,6 +57,11 @@ type MysqlCartGenerator interface {
 	RemoveCart(cart *model.Cart)
 	SelectCartByUserId(UserId int64) *[]model.Cart
 	RemoveAllCart(UserId int64)
+}
+
+type OSSManager interface {
+	CreateHeadOSS(ctx context.Context, req *oss.CreateHeadOSSRequest, callOptions ...callopt.Option) (r *oss.CreateHeadOSSResponse, err error)
+	GetHeadOSS(ctx context.Context, req *oss.GetHeadOSSRequest, callOptions ...callopt.Option) (r *oss.GetHeadOSSResponse, err error)
 }
 
 // Login implements the UserServiceImpl interface.
@@ -283,4 +291,22 @@ func (s *UserServiceImpl) GetSellerByGoods(ctx context.Context, req *user.GetSel
 	resp.BaseResp.StatusCode = http.StatusOK
 	resp.BaseResp.StatusMsg = "Find seller by goodsId success"
 	return resp, nil
+}
+
+// UploadHead implements the UserServiceImpl interface.
+func (s *UserServiceImpl) UploadHead(ctx context.Context, req *user.UploadHeadRequest) (resp *user.UploadHeadResponse, err error) {
+	resp = new(user.UploadHeadResponse)
+	path := tools.CreateHeadMinioPath(strconv.FormatInt(req.UserId, 10))
+	br, err := s.OSSManager.CreateHeadOSS(ctx, &oss.CreateHeadOSSRequest{
+		Path:       "",
+		TimeoutSec: 0,
+		UserId:     0,
+	})
+	return
+}
+
+// GetHead implements the UserServiceImpl interface.
+func (s *UserServiceImpl) GetHead(ctx context.Context, req *user.GetHeadRequest) (resp *user.GetHeadRespnse, err error) {
+	// TODO: Your code here...
+	return
 }

@@ -19,8 +19,10 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "OSSService"
 	handlerType := (*oss.OSSService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateOSS": kitex.NewMethodInfo(createOSSHandler, newOSSServiceCreateOSSArgs, newOSSServiceCreateOSSResult, false),
-		"GetOSS":    kitex.NewMethodInfo(getOSSHandler, newOSSServiceGetOSSArgs, newOSSServiceGetOSSResult, false),
+		"CreateGoodsOSS": kitex.NewMethodInfo(createGoodsOSSHandler, newOSSServiceCreateGoodsOSSArgs, newOSSServiceCreateGoodsOSSResult, false),
+		"GetGoodsOSS":    kitex.NewMethodInfo(getGoodsOSSHandler, newOSSServiceGetGoodsOSSArgs, newOSSServiceGetGoodsOSSResult, false),
+		"CreateHeadOSS":  kitex.NewMethodInfo(createHeadOSSHandler, newOSSServiceCreateHeadOSSArgs, newOSSServiceCreateHeadOSSResult, false),
+		"GetHeadOSS":     kitex.NewMethodInfo(getHeadOSSHandler, newOSSServiceGetHeadOSSArgs, newOSSServiceGetHeadOSSResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "oss",
@@ -36,40 +38,76 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	return svcInfo
 }
 
-func createOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*oss.OSSServiceCreateOSSArgs)
-	realResult := result.(*oss.OSSServiceCreateOSSResult)
-	success, err := handler.(oss.OSSService).CreateOSS(ctx, realArg.Req)
+func createGoodsOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*oss.OSSServiceCreateGoodsOSSArgs)
+	realResult := result.(*oss.OSSServiceCreateGoodsOSSResult)
+	success, err := handler.(oss.OSSService).CreateGoodsOSS(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newOSSServiceCreateOSSArgs() interface{} {
-	return oss.NewOSSServiceCreateOSSArgs()
+func newOSSServiceCreateGoodsOSSArgs() interface{} {
+	return oss.NewOSSServiceCreateGoodsOSSArgs()
 }
 
-func newOSSServiceCreateOSSResult() interface{} {
-	return oss.NewOSSServiceCreateOSSResult()
+func newOSSServiceCreateGoodsOSSResult() interface{} {
+	return oss.NewOSSServiceCreateGoodsOSSResult()
 }
 
-func getOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
-	realArg := arg.(*oss.OSSServiceGetOSSArgs)
-	realResult := result.(*oss.OSSServiceGetOSSResult)
-	success, err := handler.(oss.OSSService).GetOSS(ctx, realArg.Req)
+func getGoodsOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*oss.OSSServiceGetGoodsOSSArgs)
+	realResult := result.(*oss.OSSServiceGetGoodsOSSResult)
+	success, err := handler.(oss.OSSService).GetGoodsOSS(ctx, realArg.Req)
 	if err != nil {
 		return err
 	}
 	realResult.Success = success
 	return nil
 }
-func newOSSServiceGetOSSArgs() interface{} {
-	return oss.NewOSSServiceGetOSSArgs()
+func newOSSServiceGetGoodsOSSArgs() interface{} {
+	return oss.NewOSSServiceGetGoodsOSSArgs()
 }
 
-func newOSSServiceGetOSSResult() interface{} {
-	return oss.NewOSSServiceGetOSSResult()
+func newOSSServiceGetGoodsOSSResult() interface{} {
+	return oss.NewOSSServiceGetGoodsOSSResult()
+}
+
+func createHeadOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*oss.OSSServiceCreateHeadOSSArgs)
+	realResult := result.(*oss.OSSServiceCreateHeadOSSResult)
+	success, err := handler.(oss.OSSService).CreateHeadOSS(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newOSSServiceCreateHeadOSSArgs() interface{} {
+	return oss.NewOSSServiceCreateHeadOSSArgs()
+}
+
+func newOSSServiceCreateHeadOSSResult() interface{} {
+	return oss.NewOSSServiceCreateHeadOSSResult()
+}
+
+func getHeadOSSHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*oss.OSSServiceGetHeadOSSArgs)
+	realResult := result.(*oss.OSSServiceGetHeadOSSResult)
+	success, err := handler.(oss.OSSService).GetHeadOSS(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newOSSServiceGetHeadOSSArgs() interface{} {
+	return oss.NewOSSServiceGetHeadOSSArgs()
+}
+
+func newOSSServiceGetHeadOSSResult() interface{} {
+	return oss.NewOSSServiceGetHeadOSSResult()
 }
 
 type kClient struct {
@@ -82,21 +120,41 @@ func newServiceClient(c client.Client) *kClient {
 	}
 }
 
-func (p *kClient) CreateOSS(ctx context.Context, req *oss.CreateOSSRequest) (r *oss.CreateOSSResponse, err error) {
-	var _args oss.OSSServiceCreateOSSArgs
+func (p *kClient) CreateGoodsOSS(ctx context.Context, req *oss.CreateGoodsOSSRequest) (r *oss.CreateGoodsOSSResponse, err error) {
+	var _args oss.OSSServiceCreateGoodsOSSArgs
 	_args.Req = req
-	var _result oss.OSSServiceCreateOSSResult
-	if err = p.c.Call(ctx, "CreateOSS", &_args, &_result); err != nil {
+	var _result oss.OSSServiceCreateGoodsOSSResult
+	if err = p.c.Call(ctx, "CreateGoodsOSS", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil
 }
 
-func (p *kClient) GetOSS(ctx context.Context, req *oss.GetOSSRequest) (r *oss.GetOSSResponse, err error) {
-	var _args oss.OSSServiceGetOSSArgs
+func (p *kClient) GetGoodsOSS(ctx context.Context, req *oss.GetGoodsOSSRequest) (r *oss.GetGoodsOSSResponse, err error) {
+	var _args oss.OSSServiceGetGoodsOSSArgs
 	_args.Req = req
-	var _result oss.OSSServiceGetOSSResult
-	if err = p.c.Call(ctx, "GetOSS", &_args, &_result); err != nil {
+	var _result oss.OSSServiceGetGoodsOSSResult
+	if err = p.c.Call(ctx, "GetGoodsOSS", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) CreateHeadOSS(ctx context.Context, req *oss.CreateHeadOSSRequest) (r *oss.CreateHeadOSSResponse, err error) {
+	var _args oss.OSSServiceCreateHeadOSSArgs
+	_args.Req = req
+	var _result oss.OSSServiceCreateHeadOSSResult
+	if err = p.c.Call(ctx, "CreateHeadOSS", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetHeadOSS(ctx context.Context, req *oss.GetHeadOSSRequest) (r *oss.GetHeadOSSResponse, err error) {
+	var _args oss.OSSServiceGetHeadOSSArgs
+	_args.Req = req
+	var _result oss.OSSServiceGetHeadOSSResult
+	if err = p.c.Call(ctx, "GetHeadOSS", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

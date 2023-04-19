@@ -11,8 +11,10 @@ import (
 
 // Client is designed to provide IDL-compatible methods with call-option parameter for kitex framework.
 type Client interface {
-	CreateOSS(ctx context.Context, req *oss.CreateOSSRequest, callOptions ...callopt.Option) (r *oss.CreateOSSResponse, err error)
-	GetOSS(ctx context.Context, req *oss.GetOSSRequest, callOptions ...callopt.Option) (r *oss.GetOSSResponse, err error)
+	CreateGoodsOSS(ctx context.Context, req *oss.CreateGoodsOSSRequest, callOptions ...callopt.Option) (r *oss.CreateGoodsOSSResponse, err error)
+	GetGoodsOSS(ctx context.Context, req *oss.GetGoodsOSSRequest, callOptions ...callopt.Option) (r *oss.GetGoodsOSSResponse, err error)
+	CreateHeadOSS(ctx context.Context, req *oss.CreateHeadOSSRequest, callOptions ...callopt.Option) (r *oss.CreateHeadOSSResponse, err error)
+	GetHeadOSS(ctx context.Context, req *oss.GetHeadOSSRequest, callOptions ...callopt.Option) (r *oss.GetHeadOSSResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -44,12 +46,22 @@ type kOSSServiceClient struct {
 	*kClient
 }
 
-func (p *kOSSServiceClient) CreateOSS(ctx context.Context, req *oss.CreateOSSRequest, callOptions ...callopt.Option) (r *oss.CreateOSSResponse, err error) {
+func (p *kOSSServiceClient) CreateGoodsOSS(ctx context.Context, req *oss.CreateGoodsOSSRequest, callOptions ...callopt.Option) (r *oss.CreateGoodsOSSResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.CreateOSS(ctx, req)
+	return p.kClient.CreateGoodsOSS(ctx, req)
 }
 
-func (p *kOSSServiceClient) GetOSS(ctx context.Context, req *oss.GetOSSRequest, callOptions ...callopt.Option) (r *oss.GetOSSResponse, err error) {
+func (p *kOSSServiceClient) GetGoodsOSS(ctx context.Context, req *oss.GetGoodsOSSRequest, callOptions ...callopt.Option) (r *oss.GetGoodsOSSResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
-	return p.kClient.GetOSS(ctx, req)
+	return p.kClient.GetGoodsOSS(ctx, req)
+}
+
+func (p *kOSSServiceClient) CreateHeadOSS(ctx context.Context, req *oss.CreateHeadOSSRequest, callOptions ...callopt.Option) (r *oss.CreateHeadOSSResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.CreateHeadOSS(ctx, req)
+}
+
+func (p *kOSSServiceClient) GetHeadOSS(ctx context.Context, req *oss.GetHeadOSSRequest, callOptions ...callopt.Option) (r *oss.GetHeadOSSResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetHeadOSS(ctx, req)
 }

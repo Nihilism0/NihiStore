@@ -8,4 +8,5 @@ type User struct {
 	Password    string
 	IsSeller    bool
 	SellerAliId string
+	HeadId      int64
 }

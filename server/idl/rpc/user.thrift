@@ -168,6 +168,26 @@ struct GetSellerByGoodsResponse{
     2: string SellerId
 }
 
+//上传头像
+struct UploadHeadRequest{
+    1: i64 userId
+}
+
+struct UploadHeadResponse{
+    1: common.BaseResponse base_resp
+    2: string url
+}
+
+//获取头像
+struct GetHeadRequest{
+    1: i64 userId
+}
+
+struct GetHeadRespnse{
+    1: common.BaseResponse base_resp
+    2: string url
+}
+
 service UserService {
     LoginResponse Login(1:LoginRequest req)
     RegisterResponse Register(1:RegisterRequest req)
@@ -184,4 +204,6 @@ service UserService {
     CleanCartResponse CleanCart(1:CleanCartRequest req)
     BeSellerResponse BeSeller(1:BeSellerRequest req)
     GetSellerByGoodsResponse GetSellerByGoods(1:GetSellerByGoodsRequest req)
+    UploadHeadResponse UploadHead(1:UploadHeadRequest req)
+    GetHeadRespnse GetHead(1:GetHeadRequest req)
 }

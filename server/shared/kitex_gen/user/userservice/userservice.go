@@ -34,6 +34,8 @@ func NewServiceInfo() *kitex.ServiceInfo {
 		"CleanCart":             kitex.NewMethodInfo(cleanCartHandler, newUserServiceCleanCartArgs, newUserServiceCleanCartResult, false),
 		"BeSeller":              kitex.NewMethodInfo(beSellerHandler, newUserServiceBeSellerArgs, newUserServiceBeSellerResult, false),
 		"GetSellerByGoods":      kitex.NewMethodInfo(getSellerByGoodsHandler, newUserServiceGetSellerByGoodsArgs, newUserServiceGetSellerByGoodsResult, false),
+		"UploadHead":            kitex.NewMethodInfo(uploadHeadHandler, newUserServiceUploadHeadArgs, newUserServiceUploadHeadResult, false),
+		"GetHead":               kitex.NewMethodInfo(getHeadHandler, newUserServiceGetHeadArgs, newUserServiceGetHeadResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "user",
@@ -319,6 +321,42 @@ func newUserServiceGetSellerByGoodsResult() interface{} {
 	return user.NewUserServiceGetSellerByGoodsResult()
 }
 
+func uploadHeadHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceUploadHeadArgs)
+	realResult := result.(*user.UserServiceUploadHeadResult)
+	success, err := handler.(user.UserService).UploadHead(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceUploadHeadArgs() interface{} {
+	return user.NewUserServiceUploadHeadArgs()
+}
+
+func newUserServiceUploadHeadResult() interface{} {
+	return user.NewUserServiceUploadHeadResult()
+}
+
+func getHeadHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*user.UserServiceGetHeadArgs)
+	realResult := result.(*user.UserServiceGetHeadResult)
+	success, err := handler.(user.UserService).GetHead(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newUserServiceGetHeadArgs() interface{} {
+	return user.NewUserServiceGetHeadArgs()
+}
+
+func newUserServiceGetHeadResult() interface{} {
+	return user.NewUserServiceGetHeadResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -474,6 +512,26 @@ func (p *kClient) GetSellerByGoods(ctx context.Context, req *user.GetSellerByGoo
 	_args.Req = req
 	var _result user.UserServiceGetSellerByGoodsResult
 	if err = p.c.Call(ctx, "GetSellerByGoods", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadHead(ctx context.Context, req *user.UploadHeadRequest) (r *user.UploadHeadResponse, err error) {
+	var _args user.UserServiceUploadHeadArgs
+	_args.Req = req
+	var _result user.UserServiceUploadHeadResult
+	if err = p.c.Call(ctx, "UploadHead", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetHead(ctx context.Context, req *user.GetHeadRequest) (r *user.GetHeadRespnse, err error) {
+	var _args user.UserServiceGetHeadArgs
+	_args.Req = req
+	var _result user.UserServiceGetHeadResult
+	if err = p.c.Call(ctx, "GetHead", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

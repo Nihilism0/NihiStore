@@ -376,13 +376,54 @@ func GetSellerByGoods(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 	resp, err = config.GlobalUserClient.GetSellerByGoods(ctx, &kuser.GetSellerByGoodsRequest{
-		req.GoodsId,
+		GoodsId: req.GoodsId,
 	})
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)
 		return
 	}
+	c.JSON(consts.StatusOK, resp)
+}
 
+// UploadHead .
+// @router /user/uploadhead [POST]
+func UploadHead(ctx context.Context, c *app.RequestContext) {
+	var err error
+	resp := new(kuser.UploadHeadResponse)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.UploadHead(ctx, &kuser.UploadHeadRequest{
+		UserId: ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(consts.StatusOK, resp)
+}
+
+// GetHead .
+// @router /user/gethead [GET]
+func GetHead(ctx context.Context, c *app.RequestContext) {
+	var err error
+	resp := new(kuser.GetHeadRespnse)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	ID, _ := c.Get("ID")
+	resp, err = config.GlobalUserClient.GetHead(ctx, &kuser.GetHeadRequest{
+		UserId: ID.(int64),
+	})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
 	c.JSON(consts.StatusOK, resp)
 }

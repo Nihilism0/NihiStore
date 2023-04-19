@@ -8,11 +8,13 @@ import (
 	"NihiStore/server/shared/consts"
 	pay "NihiStore/server/shared/kitex_gen/pay/payservice"
 	"NihiStore/server/shared/middleware"
+	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/utils"
 	"github.com/cloudwego/kitex/server"
+	"gorm.io/plugin/opentelemetry/provider"
 	"net"
 	"strconv"
 )
@@ -27,6 +29,12 @@ func main() {
 	if err != nil {
 		return
 	}
+	p := provider.NewOpenTelemetryProvider(
+		provider.WithServiceName(config.GlobalServerConfig.Name),
+		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
+	)
+	defer p.Shutdown(context.Background())
 	// Create new server.
 	srv := pay.NewServer(
 		&PayServiceImpl{
