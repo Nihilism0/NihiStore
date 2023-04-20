@@ -52,3 +52,13 @@ func _buygoodsMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _getgoodsphotoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _uploadgoodsphotoMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -43,3 +43,12 @@ func (*MysqlGenerator) SelectGoodsById(Id int64) *model.Goods {
 func (*MysqlGenerator) UpdateGoods(ID int64, Goods *base.Goods) {
 	config.DB.Model(&model.Goods{}).Where("id = ?", ID).Updates(Goods)
 }
+func (*MysqlGenerator) UpdateGoodsPhoto(goodsId, photoId int64) error {
+	err := config.DB.Model(&model.Goods{}).Where("id = ?", goodsId).Update("photo_id", photoId).Error
+	return err
+}
+func (*MysqlGenerator) GetPhotoId(goodsId int64) int64 {
+	var goods model.Goods
+	config.DB.Model(&model.Goods{}).Where("id = ?", goodsId).First(&goods)
+	return goods.PhotoId
+}

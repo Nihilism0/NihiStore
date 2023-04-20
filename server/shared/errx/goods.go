@@ -4,4 +4,5 @@ package errx
 const (
 	CreateGoodsFail = iota + 1000
 	AuthGoodsFail
+	UpdateGoodsSqlErr
 )

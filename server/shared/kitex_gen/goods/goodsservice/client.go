@@ -16,6 +16,8 @@ type Client interface {
 	UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest, callOptions ...callopt.Option) (r *goods.UpdateGoodsResponse, err error)
 	SearchGoodsInfo(ctx context.Context, req *goods.SearchGoodsInfoRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsInfoResponse, err error)
 	SearchGoods(ctx context.Context, req *goods.SearchGoodsRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsResponse, err error)
+	UploadGoodsPhoto(ctx context.Context, req *goods.UploadGoodsPhotoRequest, callOptions ...callopt.Option) (r *goods.UploadGoodsPhotoResponse, err error)
+	GetGoodsPhoto(ctx context.Context, req *goods.GetGoodsPhotoRequest, callOptions ...callopt.Option) (r *goods.GetGoodsPhotoResponse, err error)
 }
 
 // NewClient creates a client for the service defined in IDL.
@@ -70,4 +72,14 @@ func (p *kGoodsServiceClient) SearchGoodsInfo(ctx context.Context, req *goods.Se
 func (p *kGoodsServiceClient) SearchGoods(ctx context.Context, req *goods.SearchGoodsRequest, callOptions ...callopt.Option) (r *goods.SearchGoodsResponse, err error) {
 	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
 	return p.kClient.SearchGoods(ctx, req)
+}
+
+func (p *kGoodsServiceClient) UploadGoodsPhoto(ctx context.Context, req *goods.UploadGoodsPhotoRequest, callOptions ...callopt.Option) (r *goods.UploadGoodsPhotoResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.UploadGoodsPhoto(ctx, req)
+}
+
+func (p *kGoodsServiceClient) GetGoodsPhoto(ctx context.Context, req *goods.GetGoodsPhotoRequest, callOptions ...callopt.Option) (r *goods.GetGoodsPhotoResponse, err error) {
+	ctx = client.NewCtxWithCallOptions(ctx, callOptions)
+	return p.kClient.GetGoodsPhoto(ctx, req)
 }

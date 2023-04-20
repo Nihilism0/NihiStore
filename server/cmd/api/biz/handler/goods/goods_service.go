@@ -160,3 +160,45 @@ func UpdateGoods(ctx context.Context, c *app.RequestContext) {
 	c.JSON(200, resp)
 	return
 }
+
+// UploadGoodsPhoto .
+// @router /goods/uploadgoodsphoto [GET]
+func UploadGoodsPhoto(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req hgoods.UploadGoodsPhotoReq
+	resp := new(kgoods.UploadGoodsPhotoResponse)
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	resp, err = config.GlobalGoodsClient.UploadGoodsPhoto(ctx, &kgoods.UploadGoodsPhotoRequest{GoodsId: req.GoodsId})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(200, resp)
+	return
+}
+
+// GetGoodsPhoto .
+// @router /goods/getgoodsphoto [GET]
+func GetGoodsPhoto(ctx context.Context, c *app.RequestContext) {
+	var err error
+	var req hgoods.GetGoodsPhotoReq
+	resp := new(kgoods.GetGoodsPhotoResponse)
+	err = c.BindAndValidate(&req)
+	if err != nil {
+		c.String(consts.StatusBadRequest, err.Error())
+		return
+	}
+	resp, err = config.GlobalGoodsClient.GetGoodsPhoto(ctx, &kgoods.GetGoodsPhotoRequest{GoodsId: req.GoodsId})
+	if err != nil {
+		hlog.Error("rpc user service err!", err)
+		c.JSON(http.StatusInternalServerError, resp)
+		return
+	}
+	c.JSON(200, resp)
+	return
+}

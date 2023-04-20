@@ -29,9 +29,8 @@ func (s *OSSServiceImpl) CreateGoodsOSS(ctx context.Context, req *oss.CreateGood
 		return resp, nil
 	}
 	ossRecord.GoodsId = req.GoodsId
-	path := fmt.Sprintf("%s/%s", req.Path, sf.Generate().String())
-	ossRecord.Path = path
-	err = config.DB.Model(&model.GoodsOSSRecord{}).Create(&ossRecord).Error
+	ossRecord.Path = fmt.Sprintf("%s/%s", req, sf.Generate().String())
+	err = config.DB.Model(&model.HeadOSSRecord{}).Create(&ossRecord).Error
 	if err != nil {
 		klog.Error("presigned put object url err", err)
 		return resp, nil
@@ -39,7 +38,7 @@ func (s *OSSServiceImpl) CreateGoodsOSS(ctx context.Context, req *oss.CreateGood
 	if err != nil {
 		klog.Fatalf("generate id failed: %s", err.Error())
 	}
-	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", path, time.Duration(req.TimeoutSec)*time.Second)
+	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", req.Path, time.Duration(req.TimeoutSec)*time.Second)
 	if err != nil {
 		klog.Error("presigned put object url err", err)
 		resp.BaseResp = tools.BuildBaseResp(errx.PutObjectError, "PutObjectError")
@@ -74,7 +73,7 @@ func (s *OSSServiceImpl) CreateHeadOSS(ctx context.Context, req *oss.CreateHeadO
 	}
 	ossRecord.UserId = req.UserId
 	ossRecord.Path = fmt.Sprintf("%s/%s", req, sf.Generate().String())
-	err = config.DB.Model(&model.GoodsOSSRecord{}).Create(&ossRecord).Error
+	err = config.DB.Model(&model.HeadOSSRecord{}).Create(&ossRecord).Error
 	if err != nil {
 		klog.Error("presigned put object url err", err)
 		return resp, nil

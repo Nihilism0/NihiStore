@@ -19,11 +19,13 @@ func NewServiceInfo() *kitex.ServiceInfo {
 	serviceName := "GoodsService"
 	handlerType := (*goods.GoodsService)(nil)
 	methods := map[string]kitex.MethodInfo{
-		"CreateGoods":     kitex.NewMethodInfo(createGoodsHandler, newGoodsServiceCreateGoodsArgs, newGoodsServiceCreateGoodsResult, false),
-		"DeleteGoods":     kitex.NewMethodInfo(deleteGoodsHandler, newGoodsServiceDeleteGoodsArgs, newGoodsServiceDeleteGoodsResult, false),
-		"UpdateGoods":     kitex.NewMethodInfo(updateGoodsHandler, newGoodsServiceUpdateGoodsArgs, newGoodsServiceUpdateGoodsResult, false),
-		"SearchGoodsInfo": kitex.NewMethodInfo(searchGoodsInfoHandler, newGoodsServiceSearchGoodsInfoArgs, newGoodsServiceSearchGoodsInfoResult, false),
-		"SearchGoods":     kitex.NewMethodInfo(searchGoodsHandler, newGoodsServiceSearchGoodsArgs, newGoodsServiceSearchGoodsResult, false),
+		"CreateGoods":      kitex.NewMethodInfo(createGoodsHandler, newGoodsServiceCreateGoodsArgs, newGoodsServiceCreateGoodsResult, false),
+		"DeleteGoods":      kitex.NewMethodInfo(deleteGoodsHandler, newGoodsServiceDeleteGoodsArgs, newGoodsServiceDeleteGoodsResult, false),
+		"UpdateGoods":      kitex.NewMethodInfo(updateGoodsHandler, newGoodsServiceUpdateGoodsArgs, newGoodsServiceUpdateGoodsResult, false),
+		"SearchGoodsInfo":  kitex.NewMethodInfo(searchGoodsInfoHandler, newGoodsServiceSearchGoodsInfoArgs, newGoodsServiceSearchGoodsInfoResult, false),
+		"SearchGoods":      kitex.NewMethodInfo(searchGoodsHandler, newGoodsServiceSearchGoodsArgs, newGoodsServiceSearchGoodsResult, false),
+		"UploadGoodsPhoto": kitex.NewMethodInfo(uploadGoodsPhotoHandler, newGoodsServiceUploadGoodsPhotoArgs, newGoodsServiceUploadGoodsPhotoResult, false),
+		"GetGoodsPhoto":    kitex.NewMethodInfo(getGoodsPhotoHandler, newGoodsServiceGetGoodsPhotoArgs, newGoodsServiceGetGoodsPhotoResult, false),
 	}
 	extra := map[string]interface{}{
 		"PackageName": "goods",
@@ -129,6 +131,42 @@ func newGoodsServiceSearchGoodsResult() interface{} {
 	return goods.NewGoodsServiceSearchGoodsResult()
 }
 
+func uploadGoodsPhotoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*goods.GoodsServiceUploadGoodsPhotoArgs)
+	realResult := result.(*goods.GoodsServiceUploadGoodsPhotoResult)
+	success, err := handler.(goods.GoodsService).UploadGoodsPhoto(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newGoodsServiceUploadGoodsPhotoArgs() interface{} {
+	return goods.NewGoodsServiceUploadGoodsPhotoArgs()
+}
+
+func newGoodsServiceUploadGoodsPhotoResult() interface{} {
+	return goods.NewGoodsServiceUploadGoodsPhotoResult()
+}
+
+func getGoodsPhotoHandler(ctx context.Context, handler interface{}, arg, result interface{}) error {
+	realArg := arg.(*goods.GoodsServiceGetGoodsPhotoArgs)
+	realResult := result.(*goods.GoodsServiceGetGoodsPhotoResult)
+	success, err := handler.(goods.GoodsService).GetGoodsPhoto(ctx, realArg.Req)
+	if err != nil {
+		return err
+	}
+	realResult.Success = success
+	return nil
+}
+func newGoodsServiceGetGoodsPhotoArgs() interface{} {
+	return goods.NewGoodsServiceGetGoodsPhotoArgs()
+}
+
+func newGoodsServiceGetGoodsPhotoResult() interface{} {
+	return goods.NewGoodsServiceGetGoodsPhotoResult()
+}
+
 type kClient struct {
 	c client.Client
 }
@@ -184,6 +222,26 @@ func (p *kClient) SearchGoods(ctx context.Context, req *goods.SearchGoodsRequest
 	_args.Req = req
 	var _result goods.GoodsServiceSearchGoodsResult
 	if err = p.c.Call(ctx, "SearchGoods", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) UploadGoodsPhoto(ctx context.Context, req *goods.UploadGoodsPhotoRequest) (r *goods.UploadGoodsPhotoResponse, err error) {
+	var _args goods.GoodsServiceUploadGoodsPhotoArgs
+	_args.Req = req
+	var _result goods.GoodsServiceUploadGoodsPhotoResult
+	if err = p.c.Call(ctx, "UploadGoodsPhoto", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
+
+func (p *kClient) GetGoodsPhoto(ctx context.Context, req *goods.GetGoodsPhotoRequest) (r *goods.GetGoodsPhotoResponse, err error) {
+	var _args goods.GoodsServiceGetGoodsPhotoArgs
+	_args.Req = req
+	var _result goods.GoodsServiceGetGoodsPhotoResult
+	if err = p.c.Call(ctx, "GetGoodsPhoto", &_args, &_result); err != nil {
 		return
 	}
 	return _result.GetSuccess(), nil

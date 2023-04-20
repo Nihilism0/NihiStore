@@ -14,6 +14,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/klog"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 // UserServiceImpl implements the last service interface defined in the IDL.
@@ -39,6 +40,8 @@ type MysqlUserGenerator interface {
 	CreateUser(theUser *model.User)
 	BeSeller(in *user.BeSellerRequest)
 	GetSellerByGoods(goodsId int64) int64
+	UpdateHeadId(userId, headId int64) error
+	GetHeadId(userId int64) int64
 }
 
 type MysqlFavoGenerator interface {
@@ -297,16 +300,50 @@ func (s *UserServiceImpl) GetSellerByGoods(ctx context.Context, req *user.GetSel
 func (s *UserServiceImpl) UploadHead(ctx context.Context, req *user.UploadHeadRequest) (resp *user.UploadHeadResponse, err error) {
 	resp = new(user.UploadHeadResponse)
 	path := tools.CreateHeadMinioPath(strconv.FormatInt(req.UserId, 10))
-	br, err := s.OSSManager.CreateHeadOSS(ctx, &oss.CreateHeadOSSRequest{
-		Path:       "",
-		TimeoutSec: 0,
-		UserId:     0,
+	hr, err := s.OSSManager.CreateHeadOSS(ctx, &oss.CreateHeadOSSRequest{
+		Path:       path,
+		TimeoutSec: int32(10 * time.Second.Seconds()),
+		UserId:     req.UserId,
 	})
-	return
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(http.StatusInternalServerError, err.Error())
+		return resp, nil
+	}
+	if hr.BaseResp.StatusCode != http.StatusOK {
+		resp.BaseResp = hr.BaseResp
+		return resp, nil
+	}
+	err = s.MysqlUserGenerator.UpdateHeadId(req.UserId, hr.Id)
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(errx.UpdateHeadIdErr, err.Error())
+		return resp, nil
+	}
+	resp.Url = hr.UploadUrl
+	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Upload head url get success")
+	return resp, nil
 }
 
 // GetHead implements the UserServiceImpl interface.
 func (s *UserServiceImpl) GetHead(ctx context.Context, req *user.GetHeadRequest) (resp *user.GetHeadRespnse, err error) {
-	// TODO: Your code here...
-	return
+	resp = new(user.GetHeadRespnse)
+	headId := s.MysqlUserGenerator.GetHeadId(req.UserId)
+	hr, err := s.OSSManager.GetHeadOSS(ctx, &oss.GetHeadOSSRequest{
+		Id:         headId,
+		TimeoutSec: int32(5 * time.Second.Seconds()),
+	})
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(http.StatusInternalServerError, err.Error())
+		return resp, nil
+	}
+	if hr.BaseResp.StatusCode != http.StatusOK {
+		klog.Error(hr.BaseResp.StatusMsg)
+		resp.BaseResp = hr.BaseResp
+		return resp, nil
+	}
+	resp.Url = hr.Url
+	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Get head url success")
+	return resp, nil
 }

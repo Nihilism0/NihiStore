@@ -20,11 +20,16 @@ type MysqlConfig struct {
 }
 
 type ServerConfig struct {
-	Name      string      `mapstructure:"name" json:"name"`
-	Host      string      `mapstructure:"host" json:"host"`
-	OtelInfo  OtelConfig  `mapstructure:"otel" json:"otel"`
-	MysqlInfo MysqlConfig `mapstructure:"mysql" json:"mysql"`
-	JWTInfo   JWTConfig   `mapstructure:"jwt" json:"jwt"`
+	Name       string       `mapstructure:"name" json:"name"`
+	Host       string       `mapstructure:"host" json:"host"`
+	OtelInfo   OtelConfig   `mapstructure:"otel" json:"otel"`
+	MysqlInfo  MysqlConfig  `mapstructure:"mysql" json:"mysql"`
+	JWTInfo    JWTConfig    `mapstructure:"jwt" json:"jwt"`
+	OSSSrvInfo OSSSrvConfig `mapstructure:"oss_srv" json:"oss_srv"`
+}
+
+type OSSSrvConfig struct {
+	Name string `mapstructure:"name" json:"name"`
 }
 
 type JWTConfig struct {

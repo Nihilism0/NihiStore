@@ -10,4 +10,5 @@ type Goods struct {
 	Description string
 	Cost        int64
 	SalesVolume int64
+	PhotoId     int64
 }

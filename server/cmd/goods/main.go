@@ -30,10 +30,12 @@ func main() {
 		provider.WithInsecure(),
 	)
 	defer p.Shutdown(context.Background())
+	ossClient := initialize.InitOSS()
 	// Create new server.
 	srv := goods.NewServer(&GoodsServiceImpl{
 		ConvertGenerator: &convert.ConvertGenerator{},
 		MysqlGenerator:   &mysql.MysqlGenerator{},
+		OSSManager:       ossClient,
 	},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),

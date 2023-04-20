@@ -54,10 +54,32 @@ struct SearchGoodsResponse{
     2: common.BaseResponse base_resp
 }
 
+//上传商品图片
+struct UploadGoodsPhotoRequest{
+    1: i64 goodsId
+}
+
+struct UploadGoodsPhotoResponse{
+    1: common.BaseResponse base_resp
+    2: string url
+}
+
+//得到商品图片
+struct GetGoodsPhotoRequest{
+    1: i64 goodsId
+}
+
+struct GetGoodsPhotoResponse{
+    1: common.BaseResponse base_resp
+    2: string url
+}
+
 service GoodsService {
     CreateGoodsResponse CreateGoods(1:CreateGoodsRequest req),
     DeleteGoodsResponse DeleteGoods(1:DeleteGoodsRequest req)
     UpdateGoodsResponse UpdateGoods(1:UpdateGoodsRequest req)
     SearchGoodsInfoResponse SearchGoodsInfo(1:SearchGoodsInfoRequest req),
     SearchGoodsResponse SearchGoods(1:SearchGoodsRequest req),
+    UploadGoodsPhotoResponse UploadGoodsPhoto(1:UploadGoodsPhotoRequest req),
+    GetGoodsPhotoResponse GetGoodsPhoto(1:GetGoodsPhotoRequest req),
 }

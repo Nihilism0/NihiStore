@@ -21,8 +21,10 @@ func Register(r *server.Hertz) {
 		_goods := root.Group("/goods", _goodsMw()...)
 		_goods.POST("/create", append(_creategoodsMw(), goods.CreateGoods)...)
 		_goods.DELETE("/delete", append(_deletegoodsMw(), goods.DeleteGoods)...)
+		_goods.GET("/getgoodsphoto", append(_getgoodsphotoMw(), goods.GetGoodsPhoto)...)
 		_goods.GET("/searchgoods", append(_searchgoodsMw(), goods.SearchGoods)...)
 		_goods.GET("/searchgoodsinfo", append(_searchgoodsinfoMw(), goods.SearchGoodsInfo)...)
 		_goods.PUT("/update", append(_updategoodsMw(), goods.UpdateGoods)...)
+		_goods.GET("/uploadgoodsphoto", append(_uploadgoodsphotoMw(), goods.UploadGoodsPhoto)...)
 	}
 }

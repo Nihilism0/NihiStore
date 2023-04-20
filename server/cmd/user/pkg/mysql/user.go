@@ -27,3 +27,14 @@ func (*MysqlUserGenerator) GetSellerByGoods(goodsId int64) int64 {
 	config.DB.Where("id = ?", goodsId).First(&goods)
 	return goods.UserId
 }
+
+func (*MysqlUserGenerator) UpdateHeadId(userId, headId int64) error {
+	err := config.DB.Model(&model.User{}).Where("id = ?", userId).Update("head_id", headId).Error
+	return err
+}
+
+func (*MysqlUserGenerator) GetHeadId(userId int64) int64 {
+	var user model.User
+	config.DB.Model(&model.User{}).Where("id = ?", userId).First(&user)
+	return user.HeadId
+}

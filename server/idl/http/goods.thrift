@@ -25,10 +25,20 @@ struct SearchGoodsReq{
     1: i64 goodsId
 }
 
+struct UploadGoodsPhotoReq{
+    1: i64 goodsId
+}
+
+struct GetGoodsPhotoReq{
+    1: i64 goodsId
+}
+
 service goodsService{
     common.NilResponse CreateGoods(1:CreateGoodsReq req) (api.post ="/goods/create"),
     common.NilResponse DeleteGoods(1:DeleteGoodsReq req) (api.delete ="/goods/delete")
     common.NilResponse UpdateGoods(1:UpdateGoodsReq req) (api.put="/goods/update")
     common.NilResponse SearchGoodsInfo(1:SearchGoodsInfoReq req)(api.get ="/goods/searchgoodsinfo")
     common.NilResponse SearchGoods(1:SearchGoodsReq req)(api.get ="/goods/searchgoods")
+    common.NilResponse UploadGoodsPhoto(1:UploadGoodsPhotoReq req)(api.get ="/goods/uploadgoodsphoto")
+    common.NilResponse GetGoodsPhoto(1:GetGoodsPhotoReq req)(api.get ="/goods/getgoodsphoto")
 }
