@@ -21,7 +21,6 @@ func main() {
 	rpc.Init()
 	h := server.New(
 		tracer,
-		server.WithALPN(true),
 		server.WithHostPorts(fmt.Sprintf(":%d", config.GlobalServerConfig.Port)),
 		server.WithRegistry(r, info),
 	)

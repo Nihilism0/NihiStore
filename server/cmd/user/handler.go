@@ -302,7 +302,7 @@ func (s *UserServiceImpl) UploadHead(ctx context.Context, req *user.UploadHeadRe
 	path := tools.CreateHeadMinioPath(strconv.FormatInt(req.UserId, 10))
 	hr, err := s.OSSManager.CreateHeadOSS(ctx, &oss.CreateHeadOSSRequest{
 		Path:       path,
-		TimeoutSec: int32(10 * time.Second.Seconds()),
+		TimeoutSec: int32(100 * time.Second.Seconds()),
 		UserId:     req.UserId,
 	})
 	if err != nil {
@@ -331,7 +331,7 @@ func (s *UserServiceImpl) GetHead(ctx context.Context, req *user.GetHeadRequest)
 	headId := s.MysqlUserGenerator.GetHeadId(req.UserId)
 	hr, err := s.OSSManager.GetHeadOSS(ctx, &oss.GetHeadOSSRequest{
 		Id:         headId,
-		TimeoutSec: int32(5 * time.Second.Seconds()),
+		TimeoutSec: int32(50 * time.Second.Seconds()),
 	})
 	if err != nil {
 		klog.Error(err)

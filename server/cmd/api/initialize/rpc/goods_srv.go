@@ -48,7 +48,6 @@ func initGoods() {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.GoodsSrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
-		provider.WithInsecure(),
 	)
 
 	// create a new client

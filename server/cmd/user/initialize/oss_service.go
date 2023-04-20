@@ -49,7 +49,6 @@ func InitOSS() ossservice.Client {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.OSSSrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
-		provider.WithInsecure(),
 	)
 	// create a new client
 	c, err := ossservice.NewClient(

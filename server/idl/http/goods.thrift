@@ -39,6 +39,6 @@ service goodsService{
     common.NilResponse UpdateGoods(1:UpdateGoodsReq req) (api.put="/goods/update")
     common.NilResponse SearchGoodsInfo(1:SearchGoodsInfoReq req)(api.get ="/goods/searchgoodsinfo")
     common.NilResponse SearchGoods(1:SearchGoodsReq req)(api.get ="/goods/searchgoods")
-    common.NilResponse UploadGoodsPhoto(1:UploadGoodsPhotoReq req)(api.get ="/goods/uploadgoodsphoto")
+    common.NilResponse UploadGoodsPhoto(1:UploadGoodsPhotoReq req)(api.get ="1")
     common.NilResponse GetGoodsPhoto(1:GetGoodsPhotoReq req)(api.get ="/goods/getgoodsphoto")
 }

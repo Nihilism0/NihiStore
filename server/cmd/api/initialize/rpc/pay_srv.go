@@ -38,7 +38,6 @@ func initPay() {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.PaySrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
-		provider.WithInsecure(),
 	)
 
 	nacosCli, err := clients.NewNamingClient(
@@ -50,6 +49,7 @@ func initPay() {
 	if err != nil {
 		klog.Fatalf("new consul client failed: %s", err.Error())
 	}
+
 	// create a new client
 	c, err := payservice.NewClient(
 		config.GlobalServerConfig.PaySrvInfo.Name,

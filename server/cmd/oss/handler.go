@@ -29,7 +29,8 @@ func (s *OSSServiceImpl) CreateGoodsOSS(ctx context.Context, req *oss.CreateGood
 		return resp, nil
 	}
 	ossRecord.GoodsId = req.GoodsId
-	ossRecord.Path = fmt.Sprintf("%s/%s", req, sf.Generate().String())
+	path := fmt.Sprintf("%s/%s", req.Path, sf.Generate().String())
+	ossRecord.Path = path
 	err = config.DB.Model(&model.HeadOSSRecord{}).Create(&ossRecord).Error
 	if err != nil {
 		klog.Error("presigned put object url err", err)
@@ -38,7 +39,7 @@ func (s *OSSServiceImpl) CreateGoodsOSS(ctx context.Context, req *oss.CreateGood
 	if err != nil {
 		klog.Fatalf("generate id failed: %s", err.Error())
 	}
-	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", req.Path, time.Duration(req.TimeoutSec)*time.Second)
+	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", path, time.Duration(req.TimeoutSec)*time.Second)
 	if err != nil {
 		klog.Error("presigned put object url err", err)
 		resp.BaseResp = tools.BuildBaseResp(errx.PutObjectError, "PutObjectError")
@@ -72,7 +73,8 @@ func (s *OSSServiceImpl) CreateHeadOSS(ctx context.Context, req *oss.CreateHeadO
 		return resp, nil
 	}
 	ossRecord.UserId = req.UserId
-	ossRecord.Path = fmt.Sprintf("%s/%s", req, sf.Generate().String())
+	path := fmt.Sprintf("%s/%s", req.Path, sf.Generate().String())
+	ossRecord.Path = path
 	err = config.DB.Model(&model.HeadOSSRecord{}).Create(&ossRecord).Error
 	if err != nil {
 		klog.Error("presigned put object url err", err)
@@ -81,7 +83,7 @@ func (s *OSSServiceImpl) CreateHeadOSS(ctx context.Context, req *oss.CreateHeadO
 	if err != nil {
 		klog.Fatalf("generate id failed: %s", err.Error())
 	}
-	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", req.Path, time.Duration(req.TimeoutSec)*time.Second)
+	u, err := config.MinioClient.PresignedPutObject(ctx, "nihistore", path, time.Duration(req.TimeoutSec)*time.Second)
 	if err != nil {
 		klog.Error("presigned put object url err", err)
 		resp.BaseResp = tools.BuildBaseResp(errx.PutObjectError, "PutObjectError")
@@ -98,7 +100,7 @@ func (s *OSSServiceImpl) GetHeadOSS(ctx context.Context, req *oss.GetHeadOSSRequ
 	resp = new(oss.GetHeadOSSResponse)
 	var ossRecord model.HeadOSSRecord
 	config.DB.Model(&model.HeadOSSRecord{}).Where("id = ?", req.Id).First(&ossRecord)
-	url, err := config.MinioClient.PresignedGetObject(ctx, "nihilism", ossRecord.Path, time.Duration(req.TimeoutSec)*time.Second, nil)
+	url, err := config.MinioClient.PresignedGetObject(ctx, "nihistore", ossRecord.Path, time.Duration(req.TimeoutSec)*time.Second, nil)
 	resp.Url = url.String()
 	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Get URL success")
 	return resp, nil

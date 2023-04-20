@@ -32,7 +32,6 @@ func main() {
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
-		provider.WithInsecure(),
 	)
 	defer p.Shutdown(context.Background())
 	// Create new server.
