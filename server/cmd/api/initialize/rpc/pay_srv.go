@@ -5,6 +5,7 @@ import (
 	"NihiStore/server/shared/consts"
 	"NihiStore/server/shared/kitex_gen/pay/payservice"
 	"NihiStore/server/shared/middleware"
+	"fmt"
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/loadbalance"
@@ -34,10 +35,12 @@ func initPay() {
 		CacheDir:            consts.NacosCacheDir,
 		LogLevel:            consts.NacosLogLevel,
 	}
+	fmt.Println(config.GlobalServerConfig.OtelInfo.EndPoint)
 	// init OpenTelemetry
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.PaySrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
 	)
 
 	nacosCli, err := clients.NewNamingClient(

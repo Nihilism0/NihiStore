@@ -10,10 +10,10 @@ require (
 	github.com/cloudwego/kitex v0.5.1
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/hertz-contrib/cors v0.0.0-20230307061136-1fe747ea6a2a
-	github.com/hertz-contrib/http2 v0.1.5
 	github.com/hertz-contrib/obs-opentelemetry/logging/logrus v0.1.1
 	github.com/hertz-contrib/obs-opentelemetry/tracing v0.2.0
 	github.com/hertz-contrib/registry/nacos v0.0.0-20230310022437-e0024eacdbb7
+	github.com/kitex-contrib/obs-opentelemetry v0.2.1
 	github.com/kitex-contrib/obs-opentelemetry/logging/logrus v0.0.0-20230219092456-5e6c84962323
 	github.com/kitex-contrib/registry-nacos v0.1.0
 	github.com/minio/minio-go/v7 v7.0.52
@@ -53,7 +53,7 @@ require (
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/pprof v0.0.0-20220608213341-c488b8fa1db3 // indirect
 	github.com/google/uuid v1.3.0 // indirect
-	github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.0 // indirect
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.15.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/henrylee2cn/ameda v1.5.1 // indirect
 	github.com/jhump/protoreflect v1.8.2 // indirect
@@ -87,7 +87,7 @@ require (
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	go.opentelemetry.io/contrib/instrumentation/runtime v0.38.0 // indirect
+	go.opentelemetry.io/contrib/instrumentation/runtime v0.39.0 // indirect
 	go.opentelemetry.io/contrib/propagators/b3 v1.14.0 // indirect
 	go.opentelemetry.io/contrib/propagators/jaeger v1.13.0 // indirect
 	go.opentelemetry.io/contrib/propagators/opencensus v0.39.0 // indirect

@@ -5,6 +5,7 @@ import (
 	"NihiStore/server/shared/consts"
 	"NihiStore/server/shared/kitex_gen/oss/ossservice"
 	"NihiStore/server/shared/middleware"
+	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 
 	"github.com/cloudwego/kitex/client"
 	"github.com/cloudwego/kitex/pkg/klog"
@@ -49,6 +50,7 @@ func InitOSS() ossservice.Client {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.OSSSrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
 	)
 	// create a new client
 	c, err := ossservice.NewClient(
@@ -58,6 +60,7 @@ func InitOSS() ossservice.Client {
 		client.WithMuxConnection(1),                                // multiplexing
 		client.WithMiddleware(middleware.CommonMiddleware),
 		client.WithInstanceMW(middleware.ClientMiddleware),
+		client.WithSuite(tracing.NewClientSuite()),
 		client.WithClientBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.OSSSrvInfo.Name}),
 	)
 	if err != nil {

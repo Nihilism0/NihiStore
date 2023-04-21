@@ -12,6 +12,7 @@ import (
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/utils"
 	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	"gorm.io/plugin/opentelemetry/provider"
 	"net"
 	"strconv"
@@ -29,6 +30,7 @@ func main() {
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
 	)
 	defer p.Shutdown(context.Background())
 	// Create new server.
@@ -41,6 +43,7 @@ func main() {
 		server.WithMiddleware(middleware.CommonMiddleware),
 		server.WithMiddleware(middleware.ServerMiddleware),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.Name}),
+		server.WithSuite(tracing.NewServerSuite()),
 	)
 	err = srv.Run()
 	if err != nil {

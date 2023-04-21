@@ -48,6 +48,7 @@ func initUser() {
 	provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.UserSrvInfo.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
 	)
 	// create a new client
 	c, err := userservice.NewClient(

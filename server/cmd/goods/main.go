@@ -7,13 +7,13 @@ import (
 	"NihiStore/server/cmd/goods/pkg/mysql"
 	"NihiStore/server/shared/consts"
 	goods "NihiStore/server/shared/kitex_gen/goods/goodsservice"
-	"NihiStore/server/shared/middleware"
 	"context"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
 	"github.com/cloudwego/kitex/pkg/utils"
 	"github.com/cloudwego/kitex/server"
+	"github.com/kitex-contrib/obs-opentelemetry/tracing"
 	"gorm.io/plugin/opentelemetry/provider"
 	"net"
 	"strconv"
@@ -27,6 +27,7 @@ func main() {
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),
+		provider.WithInsecure(),
 	)
 	defer p.Shutdown(context.Background())
 	ossClient := initialize.InitOSS()
@@ -40,8 +41,7 @@ func main() {
 		server.WithRegistry(r),
 		server.WithRegistryInfo(info),
 		server.WithLimit(&limit.Option{MaxConnections: 2000, MaxQPS: 500}),
-		server.WithMiddleware(middleware.CommonMiddleware),
-		server.WithMiddleware(middleware.ServerMiddleware),
+		server.WithSuite(tracing.NewServerSuite()),
 		server.WithServerBasicInfo(&rpcinfo.EndpointBasicInfo{ServiceName: config.GlobalServerConfig.Name}),
 	)
 
