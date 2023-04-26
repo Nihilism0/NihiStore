@@ -10,11 +10,10 @@ import (
 
 type TokenGenerator struct{}
 
-func (TG *TokenGenerator) CreateJWTtoken(ID int64, isSeller bool) (string, error) {
+func (TG *TokenGenerator) CreateJWTtoken(ID int64) (string, error) {
 	now := time.Now().Unix()
 	claim := model.CustomClaims{
-		ID:       ID,
-		IsSeller: isSeller,
+		ID: ID,
 		StandardClaims: jwt.StandardClaims{
 			IssuedAt:  now,
 			NotBefore: now,

@@ -21,10 +21,19 @@ type ServerConfig struct {
 	JWTInfo      JWTConfig    `mapstructure:"jwt" json:"jwt"`
 	MqInfo       MqConfig     `mapstructure:"mq_info" json:"mq_info"`
 	OtelInfo     OtelConfig   `mapstructure:"otel" json:"otel"`
+	MysqlInfo    MysqlConfig  `mapstructure:"mysql" json:"mysql"`
 	AlipayInfo   AlipayConfig `mapstructure:"alipay" json:"alipay"`
 	UserSrvInfo  RPCSrvConfig `mapstructure:"user_srv" json:"user_srv"`
 	GoodsSrvInfo RPCSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 	PaySrvInfo   RPCSrvConfig `mapstructure:"pay_srv" json:"pay_srv"`
+}
+
+type MysqlConfig struct {
+	Host     string `mapstructure:"host" json:"host"`
+	Port     int    `mapstructure:"port" json:"port"`
+	Name     string `mapstructure:"db" json:"db"`
+	User     string `mapstructure:"user" json:"user"`
+	Password string `mapstructure:"password" json:"password"`
 }
 
 type OtelConfig struct {

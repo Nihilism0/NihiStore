@@ -16,7 +16,6 @@ type MysqlConfig struct {
 	Name     string `mapstructure:"db" json:"db"`
 	User     string `mapstructure:"user" json:"user"`
 	Password string `mapstructure:"password" json:"password"`
-	Salt     string `mapstructure:"salt" json:"salt"`
 }
 
 type ServerConfig struct {

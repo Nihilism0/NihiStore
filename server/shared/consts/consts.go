@@ -4,6 +4,8 @@ const (
 	JWTIssuer  = "NihiStore"
 	ThirtyDays = 60 * 60 * 24 * 30
 
+	CasbinModelPath = "initialize/casbin/model.conf"
+
 	IPFlagName  = "ip"
 	IPFlagValue = "0.0.0.0"
 	IPFlagUsage = "address"
@@ -35,6 +37,6 @@ const (
 
 	OSSSnowflakeNode = 1
 	MySqlDSN         = "%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local"
-
-	MaxGoodsAmount = 99
+	CasbinMysqlDSN   = "%s:%s@tcp(%s:%d)/%s"
+	MaxGoodsAmount   = 99
 )

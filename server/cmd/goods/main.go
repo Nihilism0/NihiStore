@@ -3,6 +3,7 @@ package main
 import (
 	"NihiStore/server/cmd/goods/config"
 	"NihiStore/server/cmd/goods/initialize"
+	"NihiStore/server/cmd/goods/initialize/casbin"
 	"NihiStore/server/cmd/goods/pkg/convert"
 	"NihiStore/server/cmd/goods/pkg/mysql"
 	"NihiStore/server/shared/consts"
@@ -24,6 +25,7 @@ func main() {
 	IP, Port := initialize.InitFlag()
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
+	casbin.InitCasbin()
 	p := provider.NewOpenTelemetryProvider(
 		provider.WithServiceName(config.GlobalServerConfig.Name),
 		provider.WithExportEndpoint(config.GlobalServerConfig.OtelInfo.EndPoint),

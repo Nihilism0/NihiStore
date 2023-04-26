@@ -4,6 +4,7 @@ import (
 	"NihiStore/server/cmd/user/config"
 	"NihiStore/server/shared/kitex_gen/user"
 	"NihiStore/server/shared/model"
+	"strconv"
 )
 
 type MysqlUserGenerator struct{}
@@ -19,7 +20,8 @@ func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
 }
 
 func (*MysqlUserGenerator) BeSeller(in *user.BeSellerRequest) {
-	config.DB.Model(&model.User{}).Where("id = ?", in.UserId).Updates(&model.User{IsSeller: true, SellerAliId: in.SellerAliId})
+	config.DB.Model(&model.User{}).Where("id = ?", in.UserId).Updates(&model.User{SellerAliId: in.SellerAliId})
+	config.Enforcer.AddRoleForUser(strconv.FormatInt(in.UserId, 10), "seller", "g")
 }
 
 func (*MysqlUserGenerator) GetSellerByGoods(goodsId int64) int64 {

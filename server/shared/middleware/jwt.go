@@ -44,7 +44,6 @@ func JWTAuthMiddleware(Secret string) app.HandlerFunc {
 		}
 
 		c.Set("ID", mc.ID)
-		c.Set("IsSeller", mc.IsSeller)
 		c.Next(ctx)
 	}
 }

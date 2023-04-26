@@ -6,9 +6,7 @@ import (
 	hgoods "NihiStore/server/cmd/api/biz/model/goods"
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/pkg"
-	"NihiStore/server/shared/errx"
 	kgoods "NihiStore/server/shared/kitex_gen/goods"
-	"NihiStore/server/shared/tools"
 	"context"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/hlog"
@@ -27,18 +25,11 @@ func CreateGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	auth, _ := c.Get("IsSeller")
 	ID, _ := c.Get("ID")
-	if auth.(bool) != true {
-		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
-		c.JSON(errx.AuthSellerFail, resp)
-		return
-	}
 	resp, err = config.GlobalGoodsClient.CreateGoods(ctx, &kgoods.CreateGoodsRequest{
 		Id:               ID.(int64),
 		GoodsInformation: pkg.ConvertGoodsInformation(req.GoodsInformation),
 	})
-
 	if err != nil {
 		hlog.Error("rpc user service err!", err)
 		c.JSON(http.StatusInternalServerError, resp)
@@ -60,13 +51,8 @@ func DeleteGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	auth, _ := c.Get("IsSeller")
 	ID, _ := c.Get("ID")
-	if auth.(bool) != true {
-		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
-		c.JSON(errx.AuthSellerFail, resp)
-		return
-	}
+
 	resp, err = config.GlobalGoodsClient.DeleteGoods(ctx, &kgoods.DeleteGoodsRequest{
 		GoodsId:  req.GoodsId,
 		SellerId: ID.(int64),
@@ -140,13 +126,9 @@ func UpdateGoods(ctx context.Context, c *app.RequestContext) {
 		c.String(consts.StatusBadRequest, err.Error())
 		return
 	}
-	auth, _ := c.Get("IsSeller")
+
 	ID, _ := c.Get("ID")
-	if auth.(bool) != true {
-		resp.BaseResp = tools.BuildBaseResp(errx.AuthCreatGoodsFail, "Auth seller failed")
-		c.JSON(errx.AuthSellerFail, resp)
-		return
-	}
+
 	resp, err = config.GlobalGoodsClient.UpdateGoods(ctx, &kgoods.UpdateGoodsRequest{
 		Id:               req.ID,
 		GoodsInformation: pkg.ConvertGoodsInformation(req.GoodsInformation),

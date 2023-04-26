@@ -1,6 +1,7 @@
 package main
 
 import (
+	"NihiStore/server/cmd/goods/config"
 	"NihiStore/server/shared/errx"
 	"NihiStore/server/shared/kitex_gen/base"
 	goods "NihiStore/server/shared/kitex_gen/goods"
@@ -46,8 +47,21 @@ type OSSManager interface {
 // CreateGoods implements the GoodsServiceImpl interface.
 func (s *GoodsServiceImpl) CreateGoods(ctx context.Context, req *goods.CreateGoodsRequest) (resp *goods.CreateGoodsResponse, err error) {
 	resp = new(goods.CreateGoodsResponse)
+	ok, err := config.Enforcer.Enforce(strconv.FormatInt(req.Id, 10), "create", "create")
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(errx.CasbinInternalError, "Enforce internal error")
+		return resp, nil
+	}
+	if !ok {
+		klog.Info(req.Id, " has no rules")
+		resp.BaseResp = tools.BuildBaseResp(errx.CasbinAuthFail, "Casbin auth fail")
+		return resp, nil
+	}
+
 	Goods := s.ConvertGenerator.ConvertGoods(req)
 	s.MysqlGenerator.CreateGoods(Goods)
+	config.Enforcer.AddPolicy(strconv.FormatInt(req.Id, 10), strconv.FormatInt(int64(Goods.ID), 10), "operate")
 	resp.BaseResp = tools.BuildBaseResp(http.StatusOK, "Create goods success")
 	return resp, nil
 }
@@ -91,6 +105,17 @@ func (s *GoodsServiceImpl) SearchGoods(ctx context.Context, req *goods.SearchGoo
 // UpdateGoods implements the GoodsServiceImpl interface.
 func (s *GoodsServiceImpl) UpdateGoods(ctx context.Context, req *goods.UpdateGoodsRequest) (resp *goods.UpdateGoodsResponse, err error) {
 	resp = new(goods.UpdateGoodsResponse)
+	ok, err := config.Enforcer.Enforce(strconv.FormatInt(req.UserId, 10), strconv.FormatInt(req.Id, 10), "operate")
+	if err != nil {
+		klog.Error(err)
+		resp.BaseResp = tools.BuildBaseResp(errx.CasbinInternalError, "Enforce internal error")
+		return resp, nil
+	}
+	if !ok {
+		klog.Info(req.Id, " has no rules")
+		resp.BaseResp = tools.BuildBaseResp(errx.CasbinAuthFail, "Casbin auth fail")
+		return resp, nil
+	}
 	Goods := s.MysqlGenerator.SelectGoodsById(req.Id)
 	if Goods.UserId != req.UserId {
 		resp.BaseResp = tools.BuildBaseResp(errx.AuthSellerFail, "Goods is not belong to you")

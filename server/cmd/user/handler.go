@@ -27,7 +27,7 @@ type UserServiceImpl struct {
 	OSSManager
 }
 type TokenGenerator interface {
-	CreateJWTtoken(ID int64, isSeller bool) (string, error)
+	CreateJWTtoken(ID int64) (string, error)
 }
 
 type ConvertGenerator interface {
@@ -79,7 +79,7 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 		resp.BaseResp = tools.BuildBaseResp(errx.PassWordWrong, "Wrong Password")
 		return resp, nil
 	}
-	resp.Token, err = s.TokenGenerator.CreateJWTtoken(int64(theUser.ID), theUser.IsSeller)
+	resp.Token, err = s.TokenGenerator.CreateJWTtoken(int64(theUser.ID))
 	if err != nil {
 		klog.Error("Create JWT error!", err)
 		return
