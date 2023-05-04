@@ -80,7 +80,7 @@ service userService {
     common.NilResponse WatchGoodsInFavorites(1: WatchGoodsInFavoritesReq request) (api.get="/user/favorites/watchgoodsinfavorites")
     common.NilResponse DeleteFavorites(1: DeleteFavoritesReq request) (api.delete="/user/favorites/deletefavorites")
     common.NilResponse CollectGoods(1: CollectGoodsReq request) (api.post="/user/favorites/collectgoods")
-    common.NilResponse AddToCart(1: AddToCartReq request) (api.post="/user/cart/addtocart")
+    common.NilRes1ponse AddToCart(1: AddToCartReq request) (api.post="/user/cart/addtocart")
     common.NilResponse AddAmounrCart(1: AddAmountCartReq request) (api.put="/user/cart/addamountcart")
     common.NilResponse DeleteAmountCart(1: DeleteAmountCartReq request) (api.put="/user/cart/deleteamountcart")
     common.NilResponse RemoveOutCart(1: RemoveOutCartReq request) (api.delete="/user/cart/removeoutcart")

@@ -2,7 +2,7 @@
 generate:
 	kitex -module NihiStore ./../idl/rpc/$(servicename).thrift
 
-user:
+user:.
 	make servicename=user generate
 
 goods:

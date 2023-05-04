@@ -8,4 +8,5 @@ type User struct {
 	Password    string
 	SellerAliId string
 	HeadId      int64
+	Salt        string
 }

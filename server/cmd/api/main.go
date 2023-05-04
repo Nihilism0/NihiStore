@@ -6,15 +6,20 @@ import (
 	"NihiStore/server/cmd/api/config"
 	"NihiStore/server/cmd/api/initialize"
 	"NihiStore/server/cmd/api/initialize/rpc"
+	"context"
 	"fmt"
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/hertz-contrib/cors"
 	hertztracing "github.com/hertz-contrib/obs-opentelemetry/tracing"
+	hertzSentinel "github.com/hertz-contrib/opensergo/sentinel/adapter"
+	"net/http"
 )
 
 func main() {
 	initialize.InitLogger()
 	r, info := initialize.InitNacos()
+	initialize.InitSentinel()
 	corsCfg := initialize.InitCors()
 	tracer, trcCfg := hertztracing.NewServerTracer()
 	initialize.InitAliPay()
@@ -27,6 +32,13 @@ func main() {
 	)
 	h.Use(cors.New(corsCfg))
 	h.Use(hertztracing.ServerMiddleware(trcCfg))
+	h.Use(hertzSentinel.SentinelServerMiddleware(
+		// abort with status 429 by default
+		hertzSentinel.WithServerBlockFallback(func(c context.Context, ctx *app.RequestContext) {
+			ctx.JSON(http.StatusTooManyRequests, nil)
+			ctx.Abort()
+		}),
+	))
 	register(h)
 	h.Spin()
 }

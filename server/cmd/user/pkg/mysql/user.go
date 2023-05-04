@@ -4,6 +4,7 @@ import (
 	"NihiStore/server/cmd/user/config"
 	"NihiStore/server/shared/kitex_gen/user"
 	"NihiStore/server/shared/model"
+	"NihiStore/server/shared/tools"
 	"strconv"
 )
 
@@ -16,6 +17,9 @@ func (*MysqlUserGenerator) SelectUserFromUsername(username string) (*model.User,
 }
 
 func (*MysqlUserGenerator) CreateUser(theUser *model.User) {
+	salt := tools.GenValidateCode(6)
+	theUser.Password = tools.MakePassword(theUser.Password, salt)
+	theUser.Salt = salt
 	config.DB.Create(theUser)
 }
 

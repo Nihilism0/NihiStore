@@ -75,6 +75,8 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *user.LoginRequest) (re
 		resp.BaseResp = tools.BuildBaseResp(errx.FindNone, "No such person found")
 		return resp, nil
 	}
+	tools.ValidPassword(req.Password, theUser.Salt, theUser.Password)
+
 	if theUser.Password != req.Password {
 		resp.BaseResp = tools.BuildBaseResp(errx.PassWordWrong, "Wrong Password")
 		return resp, nil

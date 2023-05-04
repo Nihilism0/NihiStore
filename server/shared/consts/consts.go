@@ -1,6 +1,8 @@
 package consts
 
 const (
+	NihiStore = "NihiStore"
+
 	JWTIssuer  = "NihiStore"
 	ThirtyDays = 60 * 60 * 24 * 30
 
