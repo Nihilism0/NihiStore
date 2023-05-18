@@ -26,4 +26,6 @@ NihiStore 是一个使用商城微服务业务
 
 ORM：gorm
 
+访问模型：Casbin
+
 数据库：Mysql
