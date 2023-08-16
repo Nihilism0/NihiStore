@@ -10,15 +10,18 @@ import (
 )
 
 func main() {
-	user := ""
-	password := ""
-	host := ""
+	user := "NihiStore"
+	password := "NihiStore1024"
+	host := "49.234.42.190"
 	port := 3306
-	name := ""
+	name := "nihistore"
 	db := initDb(user, password, host, port, name)
-	_ = db.AutoMigrate(
-		&model.Goods{},
+	err := db.AutoMigrate(
+		&model.User{},
 	)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
 
 func initDb(user, password, host string, port int, name string) *gorm.DB {

@@ -5,10 +5,12 @@ import (
 	"NihiStore/server/cmd/pay/initialize"
 	"NihiStore/server/cmd/pay/initialize/mq"
 	"NihiStore/server/cmd/pay/pkg/Parse"
+	"NihiStore/server/cmd/pay/pkg/mysql"
 	"NihiStore/server/shared/consts"
 	pay "NihiStore/server/shared/kitex_gen/pay/payservice"
 	"NihiStore/server/shared/middleware"
 	"context"
+	"fmt"
 	"github.com/cloudwego/kitex/pkg/klog"
 	"github.com/cloudwego/kitex/pkg/limit"
 	"github.com/cloudwego/kitex/pkg/rpcinfo"
@@ -26,6 +28,7 @@ func main() {
 	r, info := initialize.InitNacos(Port)
 	initialize.InitDB()
 	initialize.InitAliPay()
+	fmt.Println(config.GlobalServerConfig.MqInfo.Address)
 	err := mq.InitConsumer("Pay", "order", config.GlobalServerConfig.MqInfo.Address)
 	if err != nil {
 		return
@@ -39,7 +42,8 @@ func main() {
 	// Create new server.
 	srv := pay.NewServer(
 		&PayServiceImpl{
-			ParseGenerator: &Parse.ParseGenerator{},
+			ParseGenerator:    &Parse.ParseGenerator{},
+			MysqlPayGenerator: &mysql.MysqlPayGenerator{},
 		},
 		server.WithServiceAddr(utils.NewNetAddr(consts.TCP, net.JoinHostPort(IP, strconv.Itoa(Port)))),
 		server.WithRegistry(r),

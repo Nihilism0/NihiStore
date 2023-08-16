@@ -3,6 +3,8 @@
 package pay
 
 import (
+	"NihiStore/server/cmd/api/config"
+	"NihiStore/server/shared/middleware"
 	"github.com/cloudwego/hertz/pkg/app"
 )
 
@@ -19,7 +21,9 @@ func _alipayMw() []app.HandlerFunc {
 }
 
 func _buygoodsMw() []app.HandlerFunc {
-	// your code...
+	return []app.HandlerFunc{
+		middleware.JWTAuthMiddleware(config.GlobalServerConfig.JWTInfo.SigningKey),
+	}
 	return nil
 }
 

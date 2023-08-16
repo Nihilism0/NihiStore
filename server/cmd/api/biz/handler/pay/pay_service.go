@@ -76,7 +76,6 @@ func Notify(ctx context.Context, c *app.RequestContext) {
 		OutTradeNo:  noti.OutTradeNo,
 		BuyerId:     buyerId,
 		BuyerAliId:  noti.BuyerId,
-		SellerId:    0,
 		SellerAliId: noti.SellerId,
 		TradeNo:     noti.TradeNo,
 		TradeStatus: string(noti.TradeStatus),
